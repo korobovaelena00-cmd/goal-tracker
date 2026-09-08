@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#050810">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Пупс-ай — Трекер целей</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
@@ -485,7 +488,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 <div class="settings-row"><div><div class="settings-label">Язык</div><div class="settings-desc">Interface language</div></div><div class="lang-selector"><div class="lang-btn active" onclick="setLang('ru')">RU</div><div class="lang-btn" onclick="setLang('en')">EN</div></div></div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v4.2.2</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v4.2.3</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -563,7 +566,7 @@ const ACHIEVEMENTS=[
 {id:'ten_subtasks',name:'10 шагов',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>',check:s=>s.goals.reduce((n,g)=>n+(g.subtasks||[]).length,0)>=10}
 ];
 
-let state={version:4.20,goals:[],habits:[],tasks:[],customCategories:[],settings:{theme:'dark',lang:'ru',healthSynced:false,healthData:null},dailyScores:{},chatTopics:[{'id':'general','name':'Общее'}],chatHistory:{'general':[{role:'system',text:'Привет! Я твой агент. Спроси меня о целях, привычках, или попроси рекомендации.',ts:Date.now()}]},activeTopic:'general'};
+let state={version:4.20,goals:[],habits:[],tasks:[],customCategories:[],settings:{theme:'dark',lang:'ru',healthSynced:false,healthData:null},dailyScores:{},chatTopics:[{'id':'general','name':'Общее'}],chatHistory:{'general':[{role:'system',text:'Привет! Я твой агент. Спроси меня о целях, привычках, или попроси рекомендации.',ts:Date.now()}]},activeTopic:'general',lastModified:0};
 let currentView='dashboard';
 let goalFilter='all';
 let habitFilter='all';
@@ -585,19 +588,39 @@ let yearHeatmapSelectedMonth=null;
 let yearHeatmapSelectedDate=null;
 
 function getAllCategories(){const cats={...DEFAULT_CATEGORIES};(state.customCategories||[]).forEach(c=>{cats[c.id]={label:c.name,color:c.color,cls:'custom-'+c.id}});return cats}
-function migrateState(p){if(!state.tasks)state.tasks=[];if(!state.customCategories)state.customCategories=[];if(!state.settings)state.settings={theme:'dark',lang:'ru',healthSynced:false,healthData:null};if(!state.dailyScores)state.dailyScores={};if(!state.chatTopics)state.chatTopics=[{id:'general',name:'Общее'}];if(!state.chatHistory)state.chatHistory={general:[{role:'system',text:'Привет! Я твой агент. Спроси меня о целях, привычках, или попроси рекомендации.',ts:Date.now()}]};if(!state.activeTopic)state.activeTopic='general';state.goals.forEach(g=>{if(!g.subtasks)g.subtasks=[];if(!g.priority)g.priority='med';g.subtasks.forEach(s=>{if(!s.dueDate)s.dueDate=null})});state.habits.forEach(h=>{if(h.targetPerWeek===undefined)h.targetPerWeek=7;if(!h.daysOfWeek)h.daysOfWeek=[1,2,3,4,5,6,0];if(h.startDate===undefined)h.startDate=null;if(h.endDate===undefined)h.endDate=null})}
+function migrateState(p){if(!state.tasks)state.tasks=[];if(!state.customCategories)state.customCategories=[];if(!state.settings)state.settings={theme:'dark',lang:'ru',healthSynced:false,healthData:null};if(!state.dailyScores)state.dailyScores={};if(!state.chatTopics)state.chatTopics=[{id:'general',name:'Общее'}];if(!state.chatHistory)state.chatHistory={general:[{role:'system',text:'Привет! Я твой агент. Спроси меня о целях, привычках, или попроси рекомендации.',ts:Date.now()}]};if(!state.activeTopic)state.activeTopic='general';state.goals.forEach(g=>{if(!g.subtasks)g.subtasks=[];if(!g.priority)g.priority='med';g.subtasks.forEach(s=>{if(!s.dueDate)s.dueDate=null})});state.habits.forEach(h=>{if(h.targetPerWeek===undefined)h.targetPerWeek=7;if(!h.daysOfWeek)h.daysOfWeek=[1,2,3,4,5,6,0];if(h.startDate===undefined)h.startDate=null;if(h.endDate===undefined)h.endDate=null});if(state.lastModified===undefined)state.lastModified=0}
 function isValidState(p){return p&&Array.isArray(p.goals)&&Array.isArray(p.habits)}
 function loadFromBackups(){for(const key of BACKUP_KEYS){try{const raw=localStorage.getItem(key);if(raw){const p=JSON.parse(raw);if(isValidState(p)){console.log('Restored from '+key);return p}}}catch(e){}}return null}
-function loadFromCloud(cb){if(!(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.CloudStorage&&Telegram.WebApp.CloudStorage.getItem)){cb(null);return}try{Telegram.WebApp.CloudStorage.getItem(CLOUD_KEY,function(err,val){if(!err&&val){try{const p=JSON.parse(val);if(isValidState(p)){console.log('Restored from cloud');cb(p);return}}catch(e){}}cb(null)})}catch(e){cb(null)}}
+function loadFromCloud(cb){if(!(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.CloudStorage&&Telegram.WebApp.CloudStorage.getItem)){cb(null,0);return}try{Telegram.WebApp.CloudStorage.getItem(CLOUD_KEY,function(err,val){if(!err&&val){try{const p=JSON.parse(val);if(isValidState(p)){const ts=p.lastModified||0;console.log('Cloud data found, ts='+ts);cb(p,ts);return}}catch(e){}}cb(null,0)})}catch(e){cb(null,0)}}
+function showNonTelegramPrompt(){const m=document.createElement('div');m.id='restoreModal';m.className='modal-overlay active';m.style.zIndex='1000';m.innerHTML='<div class="modal-box" style="text-align:center;padding:24px;max-width:340px"><div style="font-size:48px;margin-bottom:12px">ð±</div><h3 style="font-size:18px;margin-bottom:8px">Откройте в Telegram</h3><p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px">Ваши данные хранятся в облаке Telegram. Откройте это приложение через бота в Telegram, чтобы восстановить их. Или начните заново:</p><div style="display:flex;flex-direction:column;gap:8px"><button class="btn-ok" onclick="document.getElementById(\'restoreModal\').remove();document.getElementById(\'importInput\').click()" style="padding:10px 16px">ð Загрузить из файла</button><button class="btn-cancel" onclick="document.getElementById(\'restoreModal\').remove();seedDemo();renderDashboard()" style="padding:10px 16px">ð± Начать с нуля</button></div></div>';document.body.appendChild(m)}
 function showRestorePrompt(){const m=document.createElement('div');m.id='restoreModal';m.className='modal-overlay active';m.style.zIndex='1000';m.innerHTML='<div class="modal-box" style="text-align:center;padding:24px;max-width:340px"><div style="font-size:48px;margin-bottom:12px">💾</div><h3 style="font-size:18px;margin-bottom:8px">Данные не найдены</h3><p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px">Ваши цели и привычки не были загружены. Возможно, кеш был очищен. Вы можете:</p><div style="display:flex;flex-direction:column;gap:8px"><button class="btn-ok" onclick="document.getElementById(\'restoreModal\').remove();document.getElementById(\'importInput\').click()" style="padding:10px 16px">📂 Загрузить из файла</button><button class="btn-cancel" onclick="document.getElementById(\'restoreModal\').remove();seedDemo();renderDashboard()" style="padding:10px 16px">🌱 Начать с нуля</button></div></div>';document.body.appendChild(m)}
 function loadData(){
-try{const raw=localStorage.getItem(STORAGE_KEY);if(raw){const p=JSON.parse(raw);if(isValidState(p)){state=p;if(!state.version||state.version<4.21)state.version=4.21;migrateState(p);return}}}catch(e){console.error('Load primary:',e)}
-var bp=loadFromBackups();if(bp){state=bp;if(!state.version||state.version<4.21)state.version=4.21;migrateState(bp);showToast('Восстановлено из бэкапа');return}
-loadFromCloud(function(cp){if(cp){state=cp;if(!state.version||state.version<4.21)state.version=4.21;migrateState(cp);showToast('Восстановлено из облака');saveData();renderDashboard();return}if(state.goals.length===0&&state.habits.length===0){showRestorePrompt()}})
+var localTs=0;
+try{const raw=localStorage.getItem(STORAGE_KEY);if(raw){const p=JSON.parse(raw);if(isValidState(p)){state=p;localTs=p.lastModified||0;if(!state.version||state.version<4.21)state.version=4.21;migrateState(p)}}}catch(e){console.error('Load primary:',e)}
+if(state.goals.length===0&&state.habits.length===0){
+var bp=loadFromBackups();if(bp){state=bp;localTs=bp.lastModified||0;if(!state.version||state.version<4.21)state.version=4.21;migrateState(bp);showToast('Восстановлено из бэкапа')}
+}
+loadFromCloud(function(cp,cloudTs){
+if(cp&&isValidState(cp)){
+if(cloudTs>localTs){
+state=cp;if(!state.version||state.version<4.21)state.version=4.21;migrateState(cp);
+showToast('Данные восстановлены из облака Telegram');saveData();renderDashboard();return
+}else if(cloudTs>0&&cloudTs<=localTs){
+syncToCloud();return
+}
+}
+if(state.goals.length===0&&state.habits.length===0){
+if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.CloudStorage){
+showRestorePrompt()
+}else{
+showNonTelegramPrompt()
+}
+}
+})
 }
 function rotateBackups(){try{for(let i=BACKUP_KEYS.length-1;i>0;i--){const prev=localStorage.getItem(BACKUP_KEYS[i-1]);if(prev)localStorage.setItem(BACKUP_KEYS[i],prev)}localStorage.setItem(BACKUP_KEYS[0],localStorage.getItem(STORAGE_KEY)||JSON.stringify(state))}catch(e){console.error('Backup rotate:',e)}}
 function syncToCloud(){if(cloudSyncPending)return;if(!(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.CloudStorage&&Telegram.WebApp.CloudStorage.setItem))return;cloudSyncPending=true;try{const data=JSON.stringify(state);Telegram.WebApp.CloudStorage.setItem(CLOUD_KEY,data,function(err,ok){cloudSyncPending=false;if(!err&&ok){localStorage.setItem(CLOUD_TS_KEY,Date.now().toString());console.log('Cloud sync OK')}else if(err){console.warn('Cloud sync err:',err)}else{console.warn('Cloud sync no-ok')}})}catch(e){cloudSyncPending=false;console.warn('Cloud sync:',e)}}
-function saveData(){try{const data=JSON.stringify(state);localStorage.setItem(STORAGE_KEY,data);lastSaveTs=Date.now()}catch(e){console.error('Save:',e)}try{rotateBackups()}catch(e){}try{syncToCloud()}catch(e){}}
+function saveData(){try{state.lastModified=Date.now();const data=JSON.stringify(state);localStorage.setItem(STORAGE_KEY,data);lastSaveTs=Date.now()}catch(e){console.error('Save:',e)}try{rotateBackups()}catch(e){}try{syncToCloud()}catch(e){}}
 function startAutoSave(){setInterval(function(){try{if(Date.now()-lastSaveTs>AUTOSAVE_INTERVAL){saveData()}}catch(e){}},AUTOSAVE_INTERVAL);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'){saveData()}});window.addEventListener('beforeunload',function(){saveData()})}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
 function todayStr(){return new Date().toISOString().slice(0,10)}

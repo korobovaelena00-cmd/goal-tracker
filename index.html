@@ -204,7 +204,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .habit-drag-handle:active{cursor:grabbing}
 .phrase-text{font-size:15px;line-height:1.5;color:var(--text-primary);font-style:italic}
 .phrase-author{font-size:12px;color:var(--text-muted);margin-top:6px;text-align:right}
-.habit-quick-item{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:rgba(46,139,255,0.03);border-radius:var(--radius-sm);border:1px solid var(--glass-border);transition:var(--transition)}
+.habit-quick-item{display:flex;align-items:center;justify-content:space-between;padding:3px 8px;background:rgba(46,139,255,0.03);border-radius:var(--radius-sm);border:1px solid var(--glass-border);transition:var(--transition)}
 .habit-quick-item.done{opacity:0.5}
 .habit-quick-item.done .habit-name{text-decoration:line-through}
 .habit-name{font-size:14px;font-weight:500}
@@ -221,7 +221,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .view-toggle-btn{flex:1;padding:10px;text-align:center;font-size:14px;font-weight:600;color:var(--text-secondary);cursor:pointer;transition:var(--transition);border:none;background:transparent}
 .view-toggle-btn.active{background:rgba(46,139,255,0.08);color:var(--blue-bright);box-shadow:inset 0 -2px 0 var(--blue-bright)}
 
-.task-item{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(46,139,255,0.03);border-radius:var(--radius-sm);border:1px solid var(--glass-border);margin-bottom:6px;transition:var(--transition)}
+.task-item{display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(46,139,255,0.03);border-radius:var(--radius-sm);border:1px solid var(--glass-border);margin-bottom:4px;transition:var(--transition)}
 .task-item.done{opacity:0.5}
 .task-item.done .task-title{text-decoration:line-through}
 .task-title{font-size:14px;font-weight:500;flex:1}
@@ -289,9 +289,9 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .heatmap::-webkit-scrollbar{display:none}
 .heatmap-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
 .heatmap-cell{aspect-ratio:1;border-radius:3px;background:var(--bg-elevated);transition:var(--transition);display:flex;align-items:center;justify-content:center;font-size:13px;color:rgba(232,240,255,0.35);font-weight:500}
-.heatmap-cell.checked{background:var(--accent-grad);color:rgba(255,255,255,0.3)}
+.heatmap-cell.checked{background:#2e8bff;color:rgba(255,255,255,0.4)}
 .heatmap-cell.today{outline:1.5px solid var(--blue-bright);outline-offset:1px}
-.heatmap-cell.not-scheduled{opacity:0.25}
+.heatmap-cell.not-scheduled{opacity:0.35}
 .heatmap-cell.missed{border:1px solid rgba(232,93,111,0.4);box-sizing:border-box}
 .heatmap-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--text-muted);margin-top:6px;padding:0 2px}
 .habit-target{font-size:11px;color:var(--text-muted);margin-top:8px}
@@ -498,13 +498,13 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 <div class="settings-row"><div><div class="settings-label">Язык</div><div class="settings-desc">Interface language</div></div><div class="lang-selector"><div class="lang-btn active" onclick="setLang('ru')">RU</div><div class="lang-btn" onclick="setLang('en')">EN</div></div></div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v4.3.5</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v4.3.6</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
 <div class="dash-hero card stagger">
 <div class="progress-ring-container">
-<svg viewBox="0 0 170 170"><defs><linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop id="ringStop1" offset="0%" stop-color="#0d1f3a"/><stop id="ringStop2" offset="100%" stop-color="#1a3f6f"/></linearGradient></defs>
+<svg viewBox="0 0 170 170"><defs><linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop id="ringStop1" offset="0%" stop-color="#2e8bff" stop-opacity="0.15"/><stop id="ringStop2" offset="100%" stop-color="#2e8bff" stop-opacity="0.15"/></linearGradient></defs>
 <circle class="progress-ring-bg" cx="85" cy="85" r="75" stroke-width="10"/>
 <circle class="progress-ring-fg" id="dashRing" cx="85" cy="85" r="75" stroke-width="10" stroke="url(#ringGrad)" stroke-dasharray="471" stroke-dashoffset="471"/></svg>
 <div class="progress-ring-text"><span class="pct" id="dashPct">0%</span><span class="label">Daily score</span></div>
@@ -791,9 +791,9 @@ const ring=document.getElementById('dashRing');const circ=2*Math.PI*75;
 const cappedScore=Math.min(dailyScore,100);
 ring.setAttribute('stroke-dasharray',circ);ring.setAttribute('stroke-dashoffset',circ-(circ*cappedScore/100));
 var level=getDailyScoreLevel(cappedScore);
-var ringGradients=[['#0d1f3a','#1a3f6f'],['#1a3f6f','#1a5f9f'],['#1a5f9f','#2e8bff'],['#2e8bff','#00b8ff'],['#00b8ff','#00d4ff']];
-var rg=ringGradients[level]||ringGradients[4];var rs1=document.getElementById('ringStop1');var rs2=document.getElementById('ringStop2');
-if(rs1)rs1.setAttribute('stop-color',rg[0]);if(rs2)rs2.setAttribute('stop-color',rg[1]);
+var ringLevels=[{c:'#2e8bff',o:0.15},{c:'#2e8bff',o:0.35},{c:'#2e8bff',o:0.6},{c:'#2e8bff',o:0.75},{c:'#2e8bff',o:0.9}];
+var rl=ringLevels[level]||ringLevels[4];var rs1=document.getElementById('ringStop1');var rs2=document.getElementById('ringStop2');
+if(rs1){rs1.setAttribute('stop-color',rl.c);rs1.setAttribute('stop-opacity',rl.o);}if(rs2){rs2.setAttribute('stop-color',rl.c);rs2.setAttribute('stop-opacity',rl.o);}
 document.getElementById('dashPct').textContent=cappedScore;
 state.dailyScores[today]=dailyScore;saveData();
 const habitsDone=state.habits.filter(h=>(h.checkoffs||[]).includes(today)).length;
@@ -811,8 +811,8 @@ if(state.habits.length===0){hh.innerHTML='<div style="text-align:center;color:va
 const planned=state.habits.filter(h=>isHabitScheduledToday(h)&&isHabitActive(h));
 const extra=state.habits.filter(h=>!isHabitScheduledToday(h)&&isHabitActive(h));
 let html='';
-if(planned.length>0){html+='<div style="font-size:11px;font-weight:600;color:var(--text-secondary);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.5px">Запланированные</div>';html+=planned.map(h=>{const done=(h.checkoffs||[]).includes(today);return'<div class="habit-quick-item '+(done?'done':'')+'"><span class="habit-name">'+escapeHtml(h.title)+'</span><button class="check-btn '+(done?'checked':'')+'" onclick="toggleHabit(\''+h.id+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></button></div>'}).join('')}else{html+='<div style="text-align:center;color:var(--text-muted);padding:12px">Нет запланированных привычек на сегодня</div>'}
-if(extra.length>0){html+='<div style="font-size:11px;font-weight:600;color:var(--text-secondary);margin:6px 0 3px;text-transform:uppercase;letter-spacing:0.5px">Дополнительные</div>';html+=extra.map(h=>{const done=(h.checkoffs||[]).includes(today);return'<div class="habit-quick-item '+(done?'done':'')+'"><span class="habit-name">'+escapeHtml(h.title)+'</span><button class="check-btn '+(done?'checked':'')+'" onclick="toggleHabit(\''+h.id+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></button></div>'}).join('')}
+if(planned.length>0){html+='<div style="font-size:10px;font-weight:600;color:var(--text-secondary);margin-bottom:2px;text-transform:uppercase;letter-spacing:0.5px">Запланированные</div>';html+=planned.map(h=>{const done=(h.checkoffs||[]).includes(today);return'<div class="habit-quick-item '+(done?'done':'')+'"><span class="habit-name">'+escapeHtml(h.title)+'</span><button class="check-btn '+(done?'checked':'')+'" onclick="toggleHabit(\''+h.id+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></button></div>'}).join('')}else{html+='<div style="text-align:center;color:var(--text-muted);padding:6px">Нет запланированных привычек на сегодня</div>'}
+if(extra.length>0){html+='<div style="font-size:10px;font-weight:600;color:var(--text-secondary);margin:3px 0 2px;text-transform:uppercase;letter-spacing:0.5px">Дополнительные</div>';html+=extra.map(h=>{const done=(h.checkoffs||[]).includes(today);return'<div class="habit-quick-item '+(done?'done':'')+'"><span class="habit-name">'+escapeHtml(h.title)+'</span><button class="check-btn '+(done?'checked':'')+'" onclick="toggleHabit(\''+h.id+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></button></div>'}).join('')}
 hh.innerHTML=html;
 }
 // [6] Dashboard tasks today
@@ -902,7 +902,7 @@ const dow=new Date(y,m,d).getDay();
 const scheduled=h.daysOfWeek&&h.daysOfWeek.length>0&&h.daysOfWeek.includes(dow);
 const isPastOrToday=!isFuture;
 const habitStarted=!h.startDate||new Date(h.startDate)<=new Date(ds);const habitEnded=h.endDate&&new Date(h.endDate)<new Date(ds);const isMissed=scheduled&&!checked&&isPastOrToday&&habitStarted&&!habitEnded;
-html+='<div class="heatmap-cell '+(checked?'checked':'')+' '+(isToday?'today':'')+' '+(scheduled?'':'not-scheduled')+' '+(isMissed?'missed':'')+'" style="'+(isFuture?'opacity:0.3;':'')+(scheduled&&!checked&&!isMissed?'background:rgba(46,139,255,0.06);':'')+'" onclick="if(window._expandedHabit===\''+h.id+'\')toggleHabitDate(\''+h.id+'\',\''+ds+'\')">'+d+'</div>';
+html+='<div class="heatmap-cell '+(checked?'checked':'')+' '+(isToday?'today':'')+' '+(scheduled?'':'not-scheduled')+' '+(isMissed?'missed':'')+'" style="'+(isFuture?'opacity:0.3;':'')+'" onclick="if(window._expandedHabit===\''+h.id+'\')toggleHabitDate(\''+h.id+'\',\''+ds+'\')">'+d+'</div>';
 }
 const totalCells=startDow+daysInMonth;const remaining=(7-(totalCells%7))%7;
 for(let i=0;i<remaining;i++){html+='<div class="heatmap-cell" style="visibility:hidden"></div>'}

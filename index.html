@@ -498,7 +498,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 <div class="settings-row"><div><div class="settings-label">Язык</div><div class="settings-desc">Interface language</div></div><div class="lang-selector"><div class="lang-btn active" onclick="setLang('ru')">RU</div><div class="lang-btn" onclick="setLang('en')">EN</div></div></div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v4.3.7</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v4.3.8</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -902,7 +902,7 @@ const dow=new Date(y,m,d).getDay();
 const scheduled=h.daysOfWeek&&h.daysOfWeek.length>0&&h.daysOfWeek.includes(dow);
 const isPastOrToday=!isFuture;
 const habitStarted=!h.startDate||new Date(h.startDate)<=new Date(ds);const habitEnded=h.endDate&&new Date(h.endDate)<new Date(ds);const isMissed=scheduled&&!checked&&isPastOrToday&&habitStarted&&!habitEnded;
-html+='<div class="heatmap-cell '+(checked?'checked':'')+' '+(isToday?'today':'')+' '+(scheduled?'':'not-scheduled')+' '+(isMissed?'missed':'')+'" onclick="if(window._expandedHabit===\''+h.id+'\')toggleHabitDate(\''+h.id+'\',\''+ds+'\')">'+d+'</div>';
+html+='<div class="heatmap-cell '+(checked?'checked':'not-scheduled')+' '+(isToday?'today':'')+' '+(isMissed?'missed':'')+'" onclick="if(window._expandedHabit===\''+h.id+'\')toggleHabitDate(\''+h.id+'\',\''+ds+'\')">'+d+'</div>';
 }
 const totalCells=startDow+daysInMonth;const remaining=(7-(totalCells%7))%7;
 for(let i=0;i<remaining;i++){html+='<div class="heatmap-cell" style="visibility:hidden"></div>'}

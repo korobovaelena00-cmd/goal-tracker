@@ -510,7 +510,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 <div class="settings-row"><div><div class="settings-label">Язык</div><div class="settings-desc">Interface language</div></div><div class="lang-selector"><div class="lang-btn active" onclick="setLang('ru')">RU</div><div class="lang-btn" onclick="setLang('en')">EN</div></div></div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v4.4.1</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.0.0</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -627,7 +627,7 @@ function isValidState(p){return p&&Array.isArray(p.goals)&&Array.isArray(p.habit
 function loadFromBackups(){for(const key of BACKUP_KEYS){try{const raw=localStorage.getItem(key);if(raw){const p=JSON.parse(raw);if(isValidState(p)){console.log('Restored from '+key);return p}}}catch(e){}}return null}
 function loadFromCloud(cb){if(!(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.CloudStorage&&Telegram.WebApp.CloudStorage.getItem)){cb(null,0);return}try{Telegram.WebApp.CloudStorage.getItem(CLOUD_KEY,function(err,val){if(!err&&val){try{const p=JSON.parse(val);if(isValidState(p)){const ts=p.lastModified||0;console.log('Cloud data found, ts='+ts);cb(p,ts);return}}catch(e){}}cb(null,0)})}catch(e){cb(null,0)}}
 function showNonTelegramPrompt(){const m=document.createElement('div');m.id='restoreModal';m.className='modal-overlay active';m.style.zIndex='1000';m.innerHTML='<div class="modal-box" style="text-align:center;padding:24px;max-width:340px"><div style="font-size:48px;margin-bottom:12px">ð±</div><h3 style="font-size:18px;margin-bottom:8px">Откройте в Telegram</h3><p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px">Ваши данные хранятся в облаке Telegram. Откройте это приложение через бота в Telegram, чтобы восстановить их. Или начните заново:</p><div style="display:flex;flex-direction:column;gap:8px"><button class="btn-ok" onclick="document.getElementById(\'restoreModal\').remove();document.getElementById(\'importInput\').click()" style="padding:10px 16px">ð Загрузить из файла</button><button class="btn-cancel" onclick="document.getElementById(\'restoreModal\').remove();seedDemo();renderDashboard()" style="padding:10px 16px">ð± Начать с нуля</button></div></div>';document.body.appendChild(m)}
-function showRestorePrompt(){const m=document.createElement('div');m.id='restoreModal';m.className='modal-overlay active';m.style.zIndex='1000';m.innerHTML='<div class="modal-box" style="text-align:center;padding:24px;max-width:340px"><div style="font-size:48px;margin-bottom:12px">💾</div><h3 style="font-size:18px;margin-bottom:8px">Данные не найдены</h3><p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px">Ваши цели и привычки не были загружены. Возможно, кеш был очищен. Вы можете:</p><div style="display:flex;flex-direction:column;gap:8px"><button class="btn-ok" onclick="document.getElementById(\'restoreModal\').remove();document.getElementById(\'importInput\').click()" style="padding:10px 16px">📂 Загрузить из файла</button><button class="btn-cancel" onclick="document.getElementById(\'restoreModal\').remove();seedDemo();renderDashboard()" style="padding:10px 16px">🌱 Начать с нуля</button></div></div>';document.body.appendChild(m)}
+function showRestorePrompt(){const m=document.createElement('div');m.id='restoreModal';m.className='modal-overlay active';m.style.zIndex='1000';m.innerHTML='<div class="modal-box" style="text-align:center;padding:24px;max-width:340px"><div style="font-size:18px;font-weight:600;margin-bottom:12px;color:var(--text-primary)">Бэкап</div><h3 style="font-size:18px;margin-bottom:8px">Данные не найдены</h3><p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px">Ваши цели и привычки не были загружены. Возможно, кеш был очищен. Вы можете:</p><div style="display:flex;flex-direction:column;gap:8px"><button class="btn-ok" onclick="document.getElementById(\'restoreModal\').remove();document.getElementById(\'importInput\').click()" style="padding:10px 16px">Загрузить из файла</button><button class="btn-cancel" onclick="document.getElementById(\'restoreModal\').remove();seedDemo();renderDashboard()" style="padding:10px 16px">Начать с нуля</button></div></div>';document.body.appendChild(m)}
 function loadData(){
 var localTs=0;
 try{const raw=localStorage.getItem(STORAGE_KEY);if(raw){const p=JSON.parse(raw);if(isValidState(p)){state=p;localTs=p.lastModified||0;if(!state.version||state.version<4.21)state.version=4.21;migrateState(p)}}}catch(e){console.error('Load primary:',e)}
@@ -1014,7 +1014,7 @@ function renderAnalytics(){const goals=state.goals;const cats=getAllCategories()
 const gp=document.getElementById('anGoalsProgress');
 gp.innerHTML=goals.length===0?'<div style="text-align:center;color:var(--text-muted);padding:12px">Нет целей</div>':goals.map(g=>{const cat=cats[g.category]||{color:'#2e8bff',label:''};const prog=calcGoalProgress(g);return'<div class="cat-bar-row"><div class="cat-bar-label"><span class="cat-dot" style="background:'+cat.color+'"></span>'+escapeHtml(g.title).slice(0,20)+'</div><div class="cat-bar-track"><div class="cat-bar-fill" style="width:'+prog+'%;background:'+cat.color+'"></div></div><div class="cat-bar-pct">'+prog+'%</div></div>'}).join('');
 renderYearHeatmap();
-var ins=generateInsights();var insEl=document.getElementById("anInsights");if(insEl){insEl.innerHTML=ins.map(i=>"<div style=\"display:flex;gap:8px;align-items:flex-start;padding:6px 0\"><span style=\"font-size:18px\">"+i.icon+"</span><span style=\"font-size:13px;line-height:1.5;color:var(--text-primary)\""+i.text+"</span></div>").join("")}}
+var ins=generateInsights();var insEl=document.getElementById("anInsights");if(insEl){insEl.innerHTML=ins.map(function(i){return '<div style="display:flex;gap:8px;align-items:flex-start;padding:6px 0"><span style="font-size:10px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;min-width:70px;flex-shrink:0">'+i.label+'</span><span style="font-size:13px;line-height:1.5;color:var(--text-primary)">'+i.text+'</span></div>'}).join("")}}
 function drawWeeklyChart(){const cv=document.getElementById('weeklyChart');const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;const w=cv.offsetWidth||300;const h=200;cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=dateStr(d);const count=state.habits.filter(h=>(h.checkoffs||[]).includes(ds)).length;days.push({label:['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][d.getDay()],count})}const max=Math.max(...days.map(d=>d.count),1);const bw=w/7*0.6;const gap=w/7*0.2;days.forEach((d,i)=>{const x=i*(w/7)+gap;const bh=(d.count/max)*(h-40);const grad=ctx.createLinearGradient(0,h-20-bh,0,h-20);grad.addColorStop(0,'#1a6fff');grad.addColorStop(1,'#00d4ff');ctx.fillStyle=grad;ctx.beginPath();roundRect(ctx,x,h-20-bh,bw,bh,4);ctx.fill();ctx.fillStyle='rgba(232,240,255,0.5)';ctx.font='11px sans-serif';ctx.textAlign='center';ctx.fillText(d.label,x+bw/2,h-6);ctx.fillStyle='rgba(232,240,255,0.8)';ctx.fillText(d.count,x+bw/2,h-26-bh)})}
 function drawDonutChart(){const cv=document.getElementById('donutChart');const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;const w=cv.offsetWidth||300;const h=200;cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const cats=getAllCategories();const catKeys=Object.keys(cats);const counts=catKeys.map(c=>state.goals.filter(g=>g.category===c).length);const total=counts.reduce((a,b)=>a+b,0);if(total===0){ctx.fillStyle='rgba(232,240,255,0.3)';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText('Нет данных',w/2,h/2);return}const cx=w/2,cy=h/2;const r=Math.min(w,h)/2-20;let angle=-Math.PI/2;catKeys.forEach((c,i)=>{if(counts[i]===0)return;const arc=(counts[i]/total)*Math.PI*2;ctx.beginPath();ctx.arc(cx,cy,r,angle,angle+arc);ctx.lineWidth=20;ctx.strokeStyle=cats[c].color;ctx.stroke();angle+=arc});ctx.fillStyle='rgba(232,240,255,0.9)';ctx.font='bold 24px sans-serif';ctx.textAlign='center';ctx.fillText(total,cx,cy-4);ctx.fillStyle='rgba(232,240,255,0.5)';ctx.font='11px sans-serif';ctx.fillText('целей',cx,cy+14)}
 function drawTrendChart(){const cv=document.getElementById('trendChart');const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;const w=cv.offsetWidth||300;const h=200;cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const days=30;const data=[];for(let i=days-1;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=dateStr(d);data.push(state.habits.filter(h=>(h.checkoffs||[]).includes(ds)).length)}const max=Math.max(...data,1);const pw=(w-20)/days;data.forEach((v,i)=>{const x=10+i*pw;const bh=(v/max)*(h-30);const grad=ctx.createLinearGradient(0,h-10-bh,0,h-10);grad.addColorStop(0,'#1a6fff');grad.addColorStop(1,'rgba(0,212,255,0.3)');ctx.fillStyle=grad;ctx.fillRect(x,h-10-bh,pw-1,bh)});ctx.fillStyle='rgba(232,240,255,0.3)';ctx.font='10px sans-serif';ctx.textAlign='center';ctx.fillText('30 дней назад',30,h-2);ctx.fillText('сегодня',w-30,h-2)}
@@ -1198,61 +1198,224 @@ var insights=[];
 var today=todayStr();
 var cats=getAllCategories();
 var dailyScore=calcDailyScore(today);
+function addInsight(label,text){insights.push({label:label,text:text})}
 
-// Insight: daily score trend
+// --- A. Day-of-week patterns ---
+if(state.habits.length>0){
+var dowNames=['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
+var dowStats=[0,0,0,0,0,0,0];
+var dowTotal=[0,0,0,0,0,0,0];
+var now30=new Date();
+for(var i=0;i<30;i++){
+var d=new Date(now30);d.setDate(d.getDate()-i);
+var ds=dateStr(d);var dow=d.getDay();
+var scheduled=state.habits.filter(function(h){return isHabitActive(h)&&isHabitScheduledForDate(h,ds)});
+if(scheduled.length>0){
+var done=scheduled.filter(function(h){return(h.checkoffs||[]).includes(ds)}).length;
+dowStats[dow]+=done;dowTotal[dow]+=scheduled.length;
+}
+}
+var bestDow=-1,worstDow=-1,bestRate=-1,worstRate=2;
+for(var j=0;j<7;j++){
+if(dowTotal[j]>0){
+var rate=dowStats[j]/dowTotal[j];
+if(rate>bestRate){bestRate=rate;bestDow=j}
+if(rate<worstRate){worstRate=rate;worstDow=j}
+}
+}
+if(bestDow>=0&&worstDow>=0&&bestDow!==worstDow){
+var br=Math.round(bestRate*100),wr=Math.round(worstRate*100);
+if(br-wr>=25){
+addInsight('Паттерны','Ты выполняешь '+br+'% привычек в '+dowNames[bestDow]+', но только '+wr+'% в '+dowNames[worstDow]+'. Попробуй выбрать 1-2 легкие привычки на '+dowNames[worstDow]+'.');
+}
+}
+}
+
+// --- B. Per-habit success rates ---
+if(state.habits.length>0){
+var habitRates=[];
+state.habits.forEach(function(h){
+if(!isHabitActive(h))return;
+var co=(h.checkoffs||[]).sort();
+if(co.length===0)return;
+var firstDate=new Date(co[0]);
+var todayDate=new Date(today);
+var daysSince=Math.round((todayDate-firstDate)/86400000)+1;
+if(daysSince<7)return;
+var scheduledCount=0;
+var d=new Date(firstDate);
+while(d<=todayDate){
+var ds2=dateStr(d);
+if(isHabitScheduledForDate(h,ds2))scheduledCount++;
+d.setDate(d.getDate()+1);
+}
+if(scheduledCount<3)return;
+var rate=Math.round((co.length/scheduledCount)*100);
+habitRates.push({title:h.title,rate:rate,checkoffs:co.length,scheduled:scheduledCount});
+});
+if(habitRates.length>0){
+habitRates.sort(function(a,b){return a.rate-b.rate});
+var worstH=habitRates[0];
+var bestH=habitRates[habitRates.length-1];
+if(bestH.rate-worstH.rate>=30){
+addInsight('Привычки','«'+bestH.title+'» — '+bestH.rate+'% выполнения, а «'+worstH.title+'» — только '+worstH.rate+'%. Возможно, стоит перенести ее на время, когда у тебя больше энергии.');
+}
+}
+}
+
+// --- Old: daily score trend ---
 var scores=Object.keys(state.dailyScores||{}).sort().slice(-7);
 if(scores.length>=3){
-var recent=scores.slice(-3).map(d=>state.dailyScores[d]||0);
-var older=scores.slice(0,3).map(d=>state.dailyScores[d]||0);
-var recentAvg=Math.round(recent.reduce((a,b)=>a+b,0)/recent.length);
-var olderAvg=Math.round(older.reduce((a,b)=>a+b,0)/older.length);
-if(recentAvg>olderAvg+10){insights.push({icon:'📈',text:'Твой скор вырос с '+olderAvg+'% до '+recentAvg+'% за последние дни. Так держать!'})}
-else if(recentAvg<olderAvg-10){insights.push({icon:'📉',text:'Скор упал с '+olderAvg+'% до '+recentAvg+'%. Попробуй начать с самых простых привычек.'})}
-else{insights.push({icon:'📊',text:'Твой средний скор за последние дни: '+recentAvg+'%. Стабильно!'})}
-}else{insights.push({icon:'📊',text:'Сегодняшний скор: '+dailyScore+'%. Отмечай привычки, чтобы видеть тренды.'})}
+var recent=scores.slice(-3).map(function(d){return state.dailyScores[d]||0});
+var older2=scores.slice(0,3).map(function(d){return state.dailyScores[d]||0});
+var recentAvg=Math.round(recent.reduce(function(a,b){return a+b},0)/recent.length);
+var olderAvg=Math.round(older2.reduce(function(a,b){return a+b},0)/older2.length);
+if(recentAvg>olderAvg+10){addInsight('Тренд','Твой скор вырос с '+olderAvg+'% до '+recentAvg+'% за последние дни. Так держать!')}
+else if(recentAvg<olderAvg-10){addInsight('Тренд','Скор упал с '+olderAvg+'% до '+recentAvg+'%. Попробуй начать с самых простых привычек.')}
+else{addInsight('Тренд','Твой средний скор за последние дни: '+recentAvg+'%. Стабильно!')}
+}else{addInsight('Скор','Сегодняшний скор: '+dailyScore+'%. Отмечай привычки, чтобы видеть тренды.')}
 
-// Insight: best/worst category
+// --- G. Period comparison (this week vs last week) ---
+if(state.habits.length>0){
+var nowP=new Date();
+var thisWeek=0,lastWeek=0,thisTotal=0,lastTotal=0;
+for(var i=0;i<7;i++){
+var d=new Date(nowP);d.setDate(d.getDate()-i);
+var ds3=dateStr(d);
+var sched=state.habits.filter(function(h){return isHabitActive(h)&&isHabitScheduledForDate(h,ds3)});
+var done=sched.filter(function(h){return(h.checkoffs||[]).includes(ds3)}).length;
+thisWeek+=done;thisTotal+=sched.length;
+}
+for(var i2=7;i2<14;i2++){
+var d2=new Date(nowP);d2.setDate(d2.getDate()-i2);
+var ds4=dateStr(d2);
+var sched2=state.habits.filter(function(h){return isHabitActive(h)&&isHabitScheduledForDate(h,ds4)});
+var done2=sched2.filter(function(h){return(h.checkoffs||[]).includes(ds4)}).length;
+lastWeek+=done2;lastTotal+=sched2.length;
+}
+if(thisTotal>0&&lastTotal>0){
+var twPct=Math.round(thisWeek/thisTotal*100);
+var lwPct=Math.round(lastWeek/lastTotal*100);
+var diff=twPct-lwPct;
+if(diff>=10){addInsight('Сравнение','Эта неделя vs прошлая: +'+diff+'% выполнения привычек. Растешь!')}
+else if(diff<=-10){addInsight('Сравнение','Эта неделя vs прошлая: '+diff+'% выполнения. Не переживай, это временно!')}
+}
+}
+
+// --- Old: best/worst category ---
 var catStats={};
-state.goals.forEach(g=>{if(!catStats[g.category])catStats[g.category]={count:0,done:0};catStats[g.category].count++;if(calcGoalProgress(g)>=100)catStats[g.category].done++});
+state.goals.forEach(function(g){if(!catStats[g.category])catStats[g.category]={count:0,done:0};catStats[g.category].count++;if(calcGoalProgress(g)>=100)catStats[g.category].done++});
 var catKeys=Object.keys(catStats);
 if(catKeys.length>0){
-var bestCat=catKeys.sort((a,b)=>(catStats[b].done/catStats[b].count)-(catStats[a].done/catStats[a].count))[0];
-var worstCat=catKeys.sort((a,b)=>(catStats[a].done/catStats[a].count)-(catStats[b].done/catStats[b].count))[0];
+var bestCat=catKeys.sort(function(a,b){return(catStats[b].done/catStats[b].count)-(catStats[a].done/catStats[a].count)})[0];
+var worstCat=catKeys.sort(function(a,b){return(catStats[a].done/catStats[a].count)-(catStats[b].done/catStats[b].count)})[0];
 var bestLabel=cats[bestCat]?cats[bestCat].label:bestCat;
 var worstLabel=cats[worstCat]?cats[worstCat].label:worstCat;
 if(bestCat!==worstCat){
-insights.push({icon:'🏆',text:'Лучше всего дела идут в категории «'+bestLabel+'»: '+catStats[bestCat].done+'/'+catStats[bestCat].count+' целей завершено.'});
-if(catStats[worstCat].done<catStats[worstCat].count){insights.push({icon:'🎯',text:'Категория «'+worstLabel+'» проседает: '+catStats[worstCat].done+'/'+catStats[worstCat].count+'. Стоит сфокусироваться.'})}
+addInsight('Категории','Лучше всего дела идут в категории «'+bestLabel+'»: '+catStats[bestCat].done+'/'+catStats[bestCat].count+' целей завершено.');
+if(catStats[worstCat].done<catStats[worstCat].count){addInsight('Категории','Категория «'+worstLabel+'» проседает: '+catStats[worstCat].done+'/'+catStats[worstCat].count+'. Стоит сфокусироваться.')}
 }
 }
 
-// Insight: habit consistency
+// --- Old: habit consistency ---
 if(state.habits.length>0){
-var totalStreaks=state.habits.map(h=>calcHabitStreak(h));
-var avgStreak=Math.round(totalStreaks.reduce((a,b)=>a+b,0)/totalStreaks.length);
-var maxStreak=Math.max(...totalStreaks);
-if(maxStreak>=7){insights.push({icon:'🔥',text:'Лучшая серия: '+maxStreak+' дней подряд! Некоторые привычки уже стали рутиной.'})}
-else if(avgStreak<3){insights.push({icon:'🌱',text:'Средняя серия привычек: '+avgStreak+' дней. Нужно 21 день для формирования привычки — не сдавайся!'})}
+var totalStreaks=state.habits.map(function(h){return calcHabitStreak(h)});
+var avgStreak=Math.round(totalStreaks.reduce(function(a,b){return a+b},0)/totalStreaks.length);
+var maxStreak=Math.max.apply(null,totalStreaks);
+if(maxStreak>=7){addInsight('Серии','Лучшая серия: '+maxStreak+' дней подряд! Некоторые привычки уже стали рутиной.')}
+else if(avgStreak<3){addInsight('Серии','Средняя серия привычек: '+avgStreak+' дней. Нужно 21 день для формирования привычки — не сдавайся!')}
 }
 
-// Insight: goals with low progress
-var lowGoals=state.goals.filter(g=>calcGoalProgress(g)<30&&calcGoalProgress(g)>0);
-if(lowGoals.length>0){insights.push({icon:'💡',text:'Цель «'+lowGoals[0].title+'» — прогресс всего '+calcGoalProgress(lowGoals[0])+'%. Разбей на мелкие шаги и начни с одного.'})}
+// --- D. Streak loss risk warning ---
+if(state.habits.length>0){
+state.habits.forEach(function(h){
+if(!isHabitActive(h))return;
+var streak=calcHabitStreak(h);
+if(streak>=3){
+var today2=todayStr();
+var checkedToday=(h.checkoffs||[]).includes(today2);
+if(!checkedToday&&isHabitScheduledToday(h)){
+addInsight('Риск серии','Твоя серия по «'+h.title+'» — '+streak+' дней. Сегодня еще не отмечена! Не прерывай.');
+}
+}
+});
+}
 
-// Insight: upcoming deadlines
-var upcoming=state.goals.filter(g=>g.targetDate).map(g=>{var days=daysBetween(today,g.targetDate);return{title:g.title,days:days,progress:calcGoalProgress(g)}}).filter(g=>g.days!==null&&g.days>=0&&g.days<=7&&g.progress<100).sort((a,b)=>a.days-b.days);
-if(upcoming.length>0){insights.push({icon:'⏰',text:'Дедлайн «'+upcoming[0].title+'» через '+upcoming[0].days+' дн. (прогресс '+upcoming[0].progress+'%). Пора ускориться!'})}
+// --- Old: goals with low progress ---
+var lowGoals=state.goals.filter(function(g){return calcGoalProgress(g)<30&&calcGoalProgress(g)>0});
+if(lowGoals.length>0){addInsight('Цели','Цель «'+lowGoals[0].title+'» — прогресс всего '+calcGoalProgress(lowGoals[0])+'%. Разбей на мелкие шаги и начни с одного.')}
 
-// Insight: task completion
-var todayTasks=state.tasks.filter(t=>t.date===today);
-if(todayTasks.length>0){var doneTasks=todayTasks.filter(t=>t.done).length;if(doneTasks===todayTasks.length){insights.push({icon:'✅',text:'Все задачи на сегодня выполнены! Отличная работа.'})}else{insights.push({icon:'📋',text:'Осталось '+ (todayTasks.length-doneTasks) +' задач на сегодня. Можно начать с самой простой.'})}}
+// --- V. Goal completion forecast ---
+state.goals.forEach(function(g){
+if(!g.targetDate||calcGoalProgress(g)>=100)return;
+var prog=calcGoalProgress(g);
+var totalSubs=(g.subtasks||[]).length;
+if(totalSubs<2)return;
+var doneSubs=(g.subtasks||[]).filter(function(s){return s.done}).length;
+var remainDays=daysBetween(today,g.targetDate);
+if(remainDays===null||remainDays<=0)return;
+var remainSubs=totalSubs-doneSubs;
+if(remainSubs<=0)return;
+var createdStr=g.createdAt||g.targetDate;
+var elapsed=Math.max(1,daysBetween(createdStr,today));
+var ratePerDay=doneSubs/elapsed;
+if(ratePerDay<0.01)return;
+var projectedDays=Math.ceil(remainSubs/ratePerDay);
+if(projectedDays>remainDays){
+var factor=Math.round(projectedDays/remainDays*10)/10;
+addInsight('Прогноз','Цель «'+g.title+'»: при текущем темпе завершишь через '+projectedDays+' дн., а дедлайн через '+remainDays+'. Нужно ускориться в '+factor+' раза.');
+}
+});
 
-// Insight: achievements progress
-var unlocked=ACHIEVEMENTS.filter(a=>a.check(state)).length;
-var nextAch=ACHIEVEMENTS.find(a=>!a.check(state));
-if(nextAch){insights.push({icon:'🏅',text:'Разблокировано достижений: '+unlocked+'/'+ACHIEVEMENTS.length+'. Следующее: «'+nextAch.name+'» — '+nextAch.desc+'.'})}
+// --- Old: upcoming deadlines ---
+var upcoming=state.goals.filter(function(g){return g.targetDate}).map(function(g){var days=daysBetween(today,g.targetDate);return{title:g.title,days:days,progress:calcGoalProgress(g)}}).filter(function(g){return g.days!==null&&g.days>=0&&g.days<=7&&g.progress<100}).sort(function(a,b){return a.days-b.days});
+if(upcoming.length>0){addInsight('Дедлайны','Дедлайн «'+upcoming[0].title+'» через '+upcoming[0].days+' дн. (прогресс '+upcoming[0].progress+'%). Пора ускориться!')}
 
-if(insights.length===0){insights.push({icon:'✨',text:'Добавь цели и привычки, чтобы получать персональные инсайты!'})}
+// --- Old: task completion ---
+var todayTasks=state.tasks.filter(function(t){return t.date===today});
+if(todayTasks.length>0){var doneTasks=todayTasks.filter(function(t){return t.done}).length;if(doneTasks===todayTasks.length){addInsight('Задачи','Все задачи на сегодня выполнены! Отличная работа.')}else{addInsight('Задачи','Осталось '+(todayTasks.length-doneTasks)+' задач на сегодня. Можно начать с самой простой.')}}
+
+// --- E. Category balance ---
+if(state.goals.length>=3){
+var goalCats={};
+state.goals.forEach(function(g){goalCats[g.category]=(goalCats[g.category]||0)+1});
+var catEntries=Object.keys(goalCats).map(function(k){return{cat:k,count:goalCats[k],label:cats[k]?cats[k].label:k}});
+catEntries.sort(function(a,b){return b.count-a.count});
+var total=state.goals.length;
+var topPct=Math.round(catEntries[0].count/total*100);
+if(topPct>=60&&catEntries.length>1){
+addInsight('Баланс',''+topPct+'% твоих целей в категории «'+catEntries[0].label+'», но всего '+(catEntries.length>1?Math.round(catEntries[catEntries.length-1].count/total*100):0)+'% в «'+catEntries[catEntries.length-1].label+'». Рассмотри добавление цели в других областях.');
+}
+}
+
+// --- Zh. Return-after-gap patterns ---
+if(state.habits.length>0){
+var allCheckoffs=[];
+state.habits.forEach(function(h){
+(h.checkoffs||[]).forEach(function(d){allCheckoffs.push(d)});
+});
+allCheckoffs.sort();
+if(allCheckoffs.length>=5){
+var gaps=[];
+for(var gi=1;gi<allCheckoffs.length;gi++){
+var gap=Math.round((new Date(allCheckoffs[gi])-new Date(allCheckoffs[gi-1]))/86400000);
+if(gap>=2)gaps.push(gap);
+}
+if(gaps.length>=1){
+var avgGap=Math.round(gaps.reduce(function(a,b){return a+b},0)/gaps.length);
+if(avgGap<=2){
+addInsight('Возврат','После пропуска ты обычно возвращаешься через '+avgGap+' дн. Это отлично — не даешь привычкам забыться!');
+}
+}
+}
+}
+
+// --- Old: achievements progress ---
+var unlocked=ACHIEVEMENTS.filter(function(a){return a.check(state)}).length;
+var nextAch=ACHIEVEMENTS.find(function(a){return!a.check(state)});
+if(nextAch){addInsight('Достижения','Разблокировано достижений: '+unlocked+'/'+ACHIEVEMENTS.length+'. Следующее: «'+nextAch.name+'» — '+nextAch.desc+'.')}
+
+if(insights.length===0){addInsight('Начало','Добавь цели и привычки, чтобы получать персональные инсайты!')}
 
 return insights;
 }

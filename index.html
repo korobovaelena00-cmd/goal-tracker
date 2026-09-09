@@ -165,7 +165,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .stagger:nth-child(5){animation-delay:0.25s}
 .stagger:nth-child(6){animation-delay:0.3s}
 
-.dash-hero{display:flex;flex-direction:column;align-items:center;padding:16px 16px}
+.dash-hero{padding:14px 16px}.dash-hero-row{display:flex;align-items:center;gap:16px}.dash-hero-row .progress-ring-container{flex-shrink:0;width:120px;height:120px}.dash-hero-row .progress-ring-container svg{width:120px;height:120px}.dash-hero-row .progress-ring-text .pct{font-size:22px}.dash-hero-row .progress-ring-text .label{font-size:9px}.dash-stats{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}.dash-stats .stat-card{display:flex;align-items:center;gap:8px;padding:4px 8px;background:rgba(255,255,255,0.03);border-radius:8px}.dash-stats .stat-card .num{font-size:15px;font-weight:700;min-width:36px}.dash-stats .stat-card .lbl{font-size:10px;color:var(--text-secondary)}
 .progress-ring-container{position:relative;width:140px;height:140px;display:flex;align-items:center;justify-content:center}
 .progress-ring-container svg{width:100%;height:100%;transform:rotate(-90deg)}
 .progress-ring-bg{stroke:var(--bg-elevated);fill:none}
@@ -498,11 +498,12 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 <div class="settings-row"><div><div class="settings-label">Язык</div><div class="settings-desc">Interface language</div></div><div class="lang-selector"><div class="lang-btn active" onclick="setLang('ru')">RU</div><div class="lang-btn" onclick="setLang('en')">EN</div></div></div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v4.3.8</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v4.4.0</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
 <div class="dash-hero card stagger">
+<div class="dash-hero-row">
 <div class="progress-ring-container">
 <svg viewBox="0 0 170 170"><defs><linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop id="ringStop1" offset="0%" stop-color="#2e8bff" stop-opacity="0.15"/><stop id="ringStop2" offset="100%" stop-color="#2e8bff" stop-opacity="0.15"/></linearGradient></defs>
 <circle class="progress-ring-bg" cx="85" cy="85" r="75" stroke-width="10"/>
@@ -511,7 +512,8 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 <div class="dash-stats" id="dashStats"></div>
 </div>
-<div class="card stagger" id="dashAchievements" style="display:none"><div class="card-title">Достижения</div><div class="achievements-row" id="achievementsRow"></div></div>
+</div>
+<div class="card stagger" id="dashAchievements" style="display:none"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Достижения <span id="achCounter" style="font-size:11px;color:var(--text-secondary);font-weight:400"></span></div><div class="achievements-row" id="achievementsRow"></div><div id="achievementsExpanded" style="display:none;margin-top:8px;padding-top:8px;border-top:1px solid var(--glass-border)"><div id="achievementsAll" style="display:flex;flex-wrap:wrap;gap:8px"></div></div><button id="achExpandBtn" onclick="toggleAchievementsExpand()" style="width:100%;padding:6px;background:transparent;border:none;color:var(--text-secondary);font-size:11px;cursor:pointer">Показать все</button></div>
 <div class="card stagger" id="dashPhraseCard"><div class="card-title">Фраза дня</div><div id="dashPhrase" style="padding:4px 0"></div></div>
 <div class="card stagger" id="dashCategoriesCard"><div class="card-title">Прогресс по категориям</div><div class="category-bars" id="dashCategories"></div></div>
 <div class="card stagger"><div class="card-title">Привычки сегодня</div><div class="habit-quick-list" id="dashHabits"></div></div>
@@ -524,6 +526,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 <div class="view" id="view-analytics">
 <div class="card stagger"><div class="card-title">Годовая активность</div><div class="year-heatmap-grid" id="yearHeatmapGrid"></div><div class="year-heat-legend"><span>0%</span><div class="scale"><div style="background:var(--bg-elevated)"></div><div style="background:rgba(46,139,255,0.15)"></div><div style="background:rgba(46,139,255,0.35)"></div><div style="background:rgba(46,139,255,0.6)"></div><div style="background:rgba(46,139,255,0.9)"></div></div><span>100%</span></div></div>
 <div class="card stagger"><div class="card-title">Прогресс целей</div><div id="anGoalsProgress" style="display:flex;flex-direction:column;gap:10px"></div></div>
+<div class="card stagger"><div class="card-title">Инсайты</div><div id="anInsights" style="display:flex;flex-direction:column;gap:8px"></div></div>
 </div>
 
 <div class="bottom-nav">
@@ -567,15 +570,23 @@ const PRIORITIES={high:{label:'Высокий',cls:'high'},med:{label:'Сред�
 const DOW_NAMES=['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
 const DOW_FULL=['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
 const ACHIEVEMENTS=[
-{id:'first_goal',name:'Первая цель',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>',check:s=>s.goals.length>=1},
-{id:'five_goals',name:'5 целей',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l2.4 7.2H22l-6 4.8 2.4 7.2L12 16.8 5.6 21.2 8 14 2 9.2h7.6z"/></svg>',check:s=>s.goals.length>=5},
-{id:'complete_goal',name:'Цель done',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>',check:s=>s.goals.some(g=>calcGoalProgress(g)>=100)},
-{id:'three_habits',name:'3 привычки',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="11"/></svg>',check:s=>s.habits.length>=3},
-{id:'streak_7',name:'Серия 7',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v6M12 22v-6M4.93 4.93l4.24 4.24M14.83 14.83l4.24 4.24M2 12h6M22 12h-6M4.93 19.07l4.24-4.24M14.83 9.17l4.24-4.24"/></svg>',check:s=>calcMaxStreak()>=7},
-{id:'streak_30',name:'Серия 30',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3 7 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg>',check:s=>calcMaxStreak()>=30},
-{id:'all_cats',name:'Все кат.',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l9 5v10l-9 5-9-5V7l9-5z"/></svg>',check:s=>{const cats=getAllCategories();return Object.keys(cats).every(c=>s.goals.some(g=>g.category===c))}},
-{id:'ten_subtasks',name:'10 шагов',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>',check:s=>s.goals.reduce((n,g)=>n+(g.subtasks||[]).length,0)>=10}
-];
+{id:'first_goal',name:'Первая цель',desc:'Создать первую цель',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>',check:function(s){return s.goals.length>=1}},
+{id:'five_goals',name:'5 целей',desc:'Создать 5 целей',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l2.4 7.2H22l-6 4.8 2.4 7.2L12 16.8 5.6 21.2 8 14 2 9.2h7.6z"/></svg>',check:function(s){return s.goals.length>=5}},
+{id:'complete_goal',name:'Цель достигнута',desc:'Завершить первую цель',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>',check:function(s){return s.goals.some(function(g){return calcGoalProgress(g)>=100})}},
+{id:'three_goals_done',name:'Триумф',desc:'Завершить 3 цели',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9V4h12v5"/><path d="M6 9l-2 7h16l-2-7"/><path d="M9 20h6"/></svg>',check:function(s){return s.goals.filter(function(g){return calcGoalProgress(g)>=100}).length>=3}},
+{id:'three_habits',name:'3 привычки',desc:'Создать 3 привычки',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="11"/></svg>',check:function(s){return s.habits.length>=3}},
+{id:'streak_7',name:'Серия 7',desc:'7 дней подряд',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v6M12 22v-6M4.93 4.93l4.24 4.24M14.83 14.83l4.24 4.24M2 12h6M22 12h-6M4.93 19.07l4.24-4.24M14.83 9.17l4.24-4.24"/></svg>',check:function(s){return calcMaxStreak()>=7}},
+{id:'streak_30',name:'Серия 30',desc:'30 дней подряд',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3 7 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg>',check:function(s){return calcMaxStreak()>=30}},
+{id:'streak_100',name:'Серия 100',desc:'100 дней подряд!',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>',check:function(s){return calcMaxStreak()>=100}},
+{id:'all_cats',name:'Разносторонний',desc:'Цели во всех категориях',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l9 5v10l-9 5-9-5V7l9-5z"/></svg>',check:function(s){var cats=getAllCategories();return Object.keys(cats).every(function(c){return s.goals.some(function(g){return g.category===c})})}},
+{id:'ten_subtasks',name:'10 шагов',desc:'10 подзадач всего',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>',check:function(s){return s.goals.reduce(function(n,g){return n+(g.subtasks||[]).length},0)>=10}},
+{id:'perfect_day',name:'Идеальный день',desc:'Все привычки + все задачи за день',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>',check:function(s){var t=todayStr();var ah=s.habits.filter(function(h){return isHabitActive(h)&&isHabitScheduledToday(h)});var at=s.tasks.filter(function(x){return x.date===t});return ah.every(function(h){return (h.checkoffs||[]).includes(t)})&&at.every(function(x){return x.done})&&ah.length>0}},
+{id:'week_streak',name:'Неделя огня',desc:'7 дней со скором выше 50%',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8 6 6 10 6 14a6 6 0 0 0 12 0c0-4-2-8-6-12z"/></svg>',check:function(s){for(var i=0;i<7;i++){var d=new Date();d.setDate(d.getDate()-i);var ds=dateStr(d);var sc=calcDailyScore(ds);if(sc<=50)return false}return true}},
+{id:'big_goal',name:'Большая цель',desc:'Цель с 10+ подзадачами',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>',check:function(s){return s.goals.some(function(g){return (g.subtasks||[]).length>=10})}},
+{id:'ten_habits',name:'10 привычек',desc:'Создать 10 привычек',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="12" r="3"/></svg>',check:function(s){return s.habits.length>=10}},
+{id:'comeback',name:'Возвращение',desc:'Отметить привычку после пропуска 3+ дней',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>',check:function(s){return s.habits.some(function(h){var co=(h.checkoffs||[]).sort();if(co.length<2)return false;var last=co[co.length-1];var prev=co[co.length-2];var diff=Math.round((new Date(last)-new Date(prev))/86400000);return diff>=3})}},
+{id:'ten_goals',name:'Десять целей',desc:'Создать 10 целей',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',check:function(s){return s.goals.length>=10}}
+]
 
 let state={version:4.20,goals:[],habits:[],tasks:[],customCategories:[],settings:{theme:'dark',lang:'ru',healthSynced:false,healthData:null},dailyScores:{},chatTopics:[{'id':'general','name':'Общее'}],chatHistory:{'general':[{role:'system',text:'Привет! Я твой агент. Спроси меня о целях, привычках, или попроси рекомендации.',ts:Date.now()}]},activeTopic:'general',lastModified:0};
 let currentView='dashboard';
@@ -784,6 +795,9 @@ var DAILY_PHRASES=[
 function getPhraseOfDay(dateStr){var t=dateStr?new Date(dateStr):new Date();var dayOfYear=Math.floor((t-new Date(t.getFullYear(),0,0))/86400000);return DAILY_PHRASES[dayOfYear%DAILY_PHRASES.length]}
 function renderPhraseOfDay(){var p=getPhraseOfDay();var el=document.getElementById('dashPhrase');if(!el)return;el.innerHTML='<div class="phrase-widget"><div class="phrase-text">“'+p.text+'”</div>'+(p.author?'<div class="phrase-author">— '+p.author+'</div>':'')+'</div>'}
 
+
+function toggleAchievementsExpand(){var exp=document.getElementById('achievementsExpanded');var btn=document.getElementById('achExpandBtn');if(exp.style.display==='none'){exp.style.display='block';btn.textContent='Свернуть'}else{exp.style.display='none';btn.textContent='Показать все'}}
+
 function renderDashboard(){
 const cats=getAllCategories();const today=todayStr();
 const dailyScore=calcDailyScore(today);
@@ -800,7 +814,14 @@ const habitsDone=state.habits.filter(h=>(h.checkoffs||[]).includes(today)).lengt
 const sc=document.getElementById('dashStats');
 const plannedHabits=state.habits.filter(h=>isHabitScheduledToday(h)&&isHabitActive(h));const extraHabits=state.habits.filter(h=>!isHabitScheduledToday(h)&&isHabitActive(h));const plannedDone=plannedHabits.filter(h=>(h.checkoffs||[]).includes(today)).length;const extraDone=extraHabits.filter(h=>(h.checkoffs||[]).includes(today)).length;sc.innerHTML='<div class="stat-card"><div class="num">'+plannedDone+'/'+plannedHabits.length+'</div><div class="lbl">заплан. привычек</div></div><div class="stat-card"><div class="num">'+extraDone+'/'+extraHabits.length+'</div><div class="lbl">доп. привычек</div></div><div class="stat-card"><div class="num">'+state.tasks.filter(t=>t.done&&t.date===today).length+'/'+state.tasks.filter(t=>t.date===today).length+'</div><div class="lbl">задач</div></div>';
 const achDiv=document.getElementById('dashAchievements');
-if(state.habits.length>0){achDiv.style.display='block';document.getElementById('achievementsRow').innerHTML=state.habits.map(h=>{const streak=calcHabitStreak(h);const bestStreak=calcBestStreak(h);const cat=getAllCategories()[h.category]||{color:'#2e8bff'};return'<div class="achievement-badge unlocked" onclick="showHabitHistory(\''+h.id+'\')" style="cursor:pointer"><div style="font-size:24px;font-weight:700;color:'+cat.color+'">'+streak+'</div><div style="font-size:8px;color:var(--text-secondary);text-align:center;max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+escapeHtml(h.title)+'</div></div>'}).join('')}else{achDiv.style.display='none'}
+var unlockedAch=ACHIEVEMENTS.filter(a=>a.check(state));
+if(state.goals.length>0||state.habits.length>0){achDiv.style.display='block';
+var achHtml=unlockedAch.map(a=>'<div class="achievement-badge unlocked" title="'+escapeHtml(a.name)+'"><div style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:var(--blue-bright,#2e8bff)">'+a.svg+'</div><div style="font-size:8px;color:var(--text-secondary);text-align:center;max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+escapeHtml(a.name)+'</div></div>').join('');
+document.getElementById('achievementsRow').innerHTML=achHtml;
+document.getElementById('achCounter').textContent=unlockedAch.length+'/'+ACHIEVEMENTS.length;
+var allAchHtml=ACHIEVEMENTS.map(a=>{var u=a.check(state);return '<div class="achievement-badge '+(u?'unlocked':'locked')+'" style="opacity:'+(u?1:0.4)+'"><div style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:'+(u?'var(--blue-bright,#2e8bff)':'var(--text-muted)')+'">'+a.svg+'</div><div style="font-size:8px;color:var(--text-secondary);text-align:center;max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+escapeHtml(a.name)+'</div></div>'}).join('');
+document.getElementById('achievementsAll').innerHTML=allAchHtml;
+}else{achDiv.style.display='none'}
 const cb=document.getElementById('dashCategories');
 const usedCats=Object.keys(cats).filter(c=>state.goals.some(g=>g.category===c));
 const catCard=document.getElementById('dashCategoriesCard');
@@ -978,7 +999,8 @@ function renderAnalytics(){const goals=state.goals;const cats=getAllCategories()
 // [7] Removed: weekly chart, stat squares, tasks card — only goals progress + year heatmap remain
 const gp=document.getElementById('anGoalsProgress');
 gp.innerHTML=goals.length===0?'<div style="text-align:center;color:var(--text-muted);padding:12px">Нет целей</div>':goals.map(g=>{const cat=cats[g.category]||{color:'#2e8bff',label:''};const prog=calcGoalProgress(g);return'<div class="cat-bar-row"><div class="cat-bar-label"><span class="cat-dot" style="background:'+cat.color+'"></span>'+escapeHtml(g.title).slice(0,20)+'</div><div class="cat-bar-track"><div class="cat-bar-fill" style="width:'+prog+'%;background:'+cat.color+'"></div></div><div class="cat-bar-pct">'+prog+'%</div></div>'}).join('');
-renderYearHeatmap()}
+renderYearHeatmap();
+var ins=generateInsights();var insEl=document.getElementById("anInsights");if(insEl){insEl.innerHTML=ins.map(i=>"<div style=\"display:flex;gap:8px;align-items:flex-start;padding:6px 0\"><span style=\"font-size:18px\">"+i.icon+"</span><span style=\"font-size:13px;line-height:1.5;color:var(--text-primary)\""+i.text+"</span></div>").join("")}}
 function drawWeeklyChart(){const cv=document.getElementById('weeklyChart');const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;const w=cv.offsetWidth||300;const h=200;cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=dateStr(d);const count=state.habits.filter(h=>(h.checkoffs||[]).includes(ds)).length;days.push({label:['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][d.getDay()],count})}const max=Math.max(...days.map(d=>d.count),1);const bw=w/7*0.6;const gap=w/7*0.2;days.forEach((d,i)=>{const x=i*(w/7)+gap;const bh=(d.count/max)*(h-40);const grad=ctx.createLinearGradient(0,h-20-bh,0,h-20);grad.addColorStop(0,'#1a6fff');grad.addColorStop(1,'#00d4ff');ctx.fillStyle=grad;ctx.beginPath();roundRect(ctx,x,h-20-bh,bw,bh,4);ctx.fill();ctx.fillStyle='rgba(232,240,255,0.5)';ctx.font='11px sans-serif';ctx.textAlign='center';ctx.fillText(d.label,x+bw/2,h-6);ctx.fillStyle='rgba(232,240,255,0.8)';ctx.fillText(d.count,x+bw/2,h-26-bh)})}
 function drawDonutChart(){const cv=document.getElementById('donutChart');const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;const w=cv.offsetWidth||300;const h=200;cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const cats=getAllCategories();const catKeys=Object.keys(cats);const counts=catKeys.map(c=>state.goals.filter(g=>g.category===c).length);const total=counts.reduce((a,b)=>a+b,0);if(total===0){ctx.fillStyle='rgba(232,240,255,0.3)';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText('Нет данных',w/2,h/2);return}const cx=w/2,cy=h/2;const r=Math.min(w,h)/2-20;let angle=-Math.PI/2;catKeys.forEach((c,i)=>{if(counts[i]===0)return;const arc=(counts[i]/total)*Math.PI*2;ctx.beginPath();ctx.arc(cx,cy,r,angle,angle+arc);ctx.lineWidth=20;ctx.strokeStyle=cats[c].color;ctx.stroke();angle+=arc});ctx.fillStyle='rgba(232,240,255,0.9)';ctx.font='bold 24px sans-serif';ctx.textAlign='center';ctx.fillText(total,cx,cy-4);ctx.fillStyle='rgba(232,240,255,0.5)';ctx.font='11px sans-serif';ctx.fillText('целей',cx,cy+14)}
 function drawTrendChart(){const cv=document.getElementById('trendChart');const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;const w=cv.offsetWidth||300;const h=200;cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const days=30;const data=[];for(let i=days-1;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=dateStr(d);data.push(state.habits.filter(h=>(h.checkoffs||[]).includes(ds)).length)}const max=Math.max(...data,1);const pw=(w-20)/days;data.forEach((v,i)=>{const x=10+i*pw;const bh=(v/max)*(h-30);const grad=ctx.createLinearGradient(0,h-10-bh,0,h-10);grad.addColorStop(0,'#1a6fff');grad.addColorStop(1,'rgba(0,212,255,0.3)');ctx.fillStyle=grad;ctx.fillRect(x,h-10-bh,pw-1,bh)});ctx.fillStyle='rgba(232,240,255,0.3)';ctx.font='10px sans-serif';ctx.textAlign='center';ctx.fillText('30 дней назад',30,h-2);ctx.fillText('сегодня',w-30,h-2)}
@@ -1155,6 +1177,72 @@ r+='Я могу:\n• Отметить привычку — напиши "вып
 return r;
 }
 function buildAgentMessage(userText){const cats=getAllCategories();const today=todayStr();const dailyScore=calcDailyScore(today);let msg='Пупс-ай — данные для анализа\n\n';msg+='DAILY SCORE: '+dailyScore+'%\n';msg+='Привычек выполнено: '+state.habits.filter(h=>(h.checkoffs||[]).includes(today)).length+'/'+state.habits.length+'\n\n';msg+='ЦЕЛИ ('+state.goals.length+'):\n';state.goals.forEach((g,i)=>{const cat=cats[g.category]?.label||g.category;const prio=PRIORITIES[g.priority||'med']?.label||'средний';const remain=g.targetDate?daysBetween(today,g.targetDate):null;const rt=remain!==null?(remain>0?remain+' дн.':remain===0?'сегодня':'просрочено'):'без срока';const subs=g.subtasks||[];const subDone=subs.filter(s=>s.done).length;const prog=calcGoalProgress(g);msg+=(i+1)+'. '+g.title+' ['+cat+'] ['+prio+'] — '+prog+'% ('+rt+')';if(subs.length>0)msg+=' ['+subDone+'/'+subs.length+' подзадач]';msg+='\n'});msg+='\nПРИВЫЧКИ ('+state.habits.length+'):\n';state.habits.forEach((h,i)=>{const streak=calcHabitStreak(h);const total=(h.checkoffs||[]).length;const wc=calcWeeklyCount(h);const tpw=h.targetPerWeek||7;const days=h.daysOfWeek||[1,2,3,4,5,6,0];msg+=(i+1)+'. '+h.title+' — серия '+streak+' дн., '+wc+'/'+tpw+' за неделю, дни: '+days.map(d=>DOW_NAMES[d]).join(',')+'\n'});msg+='\nСВОДКА:\n';msg+='Daily score сегодня: '+dailyScore+'%\n';msg+='Завершено целей: '+state.goals.filter(g=>calcGoalProgress(g)>=100).length+'/'+state.goals.length+'\n';msg+='Активных привычек: '+state.habits.length+'\n';msg+='Лучшая серия: '+calcMaxStreak()+' дн.\n';const unlocked=ACHIEVEMENTS.filter(a=>a.check(state));msg+='Достижений: '+unlocked.length+'/'+ACHIEVEMENTS.length+'\n';if(state.settings.healthSynced&&state.settings.healthData){msg+='\nHEALTH:\n';msg+='Шаги сегодня: '+state.settings.healthData.steps+'\n';msg+='Калории: '+state.settings.healthData.calories+'\n';msg+='Активные минуты: '+state.settings.healthData.activeMinutes+'\n'}msg+='\nЗАПРОС ПОЛЬЗОВАТЕЛЯ:\n'+userText;return msg}
+
+
+function generateInsights(){
+var insights=[];
+var today=todayStr();
+var cats=getAllCategories();
+var dailyScore=calcDailyScore(today);
+
+// Insight: daily score trend
+var scores=Object.keys(state.dailyScores||{}).sort().slice(-7);
+if(scores.length>=3){
+var recent=scores.slice(-3).map(d=>state.dailyScores[d]||0);
+var older=scores.slice(0,3).map(d=>state.dailyScores[d]||0);
+var recentAvg=Math.round(recent.reduce((a,b)=>a+b,0)/recent.length);
+var olderAvg=Math.round(older.reduce((a,b)=>a+b,0)/older.length);
+if(recentAvg>olderAvg+10){insights.push({icon:'📈',text:'Твой скор вырос с '+olderAvg+'% до '+recentAvg+'% за последние дни. Так держать!'})}
+else if(recentAvg<olderAvg-10){insights.push({icon:'📉',text:'Скор упал с '+olderAvg+'% до '+recentAvg+'%. Попробуй начать с самых простых привычек.'})}
+else{insights.push({icon:'📊',text:'Твой средний скор за последние дни: '+recentAvg+'%. Стабильно!'})}
+}else{insights.push({icon:'📊',text:'Сегодняшний скор: '+dailyScore+'%. Отмечай привычки, чтобы видеть тренды.'})}
+
+// Insight: best/worst category
+var catStats={};
+state.goals.forEach(g=>{if(!catStats[g.category])catStats[g.category]={count:0,done:0};catStats[g.category].count++;if(calcGoalProgress(g)>=100)catStats[g.category].done++});
+var catKeys=Object.keys(catStats);
+if(catKeys.length>0){
+var bestCat=catKeys.sort((a,b)=>(catStats[b].done/catStats[b].count)-(catStats[a].done/catStats[a].count))[0];
+var worstCat=catKeys.sort((a,b)=>(catStats[a].done/catStats[a].count)-(catStats[b].done/catStats[b].count))[0];
+var bestLabel=cats[bestCat]?cats[bestCat].label:bestCat;
+var worstLabel=cats[worstCat]?cats[worstCat].label:worstCat;
+if(bestCat!==worstCat){
+insights.push({icon:'🏆',text:'Лучше всего дела идут в категории «'+bestLabel+'»: '+catStats[bestCat].done+'/'+catStats[bestCat].count+' целей завершено.'});
+if(catStats[worstCat].done<catStats[worstCat].count){insights.push({icon:'🎯',text:'Категория «'+worstLabel+'» проседает: '+catStats[worstCat].done+'/'+catStats[worstCat].count+'. Стоит сфокусироваться.'})}
+}
+}
+
+// Insight: habit consistency
+if(state.habits.length>0){
+var totalStreaks=state.habits.map(h=>calcHabitStreak(h));
+var avgStreak=Math.round(totalStreaks.reduce((a,b)=>a+b,0)/totalStreaks.length);
+var maxStreak=Math.max(...totalStreaks);
+if(maxStreak>=7){insights.push({icon:'🔥',text:'Лучшая серия: '+maxStreak+' дней подряд! Некоторые привычки уже стали рутиной.'})}
+else if(avgStreak<3){insights.push({icon:'🌱',text:'Средняя серия привычек: '+avgStreak+' дней. Нужно 21 день для формирования привычки — не сдавайся!'})}
+}
+
+// Insight: goals with low progress
+var lowGoals=state.goals.filter(g=>calcGoalProgress(g)<30&&calcGoalProgress(g)>0);
+if(lowGoals.length>0){insights.push({icon:'💡',text:'Цель «'+lowGoals[0].title+'» — прогресс всего '+calcGoalProgress(lowGoals[0])+'%. Разбей на мелкие шаги и начни с одного.'})}
+
+// Insight: upcoming deadlines
+var upcoming=state.goals.filter(g=>g.targetDate).map(g=>{var days=daysBetween(today,g.targetDate);return{title:g.title,days:days,progress:calcGoalProgress(g)}}).filter(g=>g.days!==null&&g.days>=0&&g.days<=7&&g.progress<100).sort((a,b)=>a.days-b.days);
+if(upcoming.length>0){insights.push({icon:'⏰',text:'Дедлайн «'+upcoming[0].title+'» через '+upcoming[0].days+' дн. (прогресс '+upcoming[0].progress+'%). Пора ускориться!'})}
+
+// Insight: task completion
+var todayTasks=state.tasks.filter(t=>t.date===today);
+if(todayTasks.length>0){var doneTasks=todayTasks.filter(t=>t.done).length;if(doneTasks===todayTasks.length){insights.push({icon:'✅',text:'Все задачи на сегодня выполнены! Отличная работа.'})}else{insights.push({icon:'📋',text:'Осталось '+ (todayTasks.length-doneTasks) +' задач на сегодня. Можно начать с самой простой.'})}}
+
+// Insight: achievements progress
+var unlocked=ACHIEVEMENTS.filter(a=>a.check(state)).length;
+var nextAch=ACHIEVEMENTS.find(a=>!a.check(state));
+if(nextAch){insights.push({icon:'🏅',text:'Разблокировано достижений: '+unlocked+'/'+ACHIEVEMENTS.length+'. Следующее: «'+nextAch.name+'» — '+nextAch.desc+'.'})}
+
+if(insights.length===0){insights.push({icon:'✨',text:'Добавь цели и привычки, чтобы получать персональные инсайты!'})}
+
+return insights;
+}
+
 
 function exportData(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='pupsai-backup-'+todayStr()+'.json';a.click();URL.revokeObjectURL(url);showToast('Экспортировано')}
 function importData(e){const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=ev=>{try{const p=JSON.parse(ev.target.result);if(p&&Array.isArray(p.goals)&&Array.isArray(p.habits)){state=p;state.goals.forEach(g=>{if(!g.subtasks)g.subtasks=[];if(!g.priority)g.priority='med';g.subtasks.forEach(s=>{if(!s.dueDate)s.dueDate=null})});state.habits.forEach(h=>{if(h.targetPerWeek===undefined)h.targetPerWeek=7;if(!h.daysOfWeek)h.daysOfWeek=[1,2,3,4,5,6,0];if(!h.scheduleMode)h.scheduleMode='week';if(!h.weekInterval)h.weekInterval=1});if(!state.tasks)state.tasks=[];if(!state.customCategories)state.customCategories=[];if(!state.settings)state.settings={theme:'dark',lang:'ru',healthSynced:false,healthData:null};if(!state.dailyScores)state.dailyScores={};if(!state.chatTopics)state.chatTopics=[{id:'general',name:'Общее'}];if(!state.chatHistory)state.chatHistory={general:[{role:'system',text:'Привет! Я твой агент.',ts:Date.now()}]};if(!state.activeTopic)state.activeTopic='general';saveData();applySettings();renderDashboard();showToast('Импортировано');startAutoSave()}else{showToast('Неверный формат',true)}}catch(err){showToast('Ошибка чтения',true)}};r.readAsText(file);e.target.value=''}

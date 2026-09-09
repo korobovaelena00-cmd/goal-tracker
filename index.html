@@ -173,7 +173,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .progress-ring-text{position:absolute;display:flex;flex-direction:column;align-items:center}
 .progress-ring-text .pct{font-size:32px;font-weight:700;color:var(--blue-bright)}
 .progress-ring-text .label{font-size:12px;color:var(--text-secondary);margin-top:4px}
-.dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:14px;width:100%}
+
 .stat-card{background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:var(--radius);padding:8px 6px;text-align:center;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:var(--transition)}
 .stat-card:active{transform:scale(0.97)}
 .stat-card .num{font-size:18px;font-weight:700;color:var(--blue-bright)}
@@ -195,6 +195,18 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .achievement-badge.unlocked .ach-svg{color:var(--blue-bright)}
 .achievement-badge.locked .ach-svg{color:var(--text-muted)}
 .achievement-badge .ach-name{font-size:8px;text-align:center;color:var(--text-secondary);line-height:1.1}
+.streak-scroll-wrap{margin-top:10px;padding-top:8px;border-top:1px solid var(--glass-border)}
+.streak-scroll-title{font-size:11px;font-weight:600;color:var(--text-secondary);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px}
+.streak-scroll{display:flex;gap:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px}
+.streak-scroll::-webkit-scrollbar{display:none}
+.streak-card{flex-shrink:0;width:130px;padding:10px;background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:var(--radius);text-align:center}
+.streak-card .sc-name{font-size:11px;font-weight:600;color:var(--text-secondary);margin-bottom:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.streak-card .sc-current{font-size:28px;font-weight:700;line-height:1}
+.streak-card .sc-current-lbl{font-size:9px;color:var(--text-muted);margin-bottom:6px}
+.streak-card .sc-best{font-size:16px;font-weight:600;color:var(--blue-pale)}
+.streak-card .sc-best-lbl{font-size:9px;color:var(--text-muted)}
+.streak-card .sc-total{font-size:11px;color:var(--text-muted);margin-top:4px}
+
 
 .habit-quick-list{display:flex;flex-direction:column;gap:4px}
 .phrase-widget{padding:8px 0 8px 12px;border-left:3px solid #ffd54f;border-radius:2px}
@@ -498,7 +510,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 <div class="settings-row"><div><div class="settings-label">Язык</div><div class="settings-desc">Interface language</div></div><div class="lang-selector"><div class="lang-btn active" onclick="setLang('ru')">RU</div><div class="lang-btn" onclick="setLang('en')">EN</div></div></div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v4.4.0</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v4.4.1</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -513,7 +525,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 <div class="dash-stats" id="dashStats"></div>
 </div>
 </div>
-<div class="card stagger" id="dashAchievements" style="display:none"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Достижения <span id="achCounter" style="font-size:11px;color:var(--text-secondary);font-weight:400"></span></div><div class="achievements-row" id="achievementsRow"></div><div id="achievementsExpanded" style="display:none;margin-top:8px;padding-top:8px;border-top:1px solid var(--glass-border)"><div id="achievementsAll" style="display:flex;flex-wrap:wrap;gap:8px"></div></div><button id="achExpandBtn" onclick="toggleAchievementsExpand()" style="width:100%;padding:6px;background:transparent;border:none;color:var(--text-secondary);font-size:11px;cursor:pointer">Показать все</button></div>
+<div class="card stagger" id="dashAchievements" style="display:none"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Достижения <span id="achCounter" style="font-size:11px;color:var(--text-secondary);font-weight:400"></span></div><div class="achievements-row" id="achievementsRow"></div><div id="achievementsExpanded" style="display:none;margin-top:8px;padding-top:8px;border-top:1px solid var(--glass-border)"><div id="achievementsAll" style="display:flex;flex-wrap:wrap;gap:8px"></div><div class="streak-scroll-wrap" id="streakAnalyticsWrap" style="display:none"><div class="streak-scroll-title">Аналитика серий привычек</div><div class="streak-scroll" id="streakAnalytics"></div></div></div><button id="achExpandBtn" onclick="toggleAchievementsExpand()" style="width:100%;padding:6px;background:transparent;border:none;color:var(--text-secondary);font-size:11px;cursor:pointer">Показать все</button></div>
 <div class="card stagger" id="dashPhraseCard"><div class="card-title">Фраза дня</div><div id="dashPhrase" style="padding:4px 0"></div></div>
 <div class="card stagger" id="dashCategoriesCard"><div class="card-title">Прогресс по категориям</div><div class="category-bars" id="dashCategories"></div></div>
 <div class="card stagger"><div class="card-title">Привычки сегодня</div><div class="habit-quick-list" id="dashHabits"></div></div>
@@ -821,6 +833,8 @@ document.getElementById('achievementsRow').innerHTML=achHtml;
 document.getElementById('achCounter').textContent=unlockedAch.length+'/'+ACHIEVEMENTS.length;
 var allAchHtml=ACHIEVEMENTS.map(a=>{var u=a.check(state);return '<div class="achievement-badge '+(u?'unlocked':'locked')+'" style="opacity:'+(u?1:0.4)+'"><div style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:'+(u?'var(--blue-bright,#2e8bff)':'var(--text-muted)')+'">'+a.svg+'</div><div style="font-size:8px;color:var(--text-secondary);text-align:center;max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+escapeHtml(a.name)+'</div></div>'}).join('');
 document.getElementById('achievementsAll').innerHTML=allAchHtml;
+var ssw=document.getElementById('streakAnalyticsWrap');var ssc=document.getElementById('streakAnalytics');
+if(state.habits.length>0){ssw.style.display='block';ssc.innerHTML=state.habits.map(function(h){var st=calcHabitStreak(h);var bs=calcBestStreak(h);var tot=(h.checkoffs||[]).length;var cat=getAllCategories()[h.category]||{color:'#2e8bff',label:''};return '<div class="streak-card"><div class="sc-name">'+escapeHtml(h.title)+'</div><div class="sc-current" style="color:'+cat.color+'">'+st+'</div><div class="sc-current-lbl">текущая серия</div><div class="sc-best">'+bs+'</div><div class="sc-best-lbl">лучшая серия</div><div class="sc-total">всего отметок: '+tot+'</div></div>'}).join('')}else{ssw.style.display='none'}
 }else{achDiv.style.display='none'}
 const cb=document.getElementById('dashCategories');
 const usedCats=Object.keys(cats).filter(c=>state.goals.some(g=>g.category===c));

@@ -517,6 +517,46 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .insight-patterns{border-left-color:#9f7aea}
 .insight-patterns .insight-card-label{color:#b794f4}
 
+
+/* === v5.1.0: Weekly Review + Sync Settings === */
+.review-section{margin-bottom:20px}
+.review-section-title{font-size:13px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px}
+.review-week-range{font-size:18px;font-weight:700;color:var(--blue-bright);margin-bottom:4px}
+.review-day-cards{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px}
+.review-day-card{flex:1;min-width:42px;background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:8px 4px;text-align:center}
+.review-day-card .rdc-day{font-size:10px;color:var(--text-secondary);font-weight:500}
+.review-day-card .rdc-score{font-size:16px;font-weight:700;color:var(--blue-bright);margin-top:2px}
+.review-day-card .rdc-bar{height:3px;border-radius:2px;margin-top:4px;background:rgba(46,139,255,0.15)}
+.review-day-card .rdc-bar-fill{height:100%;border-radius:2px;background:var(--blue-bright)}
+.review-day-card.today{border-color:var(--blue-bright);box-shadow:0 0 8px rgba(74,163,255,0.15)}
+.review-stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+.review-stat-card{background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:var(--radius);padding:12px 14px}
+.review-stat-card .rsc-label{font-size:11px;color:var(--text-secondary);margin-bottom:4px}
+.review-stat-card .rsc-value{font-size:20px;font-weight:700;color:var(--blue-bright)}
+.review-stat-card .rsc-delta{font-size:11px;margin-top:2px}
+.review-stat-card .rsc-delta.up{color:#4ade80}
+.review-stat-card .rsc-delta.down{color:#f87171}
+.review-stat-card .rsc-delta.flat{color:var(--text-muted)}
+.review-comparison{background:rgba(46,139,255,0.04);border:1px solid var(--glass-border);border-radius:var(--radius);padding:14px;margin-bottom:16px}
+.review-comparison-title{font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:8px}
+.review-reflection{margin-bottom:16px}
+.review-reflection textarea{width:100%;min-height:80px;padding:12px 14px;background:rgba(46,139,255,0.05);border:1px solid var(--glass-border);border-radius:var(--radius);color:var(--text-primary);font-size:14px;font-family:inherit;resize:vertical;outline:none;transition:var(--transition)}
+.review-reflection textarea:focus{border-color:var(--blue-bright);background:rgba(46,139,255,0.08)}
+.review-reflection-label{font-size:13px;font-weight:500;color:var(--text-secondary);margin-bottom:6px}
+.review-reflection-saved{font-size:11px;color:var(--text-muted);margin-top:4px;font-style:italic}
+.review-habit-list{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.review-habit-row{display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(46,139,255,0.03);border-radius:var(--radius-sm);font-size:13px}
+.review-habit-row .rhr-name{flex:1}
+.review-habit-row .rhr-stat{font-size:12px;color:var(--text-secondary);font-weight:500}
+.review-habit-row .rhr-bar{width:60px;height:6px;border-radius:3px;background:rgba(46,139,255,0.1);overflow:hidden}
+.review-habit-row .rhr-bar-fill{height:100%;border-radius:3px;background:var(--blue-bright)}
+.review-empty{text-align:center;padding:40px 20px;color:var(--text-muted);font-size:14px}
+.sync-status{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-secondary);padding:8px 0}
+.sync-status .dot{width:8px;height:8px;border-radius:50%}
+.sync-status .dot.ok{background:#4ade80}
+.sync-status .dot.err{background:#f87171}
+.sync-status .dot.pending{background:var(--text-muted)}
+
 </style>
 </head>
 <body>
@@ -560,7 +600,20 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 <div class="settings-header"><div class="settings-avatar" id="settingsAvatar">A</div><div><div class="settings-name" id="settingsName">Пользователь</div><div class="settings-sub" id="settingsSub">Аккаунт не привязан</div></div></div>
 <div class="settings-section"><div class="settings-section-title">Внешний вид</div>
 <div class="settings-row"><div><div class="settings-label">Светлая тема</div><div class="settings-desc">Переключить оформление</div></div><div class="toggle-switch" id="themeToggle" onclick="toggleTheme()"></div></div>
-<div class="settings-row"><div><div class="settings-label">Язык</div><div class="settings-desc">Interface language</div></div><div class="lang-selector"><div class="lang-btn active" onclick="setLang('ru')">RU</div><div class="lang-btn" onclick="setLang('en')">EN</div></div></div>
+<div class="settings-row"><div><div class="settings-label">Язык</div><div class="settings-desc">Interface language</div></div><div class="lang-selector"><div class="lang-btn active" onclick="setLang('ru')">RU
+<div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--glass-border)">
+<div style="font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:10px">Синхронизация данных</div>
+<div class="form-group">
+<label class="form-label">GitHub Token (для уведомлений)</label>
+<input type="password" id="syncTokenInput" class="form-input" placeholder="ghp_..." value="">
+<button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="saveSyncToken(document.getElementById('syncTokenInput').value);showToast('Токен сохранён')">Сохранить токен</button>
+</div>
+<div class="sync-status" id="syncStatusDiv">
+<span class="dot pending"></span>
+<span id="syncStatusText">Синхронизация не настроена</span>
+</div>
+</div>
+</div><div class="lang-btn" onclick="setLang('en')">EN</div></div></div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
 <div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.0.2</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
@@ -594,12 +647,17 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 <div class="card stagger"><div class="card-title">Инсайты</div><div id="anInsights"></div></div>
 </div>
 
+<div id="view-review" class="view">
+<div id="reviewContent"></div>
+</div>
+
+
 <div class="bottom-nav">
 <button class="nav-item active" data-view="dashboard" onclick="switchView('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Главная</span></button>
 <button class="nav-item" data-view="goals" onclick="switchView('goals')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span>Цели</span></button>
 <button class="agent-nav-btn" onclick="openAgentChat()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button>
 <button class="nav-item" data-view="habits" onclick="switchView('habits')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Привычки</span></button>
-<button class="nav-item" data-view="analytics" onclick="switchView('analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Аналитика</span></button>
+<button class="nav-item" data-view="analytics" onclick="switchView('analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Аналитика</span></button><button class="nav-item" data-view="review" onclick="switchView('review')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>Ревью</span></button>
 </div>
 
 <button class="fab" id="fab" onclick="fabAction()" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
@@ -675,7 +733,7 @@ let yearHeatmapSelectedMonth=null;
 let yearHeatmapSelectedDate=null;
 
 function getAllCategories(){const cats={...DEFAULT_CATEGORIES};(state.customCategories||[]).forEach(c=>{cats[c.id]={label:c.name,color:c.color,cls:'custom-'+c.id}});return cats}
-function migrateState(p){if(!state.tasks)state.tasks=[];if(!state.customCategories)state.customCategories=[];if(!state.settings)state.settings={theme:'dark',lang:'ru',healthSynced:false,healthData:null};if(!state.dailyScores)state.dailyScores={};if(!state.chatTopics)state.chatTopics=[{id:'general',name:'Общее'}];if(!state.chatHistory)state.chatHistory={general:[{role:'system',text:'Привет! Я твой агент. Спроси меня о целях, привычках, или попроси рекомендации.',ts:Date.now()}]};if(!state.activeTopic)state.activeTopic='general';state.goals.forEach(g=>{if(!g.subtasks)g.subtasks=[];if(!g.priority)g.priority='med';g.subtasks.forEach(s=>{if(!s.dueDate)s.dueDate=null})});state.habits.forEach(h=>{if(h.targetPerWeek===undefined)h.targetPerWeek=7;if(!h.daysOfWeek)h.daysOfWeek=[1,2,3,4,5,6,0];if(h.startDate===undefined)h.startDate=null;if(h.endDate===undefined)h.endDate=null});if(state.lastModified===undefined)state.lastModified=0}
+function migrateState(p){if(!state.tasks)state.tasks=[];if(!state.customCategories)state.customCategories=[];if(!state.settings)state.settings={theme:'dark',lang:'ru',healthSynced:false,healthData:null};if(!state.dailyScores)state.dailyScores={};if(!state.weeklyReviews)state.weeklyReviews={};if(!state.chatTopics)state.chatTopics=[{id:'general',name:'Общее'}];if(!state.chatHistory)state.chatHistory={general:[{role:'system',text:'Привет! Я твой агент. Спроси меня о целях, привычках, или попроси рекомендации.',ts:Date.now()}]};if(!state.activeTopic)state.activeTopic='general';state.goals.forEach(g=>{if(!g.subtasks)g.subtasks=[];if(!g.priority)g.priority='med';g.subtasks.forEach(s=>{if(!s.dueDate)s.dueDate=null})});state.habits.forEach(h=>{if(h.targetPerWeek===undefined)h.targetPerWeek=7;if(!h.daysOfWeek)h.daysOfWeek=[1,2,3,4,5,6,0];if(h.startDate===undefined)h.startDate=null;if(h.endDate===undefined)h.endDate=null});if(state.lastModified===undefined)state.lastModified=0}
 function isValidState(p){return p&&Array.isArray(p.goals)&&Array.isArray(p.habits)}
 function loadFromBackups(){for(const key of BACKUP_KEYS){try{const raw=localStorage.getItem(key);if(raw){const p=JSON.parse(raw);if(isValidState(p)){console.log('Restored from '+key);return p}}}catch(e){}}return null}
 function loadFromCloud(cb){if(!(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.CloudStorage&&Telegram.WebApp.CloudStorage.getItem)){cb(null,0);return}try{Telegram.WebApp.CloudStorage.getItem(CLOUD_KEY,function(err,val){if(!err&&val){try{const p=JSON.parse(val);if(isValidState(p)){const ts=p.lastModified||0;console.log('Cloud data found, ts='+ts);cb(p,ts);return}}catch(e){}}cb(null,0)})}catch(e){cb(null,0)}}
@@ -694,7 +752,7 @@ state=cp;if(!state.version||state.version<4.21)state.version=4.21;migrateState(c
 showToast('Данные восстановлены из облака Telegram');saveData();renderDashboard();return
 }else if(cloudTs>0&&cloudTs<=localTs){
 syncToCloud();return
-}
+debouncedSync();}
 }
 if(state.goals.length===0&&state.habits.length===0){
 if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.CloudStorage){
@@ -739,7 +797,7 @@ return Math.round(((doneScheduled+doneTasks+doneExtra)/baseTotal)*100);
 function getDailyScoreLevel(score){if(score===0)return 0;if(score<25)return 1;if(score<50)return 2;if(score<75)return 3;return 4}
 function getDowOffset(y,m){const fd=new Date(y,m,1);return fd.getDay()===0?6:fd.getDay()-1}
 
-function switchView(v){currentView=v;document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));document.getElementById('view-'+v).classList.add('active');document.querySelectorAll('.nav-item').forEach(el=>el.classList.toggle('active',el.dataset.view===v));if(v==='dashboard')renderDashboard();else if(v==='goals')renderGoals();else if(v==='habits')renderHabits();else if(v==='analytics')renderAnalytics();document.getElementById('fab').style.display=(v==='goals'||v==='habits')?'flex':'none';window.scrollTo(0,0)}
+function switchView(v){currentView=v;document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));document.getElementById('view-'+v).classList.add('active');document.querySelectorAll('.nav-item').forEach(el=>el.classList.toggle('active',el.dataset.view===v));if(v==='dashboard')renderDashboard();else if(v==='goals')renderGoals();else if(v==='habits')renderHabits();else if(v==='analytics')renderAnalytics();document.getElementById('fab').style.display=(v==='goals'||v==='habits')?'flex':'none';window.scrollTo(0,0);if(v==='review')renderWeeklyReview();}
 function fabAction(){if(currentView==='goals'){if(goalsTab==='tasks')openTaskModal();else openGoalModal()}else if(currentView==='habits')openHabitModal()}
 function setGoalsTab(tab){goalsTab=tab;document.getElementById('toggleGoals').classList.toggle('active',tab==='goals');document.getElementById('toggleTasks').classList.toggle('active',tab==='tasks');document.getElementById('goalsList').style.display=tab==='goals'?'block':'none';document.getElementById('tasksList').style.display=tab==='tasks'?'block':'none';if(tab==='goals')renderGoals();else renderTasks();haptic('light')}
 function calcMaxStreak(){let max=0;state.habits.forEach(h=>{const s=calcHabitStreak(h);if(s>max)max=s});return max}
@@ -1493,6 +1551,250 @@ state.habits=[{id:uid(),title:'Зарядка',category:'health',checkoffs:[toda
 state.tasks=[{id:uid(),title:'Купить продукты',done:false,date:todayStr(),createdAt:new Date().toISOString()},{id:uid(),title:'Позвонить врачу',done:true,date:todayStr(),createdAt:new Date().toISOString()},{id:uid(),title:'Подготовить презентацию',done:false,date:new Date(Date.now()+2*86400000).toISOString().slice(0,10),createdAt:new Date().toISOString()}];
 saveData()}
 loadData();applySettings();initEvents();renderDashboard();startAutoSave();
+
+// === v5.1.0: Weekly Review + Data Sync ===
+var DATA_SYNC_TOKEN='';
+var DATA_SYNC_REPO='korobovaelena00-cmd/goal-tracker';
+var DATA_SYNC_KEY='pupsai_github_token';
+var syncDebounceTimer=null;
+var lastSyncTs=0;
+var SYNC_INTERVAL=300000; // 5 min
+
+function getReviewWeekStart(d){
+var dt=d?new Date(d):new Date();
+var day=dt.getDay();
+var diff=day===1?0:(day===0?-6:1-day);
+dt.setDate(dt.getDate()+diff);
+dt.setHours(0,0,0,0);
+return dt;
+}
+function getReviewWeekEnd(start){
+var e=new Date(start);
+e.setDate(e.getDate()+6);
+e.setHours(23,59,59,999);
+return e;
+}
+function getPrevWeekStart(start){
+var p=new Date(start);
+p.setDate(p.getDate()-7);
+return p;
+}
+function calcWeekScore(weekStart){
+var scores=[];
+for(var i=0;i<7;i++){
+var d=new Date(weekStart);
+d.setDate(d.getDate()+i);
+var ds=dateStr(d);
+scores.push({date:ds,dayName:['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][d.getDay()],score:state.dailyScores?state.dailyScores[ds]||calcDailyScore(ds):calcDailyScore(ds),isToday:ds===todayStr()});
+}
+return scores;
+}
+function calcWeekHabitsStats(weekStart){
+var stats=[];
+var weekEnd=getReviewWeekEnd(weekStart);
+state.habits.forEach(function(h){
+if(!isHabitActive(h))return;
+var scheduled=0,done=0;
+for(var i=0;i<7;i++){
+var d=new Date(weekStart);
+d.setDate(d.getDate()+i);
+var ds=dateStr(d);
+if(isHabitScheduledForDate(h,ds)){
+scheduled++;
+if((h.checkoffs||[]).includes(ds))done++;
+}
+}
+if(scheduled>0){
+stats.push({title:h.title,done:done,scheduled:scheduled,rate:Math.round(done/scheduled*100)});
+}
+});
+return stats.sort(function(a,b){return b.rate-a.rate});
+}
+function calcWeekTaskStats(weekStart){
+var weekEnd=getReviewWeekEnd(weekStart);
+var total=0,completed=0;
+state.tasks.forEach(function(t){
+if(!t.date)return;
+var td=new Date(t.date);
+if(td>=weekStart&&td<=weekEnd){
+total++;
+if(t.done)completed++;
+}
+});
+return{total:total,completed:completed};
+}
+function calcWeekGoalProgress(weekStart){
+var prevStart=getPrevWeekStart(weekStart);
+var results=[];
+state.goals.forEach(function(g){
+var currProg=calcGoalProgress(g);
+// Try to estimate previous progress — we don't store history, so we approximate
+// by checking if goal was completed this week
+var completedThisWeek=g.completedAt&&new Date(g.completedAt)>=weekStart&&new Date(g.completedAt)<=weekEnd;
+results.push({title:g.title,progress:currProg,completedThisWeek:completedThisWeek,category:g.category});
+});
+return results;
+}
+function getReflections(weekStart){
+var key='review_'+dateStr(weekStart);
+if(!state.weeklyReviews)state.weeklyReviews={};
+return state.weeklyReviews[key]||{wentWell:'',didNotWork:'',changeNext:''};
+}
+function saveReflection(weekStart,field,value){
+var key='review_'+dateStr(weekStart);
+if(!state.weeklyReviews)state.weeklyReviews={};
+if(!state.weeklyReviews[key])state.weeklyReviews[key]={wentWell:'',didNotWork:'',changeNext:''};
+state.weeklyReviews[key][field]=value;
+saveData();
+}
+function renderWeeklyReview(){
+var el=document.getElementById('reviewContent');
+if(!el)return;
+var weekStart=getReviewWeekStart(new Date());
+var weekEnd=getReviewWeekEnd(weekStart);
+var prevStart=getPrevWeekStart(weekStart);
+var prevEnd=getReviewWeekEnd(prevStart);
+var months=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+
+var scores=calcWeekScore(weekStart);
+var habitStats=calcWeekHabitsStats(weekStart);
+var taskStats=calcWeekTaskStats(weekStart);
+var goalStats=calcWeekGoalProgress(weekStart);
+var reflections=getReflections(weekStart);
+
+// Previous week comparison
+var prevScores=calcWeekScore(prevStart);
+var prevAvg=prevScores.reduce(function(s,d){return s+d.score},0)/7;
+var currAvg=scores.reduce(function(s,d){return s+d.score},0)/7;
+var delta=Math.round(currAvg-prevAvg);
+var prevTaskStats=calcWeekTaskStats(prevStart);
+
+var ws=weekStart.getDate()+' '+months[weekStart.getMonth()];
+var we=weekEnd.getDate()+' '+months[weekEnd.getMonth()];
+
+var h='<div style="padding:16px">';
+h+='<div class="review-section">';
+h+='<div class="review-week-range">'+ws+' — '+we+'</div>';
+h+='<div style="font-size:12px;color:var(--text-secondary)">Недельное ревью</div>';
+h+='</div>';
+
+// Day score cards
+h+='<div class="review-section">';
+h+='<div class="review-section-title">Оценки по дням</div>';
+h+='<div class="review-day-cards">';
+scores.forEach(function(s){
+var isToday=s.date===todayStr();
+h+='<div class="review-day-card'+(isToday?' today':'')+'">';
+h+='<div class="rdc-day">'+s.dayName+'</div>';
+h+='<div class="rdc-score">'+s.score+'%</div>';
+h+='<div class="rdc-bar"><div class="rdc-bar-fill" style="width:'+s.score+'%"></div></div>';
+h+='</div>';
+});
+h+='</div>';
+// Average + comparison
+var deltaCls=delta>0?'up':(delta<0?'down':'flat');
+var deltaStr=delta>0?'+'+delta:(delta<0?''+delta:'0');
+h+='<div style="font-size:13px;color:var(--text-secondary);margin-top:8px">Средняя оценка: <b style="color:var(--blue-bright)">'+Math.round(currAvg)+'%</b> <span class="rsc-delta '+deltaCls+'">('+deltaStr+' к прошлой неделе)</span></div>';
+h+='</div>';
+
+// Stats grid
+h+='<div class="review-stats-grid">';
+h+='<div class="review-stat-card"><div class="rsc-label">Привычек выполнено</div><div class="rsc-value">'+habitStats.filter(function(x){return x.rate>=50}).length+'/'+habitStats.length+'</div></div>';
+h+='<div class="review-stat-card"><div class="rsc-label">Задач выполнено</div><div class="rsc-value">'+taskStats.completed+'/'+taskStats.total+'</div>';
+var taskDelta=taskStats.completed-prevTaskStats.completed;
+h+='<div class="rsc-delta '+(taskDelta>0?'up':(taskDelta<0?'down':'flat'))+'">'+(taskDelta>0?'+':'')+taskDelta+' к прошлой неделе</div>';
+h+='</div>';
+h+='<div class="review-stat-card"><div class="rsc-label">Целей завершено</div><div class="rsc-value">'+goalStats.filter(function(g){return g.completedThisWeek}).length+'</div></div>';
+h+='<div class="review-stat-card"><div class="rsc-label">Лучшая привычка</div><div style="font-size:14px;font-weight:600;color:var(--blue-bright)">'+(habitStats.length>0?escapeHtml(habitStats[0].title)+' '+habitStats[0].rate+'%':'—')+'</div></div>';
+h+='</div>';
+
+// Habit breakdown
+if(habitStats.length>0){
+h+='<div class="review-section">';
+h+='<div class="review-section-title">Привычки</div>';
+h+='<div class="review-habit-list">';
+habitStats.forEach(function(hb){
+var rateColor=hb.rate>=75?'var(--blue-bright)':(hb.rate>=50?'#fbbf24':'#f87171');
+h+='<div class="review-habit-row">';
+h+='<span class="rhr-name">'+escapeHtml(hb.title)+'</span>';
+h+='<div class="rhr-bar"><div class="rhr-bar-fill" style="width:'+hb.rate+'%;background:'+rateColor+'"></div></div>';
+h+='<span class="rhr-stat" style="color:'+rateColor+'">'+hb.done+'/'+hb.scheduled+'</span>';
+h+='</div>';
+});
+h+='</div>';
+h+='</div>';
+}
+
+// Goal progress
+if(goalStats.length>0){
+h+='<div class="review-section">';
+h+='<div class="review-section-title">Цели</div>';
+goalStats.forEach(function(g){
+var cat=getAllCategories()[g.category]||{color:'#2e8bff',label:''};
+h+='<div class="review-habit-row">';
+h+='<span class="cat-dot" style="background:'+cat.color+'"></span>';
+h+='<span class="rhr-name">'+escapeHtml(g.title)+'</span>';
+h+='<span class="rhr-stat">'+g.progress+'%'+(g.completedThisWeek?' (завершена)':'')+'</span>';
+h+='</div>';
+});
+h+='</div>';
+}
+
+// Reflection fields
+h+='<div class="review-section">';
+h+='<div class="review-section-title">Рефлексия</div>';
+h+='<div class="review-reflection">';
+h+='<div class="review-reflection-label">Что получилось на этой неделе?</div>';
+h+='<textarea id="refl_wentWell" placeholder="Запишите свои успехи..." onblur=\'saveReflection(getReviewWeekStart(new Date()),"wentWell",this.value)\'>'+escapeHtml(reflections.wentWell)+'</textarea>';
+h+='</div>';
+h+='<div class="review-reflection">';
+h+='<div class="review-reflection-label">Что не вышло?</div>';
+h+='<textarea id="refl_didNotWork" placeholder="Что мешало прогрессу..." onblur=\'saveReflection(getReviewWeekStart(new Date()),"didNotWork",this.value)\'>'+escapeHtml(reflections.didNotWork)+'</textarea>';
+h+='</div>';
+h+='<div class="review-reflection">';
+h+='<div class="review-reflection-label">Что изменить на следующей неделе?</div>';
+h+='<textarea id="refl_changeNext" placeholder="Планы и изменения..." onblur=\'saveReflection(getReviewWeekStart(new Date()),"changeNext",this.value)\'>'+escapeHtml(reflections.changeNext)+'</textarea>';
+h+='</div>';
+h+='<div class="review-reflection-saved">Сохраняется автоматически</div>';
+h+='</div>';
+
+h+='</div>';
+el.innerHTML=h;
+}
+
+// === Data Sync to GitHub ===
+function loadSyncToken(){
+try{DATA_SYNC_TOKEN=localStorage.getItem(DATA_SYNC_KEY)||''}catch(e){DATA_SYNC_TOKEN=''}
+}
+function syncDataToGitHub(){
+if(!DATA_SYNC_TOKEN){return}
+if(Date.now()-lastSyncTs<SYNC_INTERVAL){return}
+lastSyncTs=Date.now();
+var data=JSON.stringify(state);
+var putUrl='https://api.github.com/repos/'+DATA_SYNC_REPO+'/contents/user-data.json';
+// Get current file sha if it exists (needed for update)
+fetch(putUrl,{headers:{'Authorization':'token '+DATA_SYNC_TOKEN,'Accept':'application/vnd.github+json'}}).then(function(r){
+if(r.ok)return r.json();return null;
+}).then(function(existing){
+var body={message:'chore: sync user data',content:btoa(unescape(encodeURIComponent(data)))};
+if(existing&&existing.sha)body.sha=existing.sha;
+return fetch(putUrl,{method:'PUT',headers:{'Authorization':'token '+DATA_SYNC_TOKEN,'Content-Type':'application/json','Accept':'application/vnd.github+json'},body:JSON.stringify(body)});
+}).then(function(r){if(r)return r.json();return null}).then(function(result){
+if(result&&result.content){console.log('Data synced to GitHub')}else{console.warn('Sync: no result')}
+}).catch(function(e){console.error('Sync error:',e)});
+}
+function debouncedSync(){
+if(syncDebounceTimer)clearTimeout(syncDebounceTimer);
+syncDebounceTimer=setTimeout(function(){syncDataToGitHub()},10000);
+}
+function saveSyncToken(token){
+DATA_SYNC_TOKEN=token;
+try{localStorage.setItem(DATA_SYNC_KEY,token)}catch(e){}
+}
+
+// Initialize
+loadSyncToken();
+
 </script>
 </body>
 </html>

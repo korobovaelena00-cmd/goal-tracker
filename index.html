@@ -464,6 +464,59 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .habit-card.drag-over{border-color:var(--blue-bright);box-shadow:0 0 12px rgba(74,163,255,0.3)}
 .habit-card.shake{animation:shake 0.4s ease infinite}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+
+/* === v5.0.2 Insight Cards === */
+.insight-list{display:flex;flex-direction:column;gap:8px}
+.insight-card{
+  display:flex;flex-direction:column;gap:4px;
+  padding:10px 12px;border-radius:10px;
+  background:rgba(255,255,255,0.03);
+  border-left:3px solid var(--text-secondary);
+  transition:background 0.2s,border-color 0.2s;
+}
+.insight-card:hover{background:rgba(255,255,255,0.06)}
+.insight-card-label{
+  font-size:9px;font-weight:700;letter-spacing:0.6px;
+  text-transform:uppercase;color:var(--text-secondary);
+  display:flex;align-items:center;gap:4px;
+}
+.insight-card-text{
+  font-size:13px;line-height:1.5;color:var(--text-primary);
+}
+/* Color coding by insight type */
+.insight-trend{border-left-color:#2e8bff}
+.insight-trend .insight-card-label{color:#5ba3ff}
+.insight-risk{border-left-color:#f56565}
+.insight-risk .insight-card-label{color:#fc8181}
+.insight-compare{border-left-color:#48bb78}
+.insight-compare .insight-card-label{color:#68d391}
+.insight-habits{border-left-color:#9f7aea}
+.insight-habits .insight-card-label{color:#b794f4}
+.insight-streak{border-left-color:#ed8936}
+.insight-streak .insight-card-label{color:#f6ad55}
+.insight-categories{border-left-color:#38b2ac}
+.insight-categories .insight-card-label{color:#4fd1c5}
+.insight-goals{border-left-color:#f6e05e}
+.insight-goals .insight-card-label{color:#f6e05e}
+.insight-forecast{border-left-color:#f56565}
+.insight-forecast .insight-card-label{color:#fc8181}
+.insight-deadlines{border-left-color:#ed8936}
+.insight-deadlines .insight-card-label{color:#f6ad55}
+.insight-tasks{border-left-color:#48bb78}
+.insight-tasks .insight-card-label{color:#68d391}
+.insight-balance{border-left-color:#38b2ac}
+.insight-balance .insight-card-label{color:#4fd1c5}
+.insight-return{border-left-color:#9f7aea}
+.insight-return .insight-card-label{color:#b794f4}
+.insight-achievements{border-left-color:#ecc94b}
+.insight-achievements .insight-card-label{color:#f6e05e}
+.insight-score{border-left-color:#2e8bff}
+.insight-score .insight-card-label{color:#5ba3ff}
+.insight-start{border-left-color:#4a5568}
+.insight-start .insight-card-label{color:#a0aec0}
+.insight-patterns{border-left-color:#9f7aea}
+.insight-patterns .insight-card-label{color:#b794f4}
+
 </style>
 </head>
 <body>
@@ -510,7 +563,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 <div class="settings-row"><div><div class="settings-label">Язык</div><div class="settings-desc">Interface language</div></div><div class="lang-selector"><div class="lang-btn active" onclick="setLang('ru')">RU</div><div class="lang-btn" onclick="setLang('en')">EN</div></div></div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.0.0</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.0.2</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -538,7 +591,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 <div class="view" id="view-analytics">
 <div class="card stagger"><div class="card-title">Годовая активность</div><div class="year-heatmap-grid" id="yearHeatmapGrid"></div><div class="year-heat-legend"><span>0%</span><div class="scale"><div style="background:var(--bg-elevated)"></div><div style="background:rgba(46,139,255,0.15)"></div><div style="background:rgba(46,139,255,0.35)"></div><div style="background:rgba(46,139,255,0.6)"></div><div style="background:rgba(46,139,255,0.9)"></div></div><span>100%</span></div></div>
 <div class="card stagger"><div class="card-title">Прогресс целей</div><div id="anGoalsProgress" style="display:flex;flex-direction:column;gap:10px"></div></div>
-<div class="card stagger"><div class="card-title">Инсайты</div><div id="anInsights" style="display:flex;flex-direction:column;gap:8px"></div></div>
+<div class="card stagger"><div class="card-title">Инсайты</div><div id="anInsights"></div></div>
 </div>
 
 <div class="bottom-nav">
@@ -1014,7 +1067,12 @@ function renderAnalytics(){const goals=state.goals;const cats=getAllCategories()
 const gp=document.getElementById('anGoalsProgress');
 gp.innerHTML=goals.length===0?'<div style="text-align:center;color:var(--text-muted);padding:12px">Нет целей</div>':goals.map(g=>{const cat=cats[g.category]||{color:'#2e8bff',label:''};const prog=calcGoalProgress(g);return'<div class="cat-bar-row"><div class="cat-bar-label"><span class="cat-dot" style="background:'+cat.color+'"></span>'+escapeHtml(g.title).slice(0,20)+'</div><div class="cat-bar-track"><div class="cat-bar-fill" style="width:'+prog+'%;background:'+cat.color+'"></div></div><div class="cat-bar-pct">'+prog+'%</div></div>'}).join('');
 renderYearHeatmap();
-var ins=generateInsights();var insEl=document.getElementById("anInsights");if(insEl){insEl.innerHTML=ins.map(function(i){return '<div style="display:flex;gap:8px;align-items:flex-start;padding:6px 0"><span style="font-size:10px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;min-width:70px;flex-shrink:0">'+i.label+'</span><span style="font-size:13px;line-height:1.5;color:var(--text-primary)">'+i.text+'</span></div>'}).join("")}}
+var ins=generateInsights();var insEl=document.getElementById("anInsights");if(insEl){
+var labelMap={'Тренд':'trend','Скор':'score','Паттерны':'patterns','Привычки':'habits','Сравнение':'compare','Категории':'categories','Серии':'streak','Риск серии':'risk','Цели':'goals','Прогноз':'forecast','Дедлайны':'deadlines','Задачи':'tasks','Баланс':'balance','Возврат':'return','Достижения':'achievements','Начало':'start'};
+insEl.innerHTML='<div class="insight-list">'+ins.map(function(i){
+var cls=labelMap[i.label]||'start';
+return '<div class="insight-card insight-'+cls+'"><div class="insight-card-label">'+i.label+'</div><div class="insight-card-text">'+i.text+'</div></div>'
+}).join('')+'</div>'}}
 function drawWeeklyChart(){const cv=document.getElementById('weeklyChart');const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;const w=cv.offsetWidth||300;const h=200;cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=dateStr(d);const count=state.habits.filter(h=>(h.checkoffs||[]).includes(ds)).length;days.push({label:['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][d.getDay()],count})}const max=Math.max(...days.map(d=>d.count),1);const bw=w/7*0.6;const gap=w/7*0.2;days.forEach((d,i)=>{const x=i*(w/7)+gap;const bh=(d.count/max)*(h-40);const grad=ctx.createLinearGradient(0,h-20-bh,0,h-20);grad.addColorStop(0,'#1a6fff');grad.addColorStop(1,'#00d4ff');ctx.fillStyle=grad;ctx.beginPath();roundRect(ctx,x,h-20-bh,bw,bh,4);ctx.fill();ctx.fillStyle='rgba(232,240,255,0.5)';ctx.font='11px sans-serif';ctx.textAlign='center';ctx.fillText(d.label,x+bw/2,h-6);ctx.fillStyle='rgba(232,240,255,0.8)';ctx.fillText(d.count,x+bw/2,h-26-bh)})}
 function drawDonutChart(){const cv=document.getElementById('donutChart');const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;const w=cv.offsetWidth||300;const h=200;cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const cats=getAllCategories();const catKeys=Object.keys(cats);const counts=catKeys.map(c=>state.goals.filter(g=>g.category===c).length);const total=counts.reduce((a,b)=>a+b,0);if(total===0){ctx.fillStyle='rgba(232,240,255,0.3)';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText('Нет данных',w/2,h/2);return}const cx=w/2,cy=h/2;const r=Math.min(w,h)/2-20;let angle=-Math.PI/2;catKeys.forEach((c,i)=>{if(counts[i]===0)return;const arc=(counts[i]/total)*Math.PI*2;ctx.beginPath();ctx.arc(cx,cy,r,angle,angle+arc);ctx.lineWidth=20;ctx.strokeStyle=cats[c].color;ctx.stroke();angle+=arc});ctx.fillStyle='rgba(232,240,255,0.9)';ctx.font='bold 24px sans-serif';ctx.textAlign='center';ctx.fillText(total,cx,cy-4);ctx.fillStyle='rgba(232,240,255,0.5)';ctx.font='11px sans-serif';ctx.fillText('целей',cx,cy+14)}
 function drawTrendChart(){const cv=document.getElementById('trendChart');const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;const w=cv.offsetWidth||300;const h=200;cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const days=30;const data=[];for(let i=days-1;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=dateStr(d);data.push(state.habits.filter(h=>(h.checkoffs||[]).includes(ds)).length)}const max=Math.max(...data,1);const pw=(w-20)/days;data.forEach((v,i)=>{const x=10+i*pw;const bh=(v/max)*(h-30);const grad=ctx.createLinearGradient(0,h-10-bh,0,h-10);grad.addColorStop(0,'#1a6fff');grad.addColorStop(1,'rgba(0,212,255,0.3)');ctx.fillStyle=grad;ctx.fillRect(x,h-10-bh,pw-1,bh)});ctx.fillStyle='rgba(232,240,255,0.3)';ctx.font='10px sans-serif';ctx.textAlign='center';ctx.fillText('30 дней назад',30,h-2);ctx.fillText('сегодня',w-30,h-2)}

@@ -518,7 +518,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .insight-patterns .insight-card-label{color:#b794f4}
 
 
-/* === v5.1.0: Weekly Review + Sync Settings === */
+/* === v5.2.0: Weekly Review + Sync Settings === */
 .review-section{margin-bottom:20px}
 .review-section-title{font-size:13px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px}
 .review-week-range{font-size:18px;font-weight:700;color:var(--blue-bright);margin-bottom:4px}
@@ -645,11 +645,11 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 <div class="card stagger"><div class="card-title">Годовая активность</div><div class="year-heatmap-grid" id="yearHeatmapGrid"></div><div class="year-heat-legend"><span>0%</span><div class="scale"><div style="background:var(--bg-elevated)"></div><div style="background:rgba(46,139,255,0.15)"></div><div style="background:rgba(46,139,255,0.35)"></div><div style="background:rgba(46,139,255,0.6)"></div><div style="background:rgba(46,139,255,0.9)"></div></div><span>100%</span></div></div>
 <div class="card stagger"><div class="card-title">Прогресс целей</div><div id="anGoalsProgress" style="display:flex;flex-direction:column;gap:10px"></div></div>
 <div class="card stagger"><div class="card-title">Инсайты</div><div id="anInsights"></div></div>
-</div>
 
-<div id="view-review" class="view">
 <div id="reviewContent"></div>
 </div>
+
+
 
 
 <div class="bottom-nav">
@@ -657,7 +657,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 <button class="nav-item" data-view="goals" onclick="switchView('goals')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span>Цели</span></button>
 <button class="agent-nav-btn" onclick="openAgentChat()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button>
 <button class="nav-item" data-view="habits" onclick="switchView('habits')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Привычки</span></button>
-<button class="nav-item" data-view="analytics" onclick="switchView('analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Аналитика</span></button><button class="nav-item" data-view="review" onclick="switchView('review')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>Ревью</span></button>
+<button class="nav-item" data-view="analytics" onclick="switchView('analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Аналитика</span></button>
 </div>
 
 <button class="fab" id="fab" onclick="fabAction()" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
@@ -797,7 +797,7 @@ return Math.round(((doneScheduled+doneTasks+doneExtra)/baseTotal)*100);
 function getDailyScoreLevel(score){if(score===0)return 0;if(score<25)return 1;if(score<50)return 2;if(score<75)return 3;return 4}
 function getDowOffset(y,m){const fd=new Date(y,m,1);return fd.getDay()===0?6:fd.getDay()-1}
 
-function switchView(v){currentView=v;document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));document.getElementById('view-'+v).classList.add('active');document.querySelectorAll('.nav-item').forEach(el=>el.classList.toggle('active',el.dataset.view===v));if(v==='dashboard')renderDashboard();else if(v==='goals')renderGoals();else if(v==='habits')renderHabits();else if(v==='analytics')renderAnalytics();document.getElementById('fab').style.display=(v==='goals'||v==='habits')?'flex':'none';window.scrollTo(0,0);if(v==='review')renderWeeklyReview();}
+function switchView(v){currentView=v;document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));document.getElementById('view-'+v).classList.add('active');document.querySelectorAll('.nav-item').forEach(el=>el.classList.toggle('active',el.dataset.view===v));if(v==='dashboard')renderDashboard();else if(v==='goals')renderGoals();else if(v==='habits')renderHabits();else if(v==='analytics')renderAnalytics();document.getElementById('fab').style.display=(v==='goals'||v==='habits')?'flex':'none';window.scrollTo(0,0);}
 function fabAction(){if(currentView==='goals'){if(goalsTab==='tasks')openTaskModal();else openGoalModal()}else if(currentView==='habits')openHabitModal()}
 function setGoalsTab(tab){goalsTab=tab;document.getElementById('toggleGoals').classList.toggle('active',tab==='goals');document.getElementById('toggleTasks').classList.toggle('active',tab==='tasks');document.getElementById('goalsList').style.display=tab==='goals'?'block':'none';document.getElementById('tasksList').style.display=tab==='tasks'?'block':'none';if(tab==='goals')renderGoals();else renderTasks();haptic('light')}
 function calcMaxStreak(){let max=0;state.habits.forEach(h=>{const s=calcHabitStreak(h);if(s>max)max=s});return max}
@@ -1130,7 +1130,7 @@ var labelMap={'Тренд':'trend','Скор':'score','Паттерны':'patter
 insEl.innerHTML='<div class="insight-list">'+ins.map(function(i){
 var cls=labelMap[i.label]||'start';
 return '<div class="insight-card insight-'+cls+'"><div class="insight-card-label">'+i.label+'</div><div class="insight-card-text">'+i.text+'</div></div>'
-}).join('')+'</div>'}}
+}).join('')+'</div>';var reviewEl=document.getElementById('reviewContent');if(reviewEl){renderWeeklyReview();}}}
 function drawWeeklyChart(){const cv=document.getElementById('weeklyChart');const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;const w=cv.offsetWidth||300;const h=200;cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=dateStr(d);const count=state.habits.filter(h=>(h.checkoffs||[]).includes(ds)).length;days.push({label:['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][d.getDay()],count})}const max=Math.max(...days.map(d=>d.count),1);const bw=w/7*0.6;const gap=w/7*0.2;days.forEach((d,i)=>{const x=i*(w/7)+gap;const bh=(d.count/max)*(h-40);const grad=ctx.createLinearGradient(0,h-20-bh,0,h-20);grad.addColorStop(0,'#1a6fff');grad.addColorStop(1,'#00d4ff');ctx.fillStyle=grad;ctx.beginPath();roundRect(ctx,x,h-20-bh,bw,bh,4);ctx.fill();ctx.fillStyle='rgba(232,240,255,0.5)';ctx.font='11px sans-serif';ctx.textAlign='center';ctx.fillText(d.label,x+bw/2,h-6);ctx.fillStyle='rgba(232,240,255,0.8)';ctx.fillText(d.count,x+bw/2,h-26-bh)})}
 function drawDonutChart(){const cv=document.getElementById('donutChart');const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;const w=cv.offsetWidth||300;const h=200;cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const cats=getAllCategories();const catKeys=Object.keys(cats);const counts=catKeys.map(c=>state.goals.filter(g=>g.category===c).length);const total=counts.reduce((a,b)=>a+b,0);if(total===0){ctx.fillStyle='rgba(232,240,255,0.3)';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText('Нет данных',w/2,h/2);return}const cx=w/2,cy=h/2;const r=Math.min(w,h)/2-20;let angle=-Math.PI/2;catKeys.forEach((c,i)=>{if(counts[i]===0)return;const arc=(counts[i]/total)*Math.PI*2;ctx.beginPath();ctx.arc(cx,cy,r,angle,angle+arc);ctx.lineWidth=20;ctx.strokeStyle=cats[c].color;ctx.stroke();angle+=arc});ctx.fillStyle='rgba(232,240,255,0.9)';ctx.font='bold 24px sans-serif';ctx.textAlign='center';ctx.fillText(total,cx,cy-4);ctx.fillStyle='rgba(232,240,255,0.5)';ctx.font='11px sans-serif';ctx.fillText('целей',cx,cy+14)}
 function drawTrendChart(){const cv=document.getElementById('trendChart');const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;const w=cv.offsetWidth||300;const h=200;cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const days=30;const data=[];for(let i=days-1;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=dateStr(d);data.push(state.habits.filter(h=>(h.checkoffs||[]).includes(ds)).length)}const max=Math.max(...data,1);const pw=(w-20)/days;data.forEach((v,i)=>{const x=10+i*pw;const bh=(v/max)*(h-30);const grad=ctx.createLinearGradient(0,h-10-bh,0,h-10);grad.addColorStop(0,'#1a6fff');grad.addColorStop(1,'rgba(0,212,255,0.3)');ctx.fillStyle=grad;ctx.fillRect(x,h-10-bh,pw-1,bh)});ctx.fillStyle='rgba(232,240,255,0.3)';ctx.font='10px sans-serif';ctx.textAlign='center';ctx.fillText('30 дней назад',30,h-2);ctx.fillText('сегодня',w-30,h-2)}
@@ -1552,7 +1552,7 @@ state.tasks=[{id:uid(),title:'Купить продукты',done:false,date:tod
 saveData()}
 loadData();applySettings();initEvents();renderDashboard();startAutoSave();
 
-// === v5.1.0: Weekly Review + Data Sync ===
+// === v5.2.0: Weekly Review + Data Sync ===
 var DATA_SYNC_TOKEN='';
 var DATA_SYNC_REPO='korobovaelena00-cmd/goal-tracker';
 var DATA_SYNC_KEY='pupsai_github_token';
@@ -1675,7 +1675,7 @@ var we=weekEnd.getDate()+' '+months[weekEnd.getMonth()];
 var h='<div style="padding:16px">';
 h+='<div class="review-section">';
 h+='<div class="review-week-range">'+ws+' — '+we+'</div>';
-h+='<div style="font-size:12px;color:var(--text-secondary)">Недельное ревью</div>';
+h+='<div style="font-size:12px;color:var(--text-secondary);margin-top:8px">Недельное ревью</div>';
 h+='</div>';
 
 // Day score cards

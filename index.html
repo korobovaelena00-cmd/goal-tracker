@@ -465,7 +465,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .habit-card.shake{animation:shake 0.4s ease infinite}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
 
-/* === v5.2.3 Insight Cards === */
+/* === v5.2.4 Insight Cards === */
 .insight-list{display:flex;flex-direction:column;gap:8px}
 .insight-card{
   display:flex;flex-direction:column;gap:4px;
@@ -518,7 +518,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .insight-patterns .insight-card-label{color:#b794f4}
 
 
-/* === v5.2.3: Weekly Review + Sync Settings === */
+/* === v5.2.4: Weekly Review + Sync Settings === */
 .review-section{margin-bottom:20px}
 .review-section-title{font-size:13px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px}
 .review-week-range{font-size:18px;font-weight:700;color:var(--blue-bright);margin-bottom:4px}
@@ -1070,28 +1070,74 @@ function deleteHabitFromModal(){const id=document.getElementById('habitId').valu
 let _habitDragData=null;
 function initHabitDragHandle(el,habitId){
   var startX=0,startY=0,dragging=false,origEl=null;
-  function onStart(cx,cy){var card=el.closest('.habit-card');if(!card)return;origEl=card;startX=cx;startY=cy;dragging=false;}
+  var cardPositions=[];var cardWidth=0,cardHeight=0;var gap=8;
+  function recordPositions(){
+    var container=origEl.parentNode;
+    var cards=Array.from(container.querySelectorAll('.habit-card'));
+    cardPositions=[];
+    cards.forEach(function(c){
+      var r=c.getBoundingClientRect();
+      cardPositions.push({el:c,x:r.left,y:r.top,w:r.width,h:r.height,cx:r.left+r.width/2,cy:r.top+r.height/2});
+    });
+    if(cardPositions.length>1){gap=Math.max(0,cardPositions[1].y-(cardPositions[0].y+cardPositions[0].h))}
+    cardWidth=cardPositions[0]?cardPositions[0].w:200;
+    cardHeight=cardPositions[0]?cardPositions[0].h:80;
+  }
+  function onStart(cx,cy){
+    var card=el.closest('.habit-card');
+    if(!card)return;
+    origEl=card;startX=cx;startY=cy;dragging=false;
+    recordPositions();
+  }
   function onMove(cx,cy){
     if(!origEl)return;
     var dx=cx-startX,dy=cy-startY;
-    if(!dragging&&(Math.abs(dx)>8||Math.abs(dy)>8)){dragging=true;origEl.classList.add('dragging');haptic('light');}
-    if(dragging){
-      origEl.style.transform='translate('+dx+'px,'+dy+'px)';origEl.style.zIndex='100';origEl.style.opacity='0.8';
+    if(!dragging&&(Math.abs(dx)>8||Math.abs(dy)>8)){
+      dragging=true;
+      origEl.classList.add('dragging');
+      origEl.style.transition='none';
+      origEl.style.zIndex='100';
+      origEl.style.opacity='0.85';
+      haptic('light');
       var container=origEl.parentNode;
       var cards=Array.from(container.querySelectorAll('.habit-card'));
+      cards.forEach(function(c){
+        if(c!==origEl){c.style.transition='transform 0.25s cubic-bezier(0.2,0,0,1)'}
+      });
+    }
+    if(dragging){
+      origEl.style.transform='translate('+dx+'px,'+dy+'px)';
+      var origIdx=-1;
+      for(var i=0;i<cardPositions.length;i++){
+        if(cardPositions[i].el===origEl){origIdx=i;break}
+      }
+      if(origIdx<0)return;
       var origRect=origEl.getBoundingClientRect();
-      var origCx=origRect.left+origRect.width/2;
-      var origCy=origRect.top+origRect.height/2;
-      cards.forEach(function(c,idx){
-        if(c===origEl)return;
-        var r=c.getBoundingClientRect();
-        var cCx=r.left+r.width/2;
-        var cCy=r.top+r.height/2;
-        if(cCx<=origCx+2&&cCy<=origCy+2){c.style.transform='translate('+origRect.width+'px,0)'}
-        else if(cCx>=origCx-2&&cCy>=origCy-2){c.style.transform='translate('+(-origRect.width)+'px,0)'}
-        else if(cCy<origCy){c.style.transform='translate(0,'+origRect.height+'px)'}
-        else if(cCy>origCy){c.style.transform='translate(0,'+(-origRect.height)+'px)'}
-        else{c.style.transform=''}
+      var dragCx=origRect.left+origRect.width/2;
+      var dragCy=origRect.top+origRect.height/2;
+      var targetIdx=origIdx;
+      for(var i=0;i<cardPositions.length;i++){
+        if(i===origIdx)continue;
+        var cp=cardPositions[i];
+        if(dragCx>=cp.x&&dragCx<=cp.x+cp.w&&dragCy>=cp.y&&dragCy<=cp.y+cp.h){targetIdx=i;break}
+      }
+      cardPositions.forEach(function(cp,i){
+        if(i===origIdx)return;
+        if(targetIdx===origIdx){
+          cp.el.style.transform='';
+        }else if(targetIdx>origIdx){
+          if(i>origIdx&&i<=targetIdx){
+            cp.el.style.transform='translate(0,'+(-(cardHeight+gap))+'px)';
+          }else{
+            cp.el.style.transform='';
+          }
+        }else{
+          if(i<origIdx&&i>=targetIdx){
+            cp.el.style.transform='translate(0,'+(cardHeight+gap)+'px)';
+          }else{
+            cp.el.style.transform='';
+          }
+        }
       });
     }
   }
@@ -1100,16 +1146,19 @@ function initHabitDragHandle(el,habitId){
     if(dragging){
       var container=origEl.parentNode;
       var cards=Array.from(container.querySelectorAll('.habit-card'));
-      cards.forEach(function(c){c.style.transform='';c.style.zIndex='';c.style.opacity='';c.classList.remove('dragging')});
       var origId=origEl.dataset.habitId;
       var origRect=origEl.getBoundingClientRect();
-      var origCx=origRect.left+origRect.width/2;
-      var origCy=origRect.top+origRect.height/2;
+      var dragCx=origRect.left+origRect.width/2;
+      var dragCy=origRect.top+origRect.height/2;
       var targetEl=null;
       cards.forEach(function(c){
         if(c===origEl)return;
         var r=c.getBoundingClientRect();
-        if(r.left<=origCx&&r.right>=origCx&&r.top<=origCy&&r.bottom>=origCy)targetEl=c;
+        if(dragCx>=r.left&&dragCx<=r.right&&dragCy>=r.top&&dragCy<=r.bottom)targetEl=c;
+      });
+      cards.forEach(function(c){
+        c.style.transform='';c.style.transition='';c.style.zIndex='';c.style.opacity='';
+        c.classList.remove('dragging');
       });
       if(targetEl){reorderHabit(targetEl.dataset.habitId,origId)}else{renderHabits()}
     }

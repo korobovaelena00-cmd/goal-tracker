@@ -465,7 +465,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .habit-card.shake{animation:shake 0.4s ease infinite}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
 
-/* === v5.2.4 Insight Cards === */
+/* === v5.2.5 Insight Cards === */
 .insight-list{display:flex;flex-direction:column;gap:8px}
 .insight-card{
   display:flex;flex-direction:column;gap:4px;
@@ -518,7 +518,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .insight-patterns .insight-card-label{color:#b794f4}
 
 
-/* === v5.2.4: Weekly Review + Sync Settings === */
+/* === v5.2.5: Weekly Review + Sync Settings === */
 .review-section{margin-bottom:20px}
 .review-section-title{font-size:13px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px}
 .review-week-range{font-size:18px;font-weight:700;color:var(--blue-bright);margin-bottom:4px}
@@ -614,7 +614,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.2.4</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.2.5</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -1028,7 +1028,7 @@ const expandedId=window._expandedHabit||null;
 list.innerHTML+='<div class="habits-grid" id="habitsGridContainer" ondragover="event.preventDefault()" ondrop="event.preventDefault();var t=event.target.closest(\'.habit-card\');if(t)reorderHabit(t.dataset.habitId,event.dataTransfer.getData(\'text/plain\'))">'+filtered.map(h=>{
 const isExpanded=h.id===expandedId;
 const streak=calcHabitStreak(h);const total=(h.checkoffs||[]).length;const wc=calcWeeklyCount(h);const cat=cats[h.category]||cats.health;const days=h.daysOfWeek||[1,2,3,4,5,6,0];const dayLabels=[...days].sort((a,b)=>{const o=[1,2,3,4,5,6,0];return o.indexOf(a)-o.indexOf(b)}).map(d=>DOW_NAMES[d]).join(', ');const tpw=days.length;
-return'<div class="habit-card stagger '+(isExpanded?'expanded':'compact')+' '+(habitReorderMode?'shake-mode':'')+'" data-habit-id="'+h.id+'" onclick="'+(isExpanded?'':'window._expandedHabit=\''+h.id+'\';renderHabits();scrollHabitCenter(h.id)')+'" data-habit-id="'+h.id+'"><div class="habit-card-header"><div class="habit-info"><span class="cat-dot" style="background:'+cat.color+'"></span><div><div class="habit-name" onclick="event.stopPropagation();onHabitNameClick(\''+h.id+'\')" style="cursor:pointer">'+escapeHtml(h.title)+'</div>'+(streak>0?'<div class="habit-streak">серия '+streak+' дн.</div>':'')+'</div></div>'+(isExpanded?'<div class="habit-drag-handle" id="dh_'+h.id+'" draggable="true" ondragstart="event.dataTransfer.setData(\'text/plain\','+h.id+')" ondragend="this.style.opacity=\'\'"><span></span><span></span><span></span></div><div class="goal-actions">'+(habitReorderMode?'<button class="goal-action-btn" onclick="event.stopPropagation();moveHabit(\''+h.id+'\',-1)" title="Up"><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\'><path d=\'M18 15l-6-6-6 6\'/></svg></button><button class="goal-action-btn" onclick="event.stopPropagation();moveHabit(\''+h.id+'\',1)" title="Down"><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\'><path d=\'M6 9l6 6 6-6\'/></svg></button>':'')+'<button class="goal-action-btn" onclick="event.stopPropagation();window._expandedHabit=null;renderHabits()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg></button></div>':'<div class="habit-drag-handle" id="dh_'+h.id+'" draggable="true" ondragstart="event.dataTransfer.setData(\'text/plain\','+h.id+')" ondragend="this.style.opacity=\'\'"><span></span><span></span><span></span></div>')+(habitReorderMode?'<div class="goal-actions"><button class="goal-action-btn" onclick="event.stopPropagation();moveHabit(\''+h.id+'\',-1)"><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\'><path d=\'M18 15l-6-6-6 6\'/></svg></button><button class="goal-action-btn" onclick="event.stopPropagation();moveHabit(\''+h.id+'\',1)"><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\'><path d=\'M6 9l6 6 6-6\'/></svg></button></div>':'')+'</div><div class="habit-calendar-wrapper">'+renderHabitCalendar(h)+'</div><div class="habit-target">'+(isExpanded?'Расписание: '+dayLabels+'<br>Отметок: '+wc+'/'+(days.length||7)+' — всего '+total+'. Для корректировки нажмите на день в календаре.':'Отметок: '+wc+'/'+(days.length||7)+' за неделю')+'</div></div>'}).join('')+'</div>';
+return'<div class="habit-card stagger '+(isExpanded?'expanded':'compact')+' '+(habitReorderMode?'shake-mode':'')+'" data-habit-id="'+h.id+'" onclick="'+(isExpanded?'':'window._expandedHabit=\''+h.id+'\';renderHabits();scrollHabitCenter(h.id)')+'" data-habit-id="'+h.id+'"><div class="habit-card-header"><div class="habit-info"><span class="cat-dot" style="background:'+cat.color+'"></span><div><div class="habit-name" onclick="event.stopPropagation();onHabitNameClick(\''+h.id+'\')" style="cursor:pointer">'+escapeHtml(h.title)+'</div>'+(streak>0?'<div class="habit-streak">серия '+streak+' дн.</div>':'')+'</div></div>'+(isExpanded?'<div class="habit-drag-handle" id="dh_'+h.id+'" ><span></span><span></span><span></span></div><div class="goal-actions">'+(habitReorderMode?'<button class="goal-action-btn" onclick="event.stopPropagation();moveHabit(\''+h.id+'\',-1)" title="Up"><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\'><path d=\'M18 15l-6-6-6 6\'/></svg></button><button class="goal-action-btn" onclick="event.stopPropagation();moveHabit(\''+h.id+'\',1)" title="Down"><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\'><path d=\'M6 9l6 6 6-6\'/></svg></button>':'')+'<button class="goal-action-btn" onclick="event.stopPropagation();window._expandedHabit=null;renderHabits()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg></button></div>':'<div class="habit-drag-handle" id="dh_'+h.id+'" ><span></span><span></span><span></span></div>')+(habitReorderMode?'<div class="goal-actions"><button class="goal-action-btn" onclick="event.stopPropagation();moveHabit(\''+h.id+'\',-1)"><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\'><path d=\'M18 15l-6-6-6 6\'/></svg></button><button class="goal-action-btn" onclick="event.stopPropagation();moveHabit(\''+h.id+'\',1)"><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\'><path d=\'M6 9l6 6 6-6\'/></svg></button></div>':'')+'</div><div class="habit-calendar-wrapper">'+renderHabitCalendar(h)+'</div><div class="habit-target">'+(isExpanded?'Расписание: '+dayLabels+'<br>Отметок: '+wc+'/'+(days.length||7)+' — всего '+total+'. Для корректировки нажмите на день в календаре.':'Отметок: '+wc+'/'+(days.length||7)+' за неделю')+'</div></div>'}).join('')+'</div>';
 var dhs=document.querySelectorAll('.habit-drag-handle');dhs.forEach(function(dh){var id=dh.id.replace('dh_','');if(id)initHabitDragHandle(dh,id)});
 }
 function renderHabitCalendar(h){
@@ -1069,105 +1069,113 @@ function onHabitNameClick(id){if(window._expandedHabit===id){editHabit(id)}else{
 function deleteHabitFromModal(){const id=document.getElementById('habitId').value;if(!id)return;showConfirm('Удалить привычку?',()=>{state.habits=state.habits.filter(h=>h.id!==id);saveData();closeHabitModal();renderHabits();showToast('Привычка удалена');haptic('warning')})}
 let _habitDragData=null;
 function initHabitDragHandle(el,habitId){
-  var startX=0,startY=0,dragging=false,origEl=null;
-  var cardPositions=[];var cardWidth=0,cardHeight=0;var gap=8;
-  function recordPositions(){
-    var container=origEl.parentNode;
-    var cards=Array.from(container.querySelectorAll('.habit-card'));
-    cardPositions=[];
-    cards.forEach(function(c){
-      var r=c.getBoundingClientRect();
-      cardPositions.push({el:c,x:r.left,y:r.top,w:r.width,h:r.height,cx:r.left+r.width/2,cy:r.top+r.height/2});
-    });
-    if(cardPositions.length>1){gap=Math.max(0,cardPositions[1].y-(cardPositions[0].y+cardPositions[0].h))}
-    cardWidth=cardPositions[0]?cardPositions[0].w:200;
-    cardHeight=cardPositions[0]?cardPositions[0].h:80;
-  }
-  function onStart(cx,cy){
-    var card=el.closest('.habit-card');
-    if(!card)return;
-    origEl=card;startX=cx;startY=cy;dragging=false;
-    recordPositions();
-  }
-  function onMove(cx,cy){
-    if(!origEl)return;
-    var dx=cx-startX,dy=cy-startY;
-    if(!dragging&&(Math.abs(dx)>8||Math.abs(dy)>8)){
-      dragging=true;
-      origEl.classList.add('dragging');
-      origEl.style.transition='none';
-      origEl.style.zIndex='100';
-      origEl.style.opacity='0.85';
-      haptic('light');
-      var container=origEl.parentNode;
-      var cards=Array.from(container.querySelectorAll('.habit-card'));
-      cards.forEach(function(c){
-        if(c!==origEl){c.style.transition='transform 0.25s cubic-bezier(0.2,0,0,1)'}
-      });
-    }
-    if(dragging){
-      origEl.style.transform='translate('+dx+'px,'+dy+'px)';
-      var origIdx=-1;
-      for(var i=0;i<cardPositions.length;i++){
-        if(cardPositions[i].el===origEl){origIdx=i;break}
-      }
-      if(origIdx<0)return;
-      var origRect=origEl.getBoundingClientRect();
-      var dragCx=origRect.left+origRect.width/2;
-      var dragCy=origRect.top+origRect.height/2;
-      var targetIdx=origIdx;
-      for(var i=0;i<cardPositions.length;i++){
-        if(i===origIdx)continue;
-        var cp=cardPositions[i];
-        if(dragCx>=cp.x&&dragCx<=cp.x+cp.w&&dragCy>=cp.y&&dragCy<=cp.y+cp.h){targetIdx=i;break}
-      }
-      cardPositions.forEach(function(cp,i){
-        if(i===origIdx)return;
-        if(targetIdx===origIdx){
-          cp.el.style.transform='';
-        }else if(targetIdx>origIdx){
-          if(i>origIdx&&i<=targetIdx){
-            cp.el.style.transform='translate(0,'+(-(cardHeight+gap))+'px)';
-          }else{
-            cp.el.style.transform='';
-          }
-        }else{
-          if(i<origIdx&&i>=targetIdx){
-            cp.el.style.transform='translate(0,'+(cardHeight+gap)+'px)';
-          }else{
-            cp.el.style.transform='';
-          }
-        }
-      });
-    }
-  }
-  function onEnd(){
-    if(!origEl)return;
-    if(dragging){
-      var container=origEl.parentNode;
-      var cards=Array.from(container.querySelectorAll('.habit-card'));
-      var origId=origEl.dataset.habitId;
-      var origRect=origEl.getBoundingClientRect();
-      var dragCx=origRect.left+origRect.width/2;
-      var dragCy=origRect.top+origRect.height/2;
-      var targetEl=null;
-      cards.forEach(function(c){
-        if(c===origEl)return;
-        var r=c.getBoundingClientRect();
-        if(dragCx>=r.left&&dragCx<=r.right&&dragCy>=r.top&&dragCy<=r.bottom)targetEl=c;
-      });
-      cards.forEach(function(c){
-        c.style.transform='';c.style.transition='';c.style.zIndex='';c.style.opacity='';
-        c.classList.remove('dragging');
-      });
-      if(targetEl){reorderHabit(targetEl.dataset.habitId,origId)}else{renderHabits()}
-    }
-    origEl=null;dragging=false;
-  }
-  el.addEventListener('touchstart',function(e){onStart(e.touches[0].clientX,e.touches[0].clientY)},{passive:true});
-  el.addEventListener('touchmove',function(e){onMove(e.touches[0].clientX,e.touches[0].clientY);e.preventDefault()},{passive:false});
-  el.addEventListener('touchend',function(e){onEnd()});
-  el.addEventListener('mousedown',function(e){onStart(e.clientX,e.clientY);function mm(ev){onMove(ev.clientX,ev.clientY)}function mu(){onEnd();document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu)}document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu)});
+var dragCard=null;var startX=0,startY=0;var dragging=false;
+var slots=[];var colW=0,rowH=0,gapX=8,gapY=10;
+function recordSlots(){
+var container=dragCard.parentNode;
+var cards=Array.from(container.querySelectorAll('.habit-card'));
+slots=[];
+cards.forEach(function(c,i){
+var r=c.getBoundingClientRect();
+slots.push({el:c,idx:i,x:r.left,y:r.top,w:r.width,h:r.height});
+});
+if(slots.length>=2){
+colW=slots[0].w;
+gapX=Math.max(0,slots[1].x-(slots[0].x+slots[0].w));
+if(slots.length>=3){
+gapY=Math.max(0,slots[2].y-(slots[0].y+slots[0].h));
+}
+rowH=slots[0].h;
+}
+}
+function findSlot(cx,cy){
+for(var i=0;i<slots.length;i++){
+var s=slots[i];
+if(cx>=s.x&&cx<=s.x+s.w&&cy>=s.y&&cy<=s.y+s.h)return i;
+}
+return-1;
+}
+function applyShifts(src,tgt){
+slots.forEach(function(slot,i){
+if(slot.el===dragCard)return;
+var ni=i;
+if(tgt<0||tgt===src){ni=i}
+else if(src<tgt){if(i>src&&i<=tgt)ni=i-1;else ni=i}
+else{if(i>=tgt&&i<src)ni=i+1;else ni=i}
+var oc=i%2,or_=Math.floor(i/2);
+var nc=ni%2,nr_=Math.floor(ni/2);
+var dx=(nc-oc)*(colW+gapX);
+var dy=(nr_-or_)*(rowH+gapY);
+slot.el.style.transform=(dx!==0||dy!==0)?'translate('+dx+'px,'+dy+'px)':'';
+});
+}
+function onStart(cx,cy){
+var card=el.closest('.habit-card');
+if(!card)return;
+dragCard=card;startX=cx;startY=cy;dragging=false;
+recordSlots();
+}
+function onMove(cx,cy){
+if(!dragCard)return;
+var dx=cx-startX,dy=cy-startY;
+if(!dragging&&(Math.abs(dx)>8||Math.abs(dy)>8)){
+dragging=true;
+dragCard.classList.add('dragging');
+dragCard.style.transition='none';
+dragCard.style.zIndex='100';
+dragCard.style.opacity='0.85';
+haptic('light');
+slots.forEach(function(s){
+if(s.el!==dragCard){s.el.style.transition='transform 0.2s ease'}
+});
+}
+if(dragging){
+dragCard.style.transform='translate('+dx+'px,'+dy+'px)';
+var oi=-1,os=null;
+for(var i=0;i<slots.length;i++){
+if(slots[i].el===dragCard){oi=i;os=slots[i];break}
+}
+if(!os)return;
+var dcx=os.x+os.w/2+dx;
+var dcy=os.y+os.h/2+dy;
+var ti=findSlot(dcx,dcy);
+if(ti<0)ti=oi;
+applyShifts(oi,ti);
+}
+}
+function onEnd(){
+if(!dragCard)return;
+if(dragging){
+var oi=-1,os=null;
+for(var i=0;i<slots.length;i++){
+if(slots[i].el===dragCard){oi=i;os=slots[i];break}
+}
+var ti=oi;
+if(os){
+var m=dragCard.style.transform.match(/translate\(([-\d.]+)px,\s*([-\d.]+)px\)/);
+var dx=m?parseFloat(m[1]):0;
+var dy=m?parseFloat(m[2]):0;
+var dcx=os.x+os.w/2+dx;
+var dcy=os.y+os.h/2+dy;
+ti=findSlot(dcx,dcy);
+if(ti<0)ti=oi;
+}
+slots.forEach(function(s){
+s.el.style.transform='';s.el.style.transition='';s.el.style.zIndex='';s.el.style.opacity='';
+s.el.classList.remove('dragging');
+});
+if(ti!==oi&&ti>=0){
+var srcId=dragCard.dataset.habitId;
+var tgtId=slots[ti].el.dataset.habitId;
+reorderHabit(tgtId,srcId);
+}else{renderHabits()}
+}
+dragCard=null;dragging=false;
+}
+el.addEventListener('touchstart',function(e){onStart(e.touches[0].clientX,e.touches[0].clientY)},{passive:true});
+el.addEventListener('touchmove',function(e){onMove(e.touches[0].clientX,e.touches[0].clientY);e.preventDefault()},{passive:false});
+el.addEventListener('touchend',function(){onEnd()});
+el.addEventListener('mousedown',function(e){onStart(e.clientX,e.clientY);function mm(ev){onMove(ev.clientX,ev.clientY)}function mu(){onEnd();document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu)}document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu)});
 }
 function reorderHabit(targetId,sourceId){if(targetId===sourceId)return;const srcIdx=state.habits.findIndex(h=>h.id===sourceId);const tgtIdx=state.habits.findIndex(h=>h.id===targetId);if(srcIdx<0||tgtIdx<0)return;const[moved]=state.habits.splice(srcIdx,1);state.habits.splice(tgtIdx,0,moved);saveData();renderHabits();renderDashboard();haptic('success')}
 
@@ -1603,7 +1611,7 @@ state.tasks=[{id:uid(),title:'Купить продукты',done:false,date:tod
 saveData()}
 loadData();applySettings();initEvents();renderDashboard();startAutoSave();
 
-// === v5.2.4: Weekly Review + Data Sync ===
+// === v5.2.5: Weekly Review + Data Sync ===
 var DATA_SYNC_TOKEN='';
 var DATA_SYNC_REPO='korobovaelena00-cmd/goal-tracker';
 var DATA_SYNC_KEY='pupsai_github_token';

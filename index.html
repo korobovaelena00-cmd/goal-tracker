@@ -180,9 +180,9 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .stat-card .lbl{font-size:11px;color:var(--text-secondary);margin-top:2px}
 .category-bars{display:flex;flex-direction:column;gap:10px}
 .cat-bar-row{display:flex;align-items:center;gap:10px}
-.cat-bar-label{font-size:13px;width:80px;display:flex;align-items:center;gap:6px;flex-shrink:0}
+.cat-bar-label{font-size:13px;width:140px;display:flex;align-items:center;gap:6px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cat-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.cat-bar-track{flex:1;height:8px;background:var(--bg-elevated);border-radius:4px;overflow:hidden}
+.cat-bar-track{flex:0 1 120px;height:8px;background:var(--bg-elevated);border-radius:4px;overflow:hidden}
 .cat-bar-fill{height:100%;border-radius:4px;transition:width 0.6s ease}
 .cat-bar-pct{font-size:12px;color:var(--text-secondary);width:36px;text-align:right;flex-shrink:0}
 
@@ -619,7 +619,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.5.0</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.5.2</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -1287,7 +1287,7 @@ function reorderHabit(targetId,sourceId){if(targetId===sourceId)return;const src
 function renderAnalytics(){const goals=state.goals;const cats=getAllCategories();
 // [7] Removed: weekly chart, stat squares, tasks card — only goals progress + year heatmap remain
 const gp=document.getElementById('anGoalsProgress');
-gp.innerHTML=goals.length===0?'<div style="text-align:center;color:var(--text-muted);padding:12px">Нет целей</div>':goals.map(g=>{const cat=cats[g.category]||{color:'#2e8bff',label:''};const prog=calcGoalProgress(g);return'<div class="cat-bar-row"><div class="cat-bar-label"><span class="cat-dot" style="background:'+cat.color+'"></span>'+escapeHtml(g.title).slice(0,20)+'</div><div class="cat-bar-track"><div class="cat-bar-fill" style="width:'+prog+'%;background:'+cat.color+'"></div></div><div class="cat-bar-pct">'+prog+'%</div></div>'}).join('');
+gp.innerHTML=goals.length===0?'<div style="text-align:center;color:var(--text-muted);padding:12px">Нет целей</div>':goals.map(g=>{const cat=cats[g.category]||{color:'#2e8bff',label:''};const prog=calcGoalProgress(g);return'<div class="cat-bar-row"><div class="cat-bar-label"><span class="cat-dot" style="background:'+cat.color+'"></span>'+escapeHtml(g.title)+'</div><div class="cat-bar-track"><div class="cat-bar-fill" style="width:'+prog+'%;background:'+cat.color+'"></div></div><div class="cat-bar-pct">'+prog+'%</div></div>'}).join('');
 renderYearHeatmap();
 var ins=generateInsights();var insEl=document.getElementById("anInsights");if(insEl){
 var labelMap={'Тренд':'trend','Скор':'score','Паттерны':'patterns','Привычки':'habits','Сравнение':'compare','Категории':'categories','Серии':'streak','Риск серии':'risk','Цели':'goals','Прогноз':'forecast','Дедлайны':'deadlines','Задачи':'tasks','Баланс':'balance','Возврат':'return','Достижения':'achievements','Начало':'start'};

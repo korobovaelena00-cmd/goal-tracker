@@ -614,7 +614,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.2.10</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.2.11</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -1664,10 +1664,10 @@ if((h.checkoffs||[]).includes(ds))done++;
 }
 }
 if(scheduled>0){
-stats.push({title:h.title,done:done,scheduled:scheduled,rate:Math.round(done/scheduled*100),color:(cats[h.category]||{color:'#2e8bff'}).color});
+stats.push({title:h.title,done:done,scheduled:scheduled,rate:Math.round(done/scheduled*100),color:(cats[h.category]||{color:'#2e8bff'}).color,catName:(cats[h.category]||{name:''}).name});
 }
 });
-return stats.sort(function(a,b){return b.rate-a.rate});
+return stats.sort(function(a,b){var ca=(a.catName||''),cb=(b.catName||'');if(ca!==cb)return ca<cb?-1:ca>cb?1:0;return b.rate-a.rate});
 }
 function calcWeekTaskStats(weekStart){
 var weekEnd=getReviewWeekEnd(weekStart);
@@ -1772,12 +1772,14 @@ if(habitStats.length>0){
 h+='<div class="review-section">';
 h+='<div class="review-section-title">Привычки</div>';
 h+='<div class="review-habit-list">';
-habitStats.forEach(function(hb){
+var lastCat='';habitStats.forEach(function(hb){
 var rateColor=hb.rate>=75?'var(--blue-bright)':(hb.rate>=50?'#fbbf24':'#f87171');
+var catName=hb.catName||'';
+if(catName!==lastCat){lastCat=catName;h+='<div style="display:flex;align-items:center;gap:6px;margin:10px 0 4px;font-size:12px;color:var(--text-muted);"><span style="width:8px;height:8px;border-radius:50%;background:'+(hb.color||'#2e8bff')+'"></span>'+escapeHtml(catName)+'</div>';}
 h+='<div class="review-habit-row">';
 h+='<span class="rhr-name">'+escapeHtml(hb.title)+'</span>';
 h+='<div class="rhr-bar"><div class="rhr-bar-fill" style="width:'+hb.rate+'%;background:'+(hb.color||rateColor)+'"></div></div>';
-h+='<span class="rhr-stat" style="color:'+rateColor+'">'+hb.done+'/'+hb.scheduled+'</span>';
+h+='<span class="rhr-stat" style="color:'+(hb.color||rateColor)+'">'+hb.done+'/'+hb.scheduled+'</span>';
 h+='</div>';
 });
 h+='</div>';

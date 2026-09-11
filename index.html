@@ -470,7 +470,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .habit-card.shake{animation:shake 0.4s ease infinite}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
 
-/* === v5.3.0 Insight Cards === */
+/* === v5.3.1 Insight Cards === */
 .insight-list{display:flex;flex-direction:column;gap:8px}
 .insight-card{
   display:flex;flex-direction:column;gap:4px;
@@ -991,7 +991,104 @@ function renderPrioSelector(){document.getElementById('goalPrioSelector').innerH
 function addSubtaskEdit(){const inp=document.getElementById('subtaskInput');const t=inp.value.trim();if(!t)return;editingSubtasks.push({id:uid(),text:t,done:false,dueDate:null});inp.value='';renderSubtaskEditList()}
 function renderSubtaskEditList(){document.getElementById('subtaskEditList').innerHTML=editingSubtasks.map((s,i)=>'<div class="subtask-edit-item">'+(!s.dueDate?'<div class="subtask-drag-handle" data-idx="'+i+'"><span></span><span></span><span></span></div>':'<div style="width:20px;flex-shrink:0"></div>')+'<div class="subtask-check '+(s.done?'done':'')+'" onclick="editingSubtasks['+i+'].done=!editingSubtasks['+i+'].done;renderSubtaskEditList()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><input type="text" class="form-input" style="flex:1;padding:4px 8px;font-size:13px" value="'+escapeHtml(s.text)+'" onchange="editingSubtasks['+i+'].text=this.value"><input type="date" class="form-input" style="width:auto;padding:4px 8px;font-size:12px" value="'+(s.dueDate||'')+'" onchange="editingSubtasks['+i+'].dueDate=this.value"><button onclick="editingSubtasks.splice('+i+',1);renderSubtaskEditList()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div>').join('');initSubtaskDragHandles()}
 function initSubtaskDragHandles(){document.querySelectorAll('.subtask-drag-handle').forEach(function(h){var idx=parseInt(h.dataset.idx);initSubtaskDragHandle(h,idx)})}
-function initSubtaskDragHandle(el,idx){var startY=0,dragging=false,dragItem=null,dragH=0;function onStart(e){e.preventDefault();e.stopPropagation();dragging=true;var pt=e.touches?e.touches[0]:e;startY=pt.clientY;dragItem=el.closest('.subtask-edit-item');dragH=dragItem.offsetHeight;dragItem.style.zIndex='100';dragItem.style.position='relative';dragItem.classList.add('subtask-dragging');document.addEventListener('mousemove',onMove);document.addEventListener('touchmove',onMove,{passive:false});document.addEventListener('mouseup',onEnd);document.addEventListener('touchend',onEnd)}function onMove(e){if(!dragging)return;e.preventDefault();var pt=e.touches?e.touches[0]:e;var dy=pt.clientY-startY;dragItem.style.transform='translateY('+dy+'px)'}function onEnd(){if(!dragging)return;dragging=false;document.removeEventListener('mousemove',onMove);document.removeEventListener('touchmove',onMove,{passive:false});document.removeEventListener('mouseup',onEnd);document.removeEventListener('touchend',onEnd);var items=Array.from(dragItem.parentNode.querySelectorAll('.subtask-edit-item'));var dragRect=dragItem.getBoundingClientRect();var dragCenter=dragRect.top+dragRect.height/2;var newIdx=idx;for(var i=0;i<items.length;i++){if(items[i]===dragItem)continue;var r=items[i].getBoundingClientRect();var itemCenter=r.top+r.height/2;if(i<idx&&dragCenter<itemCenter){newIdx=i;break}if(i>idx&&dragCenter>itemCenter)newIdx=i}if(newIdx!==idx){var item=editingSubtasks.splice(idx,1)[0];editingSubtasks.splice(newIdx,0,item)}dragItem.style.transform='';dragItem.style.zIndex='';dragItem.style.position='';dragItem.classList.remove('subtask-dragging');renderSubtaskEditList()}el.addEventListener('mousedown',onStart);el.addEventListener('touchstart',onStart,{passive:false})}
+function initSubtaskDragHandle(el,idx){
+var startY=0,dragging=false,dragItem=null;
+var slots=[];
+function recordSlots(){
+var container=dragItem.parentNode;
+var items=Array.from(container.querySelectorAll('.subtask-edit-item'));
+slots=[];
+items.forEach(function(c,i){
+var r=c.getBoundingClientRect();
+slots.push({el:c,idx:i,x:r.left,y:r.top,w:r.width,h:r.height});
+});
+}
+function findSlot(cy){
+for(var i=0;i<slots.length;i++){
+var s=slots[i];
+if(cy>=s.y&&cy<=s.y+s.h)return i;
+}
+return-1;
+}
+function applyShifts(src,tgt){
+slots.forEach(function(slot,i){
+if(slot.el===dragItem)return;
+var ni=i;
+if(tgt<0||tgt===src){ni=i}
+else if(src<tgt){if(i>src&&i<=tgt)ni=i-1;else ni=i}
+else{if(i>=tgt&&i<src)ni=i+1;else ni=i}
+var dy=(ni-i)*slot.h;
+slot.el.style.transform=dy!==0?'translateY('+dy+'px)':'';
+});
+}
+function onStart(e){
+e.preventDefault();e.stopPropagation();
+var pt=e.touches?e.touches[0]:e;
+startY=pt.clientY;
+dragItem=el.closest('.subtask-edit-item');
+if(!dragItem)return;
+recordSlots();
+}
+function onMove(e){
+if(!dragItem)return;
+e.preventDefault();
+var pt=e.touches?e.touches[0]:e;
+var dy=pt.clientY-startY;
+if(!dragging&&(Math.abs(dy)>8)){
+dragging=true;
+dragItem.classList.add('subtask-dragging');
+dragItem.style.transition='none';
+dragItem.style.zIndex='100';
+dragItem.style.opacity='0.85';
+slots.forEach(function(s){
+if(s.el!==dragItem){s.el.style.transition='transform 0.2s ease'}
+});
+}
+if(dragging){
+dragItem.style.transform='translateY('+dy+'px)';
+var os=null;
+for(var i=0;i<slots.length;i++){
+if(slots[i].el===dragItem){os=slots[i];break}
+}
+if(!os)return;
+var dcy=os.y+os.h/2+dy;
+var ti=findSlot(dcy);
+if(ti<0)ti=slots.indexOf(os);
+applyShifts(slots.indexOf(os),ti);
+}
+}
+function onEnd(){
+if(!dragItem)return;
+if(dragging){
+var os=null;
+for(var i=0;i<slots.length;i++){
+if(slots[i].el===dragItem){os=slots[i];break}
+}
+var ti=slots.indexOf(os);
+if(os){
+var m=dragItem.style.transform.match(/translateY\(([-\d.]+)px\)/);
+var dy=m?parseFloat(m[1]):0;
+var dcy=os.y+os.h/2+dy;
+ti=findSlot(dcy);
+if(ti<0)ti=slots.indexOf(os);
+}
+slots.forEach(function(s){
+s.el.style.transform='';s.el.style.transition='';s.el.style.zIndex='';s.el.style.opacity='';
+s.el.classList.remove('subtask-dragging');
+});
+if(ti!==slots.indexOf(os)&&ti>=0){
+var item=editingSubtasks.splice(idx,1)[0];
+editingSubtasks.splice(ti,0,item);
+}
+renderSubtaskEditList();
+}
+dragItem=null;dragging=false;
+}
+el.addEventListener('touchstart',function(e){onStart(e)},{passive:false});
+el.addEventListener('touchmove',function(e){onMove(e)},{passive:false});
+el.addEventListener('touchend',function(){onEnd()});
+el.addEventListener('mousedown',function(e){onStart(e);function mm(ev){onMove(ev)}function mu(){onEnd();document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu)}document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu)});
+}
 function moveSubtask(idx,dir){const ni=idx+dir;if(ni<0||ni>=editingSubtasks.length)return;const tmp=editingSubtasks[idx];editingSubtasks[idx]=editingSubtasks[ni];editingSubtasks[ni]=tmp;renderSubtaskEditList()}
 function saveGoal(){const id=document.getElementById('goalId').value;const title=document.getElementById('goalTitle').value.trim();if(!title){showToast('Введите название цели',true);return}const desc=document.getElementById('goalDesc').value.trim();const date=document.getElementById('goalDate').value;editingSubtasks.sort((a,b)=>{if(a.dueDate&&b.dueDate)return a.dueDate.localeCompare(b.dueDate);if(a.dueDate)return-1;if(b.dueDate)return 1;return 0});if(id){const g=state.goals.find(x=>x.id===id);if(g){g.title=title;g.description=desc;g.targetDate=date;g.category=editingGoalCat;g.priority=editingGoalPrio;g.subtasks=editingSubtasks;g.progress=calcGoalProgress({subtasks:editingSubtasks});if(g.progress>=100&&!g.completedAt)g.completedAt=new Date().toISOString();else if(g.progress<100)g.completedAt=null;g.updatedAt=new Date().toISOString()}showToast('Цель обновлена')}else{state.goals.push({id:uid(),title,description:desc,category:editingGoalCat,priority:editingGoalPrio,targetDate:date,progress:calcGoalProgress({subtasks:editingSubtasks}),subtasks:editingSubtasks,createdAt:new Date().toISOString()});showToast('Цель добавлена')}saveData();closeGoalModal();renderGoals();haptic('success')}
 function editGoal(id){openGoalModal(id)}

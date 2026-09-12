@@ -619,7 +619,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.5.7</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.5.8</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -714,7 +714,7 @@ const ACHIEVEMENTS=[
 {id:'ten_goals',name:'Десять целей',desc:'Создать 10 целей',svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',check:function(s){return s.goals.length>=10}}
 ]
 
-let state={version:5.23,goals:[],habits:[],tasks:[],customCategories:[],settings:{theme:'dark',lang:'ru',healthSynced:false,healthData:null},dailyScores:{},chatTopics:[{'id':'general','name':'Общее'}],chatHistory:{'general':[{role:'system',text:'Привет! Я твой агент. Спроси меня о целях, привычках, или попроси рекомендации.',ts:Date.now()}]},activeTopic:'general',lastModified:0};
+let state={version:5.558,goals:[],habits:[],tasks:[],customCategories:[],settings:{theme:'dark',lang:'ru',healthSynced:false,healthData:null},dailyScores:{},chatTopics:[{'id':'general','name':'Общее'}],chatHistory:{'general':[{role:'system',text:'Привет! Я твой агент. Спроси меня о целях, привычках, или попроси рекомендации.',ts:Date.now()}]},activeTopic:'general',lastModified:0};
 let currentView='dashboard';
 let goalFilter='active';
 let habitFilter='active';
@@ -1930,7 +1930,14 @@ el.innerHTML=h;
 
 // === Data Sync to GitHub ===
 function loadSyncToken(){
-try{DATA_SYNC_TOKEN=localStorage.getItem(DATA_SYNC_KEY)||''}catch(e){DATA_SYNC_TOKEN=''}
+try{DATA_SYNC_TOKEN=localStorage.getItem(DATA_SYNC_KEY)||''}catch(e){console.warn('localStorage error:',e);DATA_SYNC_TOKEN=''}
+var inp=document.getElementById('syncTokenInput');
+if(inp){inp.value=DATA_SYNC_TOKEN}
+var ss=document.getElementById('syncStatusText');
+if(ss){ss.textContent=DATA_SYNC_TOKEN?'Синхронизация настроена':'Синхронизация не настроена';
+var sd=document.getElementById('syncStatusDiv');
+if(sd){var dot=sd.querySelector('.dot');
+if(dot){dot.className=DATA_SYNC_TOKEN?'dot ok':'dot pending'}}}
 }
 function syncDataToGitHub(){
 if(!DATA_SYNC_TOKEN){return}
@@ -1954,8 +1961,11 @@ if(syncDebounceTimer)clearTimeout(syncDebounceTimer);
 syncDebounceTimer=setTimeout(function(){syncDataToGitHub()},10000);
 }
 function saveSyncToken(token){
-DATA_SYNC_TOKEN=token;
-try{localStorage.setItem(DATA_SYNC_KEY,token)}catch(e){}
+DATA_SYNC_TOKEN=token||'';
+try{localStorage.setItem(DATA_SYNC_KEY,DATA_SYNC_TOKEN)}catch(e){console.warn('localStorage save error:',e);showToast('Ошибка сохранения: localStorage недоступен');return}
+var inp=document.getElementById('syncTokenInput');
+if(inp){inp.value=DATA_SYNC_TOKEN}
+if(DATA_SYNC_TOKEN){debouncedSync()}
 }
 
 // Initialize

@@ -242,6 +242,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .task-move-btn:active{transform:scale(0.92)}
 .task-move-btn svg{width:14px;height:14px}
 .task-overdue{color:var(--danger)}
+#dashHabits .habit-name{font-size:12px}#dashHabits .habit-quick-item{padding:2px 8px}#dashTasks .task-title{font-size:12px}#dashTasks .task-item{padding:4px 10px}
 
 .priority-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;display:inline-block}
 .priority-high{background:var(--priority-high);box-shadow:0 0 6px var(--priority-high)}
@@ -619,7 +620,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.6.0</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.6.1</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -929,12 +930,12 @@ const cats=getAllCategories();const today=todayStr();
 const dailyScore=calcDailyScore(today);
 const ring=document.getElementById('dashRing');const circ=2*Math.PI*75;
 const cappedScore=Math.min(dailyScore,100);
-ring.setAttribute('stroke-dasharray',circ);ring.setAttribute('stroke-dashoffset',circ-(circ*cappedScore/100));
+ring.setAttribute('stroke-dasharray',circ);ring.setAttribute('stroke-dashoffset',Math.max(0,circ-(circ*dailyScore/100)));ring.style.filter=dailyScore>100?'drop-shadow(0 0 8px rgba(46,139,255,0.85))':'';
 var level=getDailyScoreLevel(cappedScore);
 var ringLevels=[{c:'#2e8bff',o:0.15},{c:'#2e8bff',o:0.35},{c:'#2e8bff',o:0.6},{c:'#2e8bff',o:0.75},{c:'#2e8bff',o:0.9}];
 var rl=ringLevels[level]||ringLevels[4];var rs1=document.getElementById('ringStop1');var rs2=document.getElementById('ringStop2');
 if(rs1){rs1.setAttribute('stop-color',rl.c);rs1.setAttribute('stop-opacity',0.15);}if(rs2){rs2.setAttribute('stop-color',rl.c);rs2.setAttribute('stop-opacity',rl.o);}
-document.getElementById('dashPct').textContent=cappedScore;
+document.getElementById('dashPct').textContent=dailyScore;
 state.dailyScores[today]=dailyScore;saveData();
 const habitsDone=state.habits.filter(h=>(h.checkoffs||[]).includes(today)).length;
 const sc=document.getElementById('dashStats');
@@ -948,7 +949,7 @@ document.getElementById('achCounter').textContent=unlockedAch.length+'/'+ACHIEVE
 var allAchHtml=ACHIEVEMENTS.map(a=>{var u=a.check(state);return '<div class="achievement-badge '+(u?'unlocked':'locked')+'" style="opacity:'+(u?1:0.4)+'"><div style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:'+(u?'var(--blue-bright,#2e8bff)':'var(--text-muted)')+'">'+a.svg+'</div><div style="font-size:8px;color:var(--text-secondary);text-align:center;max-width:60px;overflow:hidden;text-overflow:clip">'+escapeHtml(a.name)+'</div></div>'}).join('');
 document.getElementById('achievementsAll').innerHTML=allAchHtml;
 var ssw=document.getElementById('streakAnalyticsWrap');var ssc=document.getElementById('streakAnalytics');
-if(state.habits.length>0){ssw.style.display='block';ssc.innerHTML=state.habits.map(function(h){var st=calcHabitStreak(h);var bs=calcBestStreak(h);var tot=(h.checkoffs||[]).length;var cat=getAllCategories()[h.category]||{color:'#2e8bff',label:''};return '<div class="streak-card"><div class="sc-name">'+escapeHtml(h.title)+'</div><div class="sc-current" style="color:'+cat.color+'">'+st+'</div><div class="sc-current-lbl">текущая серия</div><div class="sc-best">'+bs+'</div><div class="sc-best-lbl">лучшая серия</div><div class="sc-total">всего отметок: '+tot+'</div></div>'}).join('')}else{ssw.style.display='none'}
+if(state.habits.length>0){ssw.style.display='block';ssc.innerHTML=state.habits.map(function(h){var st=calcHabitStreak(h);var bs=calcBestStreak(h);var tot=(h.checkoffs||[]).length;var cat=getAllCategories()[h.category]||{color:'#2e8bff',label:''};return '<div class="streak-card"><div class="sc-name">'+escapeHtml(h.title)+'</div><div class="sc-current" style="color:'+cat.color+'">'+st+'</div><div class="sc-current-lbl">текущая серия</div><div class="sc-best" style="color:'+cat.color+'">'+bs+'</div><div class="sc-best-lbl">лучшая серия</div><div class="sc-total">всего отметок: '+tot+'</div></div>'}).join('')}else{ssw.style.display='none'}
 }else{achDiv.style.display='none'}
 const cb=document.getElementById('dashCategories');
 const usedCats=Object.keys(cats).filter(c=>state.goals.some(g=>g.category===c));
@@ -974,7 +975,7 @@ document.getElementById('dashTasks').innerHTML=todayTasks.map(t=>'<div class="ta
 const up=state.goals.filter(g=>calcGoalProgress(g)<100).sort((a,b)=>{if(!a.targetDate)return 1;if(!b.targetDate)return-1;return a.targetDate.localeCompare(b.targetDate)}).slice(0,3);
 const ud=document.getElementById('dashUpcoming');
 if(up.length===0){ud.innerHTML='<div style="text-align:center;color:var(--text-muted);padding:20px">Нет активных целей</div>'}else{
-ud.innerHTML=up.map(g=>{const cat=cats[g.category]||cats.work;const remain=g.targetDate?daysBetween(today,g.targetDate):null;const rt=remain!==null?(remain>0?remain+' дн.':remain===0?'сегодня':'просрочено'):'без срока';const ov=remain!==null&&remain<0;const prio=g.priority||'med';const prog=calcGoalProgress(g);const subtasks=g.subtasks||[];const subDone=subtasks.filter(s=>s.done).length;let subHtml='';if(subtasks.length>0){subHtml='<div class="subtask-list">'+subtasks.map(s=>'<div class="subtask-item"><div class="subtask-check '+(s.done?'done':'')+'" onclick="event.stopPropagation();toggleSubtask(\''+g.id+'\',\''+s.id+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span class="subtask-text '+(s.done?'done':'')+'">'+escapeHtml(s.text)+'</span></div>').join('')+'</div>'}return'<div class="goal-card" style="margin-bottom:8px" onclick="editGoal(\''+g.id+'\')"><div class="goal-card-header"><div class="goal-card-title"><span class="priority-dot priority-'+prio+'"></span>'+escapeHtml(g.title)+'</div><span class="goal-badge" style="background:'+cat.color+'22;color:'+cat.color+'">'+cat.label+'</span></div><div class="goal-progress-bar"><div class="goal-progress-fill" style="width:'+prog+'%"></div></div>'+(subtasks.length>0?'<div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">'+subDone+'/'+subtasks.length+' подзадач — '+prog+'%</div>':'')+subHtml+'<div class="goal-card-footer"><span class="goal-date '+(ov?'goal-overdue':'')+'">'+rt+'</span><span>'+prog+'%</span></div></div>'}).join('');
+ud.innerHTML=up.map(g=>{const cat=cats[g.category]||cats.work;const remain=g.targetDate?daysBetween(today,g.targetDate):null;const rt=remain!==null?(remain>0?remain+' дн.':remain===0?'сегодня':'просрочено'):'без срока';const ov=remain!==null&&remain<0;const prio=g.priority||'med';const prog=calcGoalProgress(g);const subtasks=g.subtasks||[];const subDone=subtasks.filter(s=>s.done).length;let subHtml='';if(subtasks.length>0){subHtml='<div class="subtask-list">'+subtasks.map(s=>'<div class="subtask-item"><div class="subtask-check '+(s.done?'done':'')+'" onclick="event.stopPropagation();toggleSubtask(\''+g.id+'\',\''+s.id+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span class="subtask-text '+(s.done?'done':'')+'">'+escapeHtml(s.text)+(s.dueDate?' <span style="font-size:10px;color:var(--text-muted)">('+formatDate(s.dueDate)+')</span>':'')+'</span></div>').join('')+'</div>'}return'<div class="goal-card" style="margin-bottom:8px" onclick="editGoal(\''+g.id+'\')"><div class="goal-card-header"><div class="goal-card-title"><span class="priority-dot priority-'+prio+'"></span>'+escapeHtml(g.title)+'</div><span class="goal-badge" style="background:'+cat.color+'22;color:'+cat.color+'">'+cat.label+'</span></div><div class="goal-progress-bar"><div class="goal-progress-fill" style="width:'+prog+'%"></div></div>'+(subtasks.length>0?'<div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">'+subDone+'/'+subtasks.length+' подзадач — '+prog+'%</div>':'')+subHtml+'<div class="goal-card-footer"><span class="goal-date '+(ov?'goal-overdue':'')+'">'+rt+'</span><span>'+prog+'%</span></div></div>'}).join('');
 }
 renderPhraseOfDay();
 }

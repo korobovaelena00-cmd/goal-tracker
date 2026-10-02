@@ -638,6 +638,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 <label class="form-label">GitHub Token (для уведомлений)</label>
 <input type="password" id="syncTokenInput" class="form-input" placeholder="ghp_..." value="">
 <button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="saveSyncToken(document.getElementById('syncTokenInput').value);showToast('Токен сохранён')">Сохранить токен</button>
+<button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="syncDataToGitHub(true)">Синхронизировать сейчас</button>
 </div>
 <div class="sync-status" id="syncStatusDiv">
 <span class="dot pending"></span>
@@ -646,7 +647,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.7.5</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.7.6</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -779,7 +780,15 @@ function loadFromBackups(){for(const key of BACKUP_KEYS){try{const raw=localStor
 function loadFromCloud(cb){if(!(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.CloudStorage&&Telegram.WebApp.CloudStorage.getItem)){cb(null,0);return}try{Telegram.WebApp.CloudStorage.getItem(CLOUD_KEY,function(err,val){if(!err&&val){try{const p=JSON.parse(val);if(isValidState(p)){const ts=p.lastModified||0;console.log('Cloud data found, ts='+ts);cb(p,ts);return}}catch(e){}}cb(null,0)})}catch(e){cb(null,0)}}
 function showNonTelegramPrompt(){const m=document.createElement('div');m.id='restoreModal';m.className='modal-overlay active';m.style.zIndex='1000';m.innerHTML='<div class="modal-box" style="text-align:center;padding:24px;max-width:340px"><div style="font-size:48px;margin-bottom:12px">ð±</div><h3 style="font-size:18px;margin-bottom:8px">Откройте в Telegram</h3><p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px">Ваши данные хранятся в облаке Telegram. Откройте это приложение через бота в Telegram, чтобы восстановить их. Или начните заново:</p><div style="display:flex;flex-direction:column;gap:8px"><button class="btn-ok" onclick="document.getElementById(\'restoreModal\').remove();document.getElementById(\'importInput\').click()" style="padding:10px 16px">ð Загрузить из файла</button><button class="btn-cancel" onclick="document.getElementById(\'restoreModal\').remove();seedDemo();renderDashboard()" style="padding:10px 16px">ð± Начать с нуля</button></div></div>';document.body.appendChild(m)}
 function showRestorePrompt(){const m=document.createElement('div');m.id='restoreModal';m.className='modal-overlay active';m.style.zIndex='1000';m.innerHTML='<div class="modal-box" style="text-align:center;padding:24px;max-width:340px"><div style="font-size:18px;font-weight:600;margin-bottom:12px;color:var(--text-primary)">Бэкап</div><h3 style="font-size:18px;margin-bottom:8px">Данные не найдены</h3><p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px">Ваши цели и привычки не были загружены. Возможно, кеш был очищен. Вы можете:</p><div style="display:flex;flex-direction:column;gap:8px"><button class="btn-ok" onclick="document.getElementById(\'restoreModal\').remove();document.getElementById(\'importInput\').click()" style="padding:10px 16px">Загрузить из файла</button><button class="btn-cancel" onclick="document.getElementById(\'restoreModal\').remove();seedDemo();renderDashboard()" style="padding:10px 16px">Начать с нуля</button></div></div>';document.body.appendChild(m)}
+function loadFromGitHub(cb){
+if(!DATA_SYNC_TOKEN){cb(null);return}
+fetch('https://api.github.com/repos/'+DATA_SYNC_REPO+'/contents/user-data.json?ref=main',{headers:_ghHeaders()})
+.then(function(r){if(!r.ok)throw new Error('gh '+r.status);return r.json()})
+.then(function(j){if(!j||!j.content){cb(null);return}var raw=atob(String(j.content).replace(/\n/g,''));var s;try{s=JSON.parse(decodeURIComponent(escape(raw)))}catch(e){cb(null);return}if(isValidState(s)){cb(s);return}cb(null)})
+.catch(function(){cb(null)});
+}
 function loadData(){
+try{DATA_SYNC_TOKEN=DATA_SYNC_TOKEN||localStorage.getItem(DATA_SYNC_KEY)||''}catch(e){}
 var localTs=0;
 try{const raw=localStorage.getItem(STORAGE_KEY);if(raw){const p=JSON.parse(raw);if(isValidState(p)){state=p;localTs=p.lastModified||0;if(!state.version||state.version<4.21)state.version=4.21;migrateState(p)}}}catch(e){console.error('Load primary:',e)}
 if(state.goals.length===0&&state.habits.length===0){
@@ -791,21 +800,24 @@ if(cloudTs>localTs){
 state=cp;if(!state.version||state.version<4.21)state.version=4.21;migrateState(cp);
 showToast('Данные восстановлены из облака Telegram');saveData();renderDashboard();return
 }else if(cloudTs>0&&cloudTs<=localTs){
-syncToCloud();return
-debouncedSync();}
+syncToCloud();scheduleGitHubSync();return
+}
 }
 if(state.goals.length===0&&state.habits.length===0){
+loadFromGitHub(function(gs){
+if(gs){state=gs;if(!state.version||state.version<4.21)state.version=4.21;migrateState(gs);showToast('Данные восстановлены из GitHub');saveData();renderDashboard();return}
 if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.CloudStorage){
 showRestorePrompt()
 }else{
 showNonTelegramPrompt()
 }
+});
 }
 })
 }
 function rotateBackups(){try{for(let i=BACKUP_KEYS.length-1;i>0;i--){const prev=localStorage.getItem(BACKUP_KEYS[i-1]);if(prev)localStorage.setItem(BACKUP_KEYS[i],prev)}localStorage.setItem(BACKUP_KEYS[0],localStorage.getItem(STORAGE_KEY)||JSON.stringify(state))}catch(e){console.error('Backup rotate:',e)}}
 function syncToCloud(){if(cloudSyncPending)return;if(!(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.CloudStorage&&Telegram.WebApp.CloudStorage.setItem))return;cloudSyncPending=true;try{const data=JSON.stringify(state);Telegram.WebApp.CloudStorage.setItem(CLOUD_KEY,data,function(err,ok){cloudSyncPending=false;if(!err&&ok){localStorage.setItem(CLOUD_TS_KEY,Date.now().toString());console.log('Cloud sync OK')}else if(err){console.warn('Cloud sync err:',err)}else{console.warn('Cloud sync no-ok')}})}catch(e){cloudSyncPending=false;console.warn('Cloud sync:',e)}}
-function saveData(){try{state.lastModified=Date.now();const data=JSON.stringify(state);localStorage.setItem(STORAGE_KEY,data);lastSaveTs=Date.now()}catch(e){console.error('Save:',e)}try{rotateBackups()}catch(e){}try{syncToCloud()}catch(e){}}
+function saveData(){try{state.lastModified=Date.now();const data=JSON.stringify(state);localStorage.setItem(STORAGE_KEY,data);lastSaveTs=Date.now()}catch(e){console.error('Save:',e)}try{rotateBackups()}catch(e){}try{syncToCloud()}catch(e){}try{scheduleGitHubSync()}catch(e){}}
 function startAutoSave(){setInterval(function(){try{if(Date.now()-lastSaveTs>AUTOSAVE_INTERVAL){saveData()}}catch(e){}},AUTOSAVE_INTERVAL);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'){saveData()}});window.addEventListener('beforeunload',function(){saveData()})}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
 function todayStr(){var d=new Date();var off=d.getTimezoneOffset();var local=new Date(d.getTime()-off*60000);return local.toISOString().slice(0,10)}
@@ -1818,7 +1830,10 @@ var DATA_SYNC_REPO='korobovaelena00-cmd/goal-tracker';
 var DATA_SYNC_KEY='pupsai_github_token';
 var syncDebounceTimer=null;
 var lastSyncTs=0;
-var SYNC_INTERVAL=300000; // 5 min
+var syncInFlight=false;
+var syncPendingAgain=false;
+var lastSyncedPayload='';
+var SYNC_INTERVAL=20000; // min ms between syncs
 
 function getReviewWeekStart(d){
 var dt=d?new Date(d):new Date();
@@ -2028,42 +2043,79 @@ var _rdcw=el.querySelector('.review-day-cards');var _rdct=el.querySelector('.rev
 
 // === Data Sync to GitHub ===
 function loadSyncToken(){
-try{DATA_SYNC_TOKEN=localStorage.getItem(DATA_SYNC_KEY)||''}catch(e){console.warn('localStorage error:',e);DATA_SYNC_TOKEN=''}
+try{DATA_SYNC_TOKEN=localStorage.getItem(DATA_SYNC_KEY)||''}catch(e){DATA_SYNC_TOKEN=''}
 var inp=document.getElementById('syncTokenInput');
 if(inp){inp.value=DATA_SYNC_TOKEN}
-var ss=document.getElementById('syncStatusText');
-if(ss){ss.textContent=DATA_SYNC_TOKEN?'Синхронизация настроена':'Синхронизация не настроена';
+updateSyncStatus(DATA_SYNC_TOKEN?'pending':'idle');
+if(DATA_SYNC_TOKEN){scheduleGitHubSync(true)}
+}
+function updateSyncStatus(kind,msg){
 var sd=document.getElementById('syncStatusDiv');
-if(sd){var dot=sd.querySelector('.dot');
-if(dot){dot.className=DATA_SYNC_TOKEN?'dot ok':'dot pending'}}}
+if(sd){var dot=sd.querySelector('.dot');if(dot){dot.className='dot '+(kind==='ok'?'ok':(kind==='err'?'err':'pending'))}}
+var ss=document.getElementById('syncStatusText');
+if(ss){ss.textContent=msg||({ok:'Синхронизировано',err:'Ошибка синхронизации',syncing:'Синхронизация...',pending:'Синхронизация настроена',idle:'Синхронизация не настроена'}[kind]||'Синхронизация не настроена')}
 }
-function syncDataToGitHub(){
-if(!DATA_SYNC_TOKEN){return}
-if(Date.now()-lastSyncTs<SYNC_INTERVAL){return}
-lastSyncTs=Date.now();
-var data=JSON.stringify(state);
-var putUrl='https://api.github.com/repos/'+DATA_SYNC_REPO+'/contents/user-data.json';
-// Get current file sha if it exists (needed for update)
-fetch(putUrl,{headers:{'Authorization':'token '+DATA_SYNC_TOKEN,'Accept':'application/vnd.github+json'}}).then(function(r){
-if(r.ok)return r.json();return null;
-}).then(function(existing){
-var body={message:'chore: sync user data',content:btoa(unescape(encodeURIComponent(data)))};
-if(existing&&existing.sha)body.sha=existing.sha;
-return fetch(putUrl,{method:'PUT',headers:{'Authorization':'token '+DATA_SYNC_TOKEN,'Content-Type':'application/json','Accept':'application/vnd.github+json'},body:JSON.stringify(body)});
-}).then(function(r){if(r)return r.json();return null}).then(function(result){
-if(result&&result.content){console.log('Data synced to GitHub')}else{console.warn('Sync: no result')}
-}).catch(function(e){console.error('Sync error:',e)});
+function _b64(s){return btoa(unescape(encodeURIComponent(s)))}
+function _ghHeaders(extra){
+var h={'Authorization':'token '+DATA_SYNC_TOKEN,'Accept':'application/vnd.github+json'};
+if(extra){for(var k in extra){h[k]=extra[k]}}
+return h;
 }
-function debouncedSync(){
+function scheduleGitHubSync(force){
+if(!DATA_SYNC_TOKEN)return;
+if(force){syncDataToGitHub(true);return}
 if(syncDebounceTimer)clearTimeout(syncDebounceTimer);
-syncDebounceTimer=setTimeout(function(){syncDataToGitHub()},10000);
+syncDebounceTimer=setTimeout(function(){syncDataToGitHub()},8000);
+}
+function syncDataToGitHub(force){
+if(!DATA_SYNC_TOKEN){return}
+var payload=JSON.stringify(state);
+if(!force&&payload===lastSyncedPayload){return}
+if(!force&&(Date.now()-lastSyncTs<SYNC_INTERVAL)){return}
+if(syncInFlight){syncPendingAgain=true;return}
+syncInFlight=true;lastSyncTs=Date.now();updateSyncStatus('syncing');
+var base='https://api.github.com/repos/'+DATA_SYNC_REPO;
+fetch(base+'/git/ref/heads/main',{headers:_ghHeaders()})
+.then(function(r){if(!r.ok)throw new Error('ref '+r.status);return r.json()})
+.then(function(ref){
+var parent=ref.object.sha;
+return fetch(base+'/git/commits/'+parent,{headers:_ghHeaders()})
+.then(function(r){if(!r.ok)throw new Error('commit '+r.status);return r.json()})
+.then(function(c){return{parent:parent,baseTree:c.tree.sha}});
+})
+.then(function(ctx){
+return fetch(base+'/git/blobs',{method:'POST',headers:_ghHeaders({'Content-Type':'application/json'}),body:JSON.stringify({content:_b64(payload),encoding:'base64'})})
+.then(function(r){if(!r.ok)throw new Error('blob '+r.status);return r.json()})
+.then(function(b){
+return fetch(base+'/git/trees',{method:'POST',headers:_ghHeaders({'Content-Type':'application/json'}),body:JSON.stringify({base_tree:ctx.baseTree,tree:[{path:'user-data.json',mode:'100644',type:'blob',sha:b.sha}]})})
+.then(function(r){if(!r.ok)throw new Error('tree '+r.status);return r.json()})
+.then(function(t){
+return fetch(base+'/git/commits',{method:'POST',headers:_ghHeaders({'Content-Type':'application/json'}),body:JSON.stringify({message:'chore: sync user data',tree:t.sha,parents:[ctx.parent]})})
+.then(function(r){if(!r.ok)throw new Error('newcommit '+r.status);return r.json()});
+});
+});
+})
+.then(function(nc){
+return fetch(base+'/git/refs/heads/main',{method:'PATCH',headers:_ghHeaders({'Content-Type':'application/json'}),body:JSON.stringify({sha:nc.sha,force:false})})
+.then(function(r){if(!r.ok)throw new Error('ref-update '+r.status);return true});
+})
+.then(function(){
+lastSyncedPayload=payload;syncInFlight=false;
+updateSyncStatus('ok','Синхронизировано '+new Date().toLocaleTimeString().slice(0,5));
+if(syncPendingAgain){syncPendingAgain=false;scheduleGitHubSync(true)}
+})
+.catch(function(e){
+syncInFlight=false;updateSyncStatus('err','Ошибка синхронизации');
+console.warn('GitHub sync error:',e);
+if(syncPendingAgain){syncPendingAgain=false}
+});
 }
 function saveSyncToken(token){
-DATA_SYNC_TOKEN=token||'';
+DATA_SYNC_TOKEN=(token||'').trim();
 try{localStorage.setItem(DATA_SYNC_KEY,DATA_SYNC_TOKEN)}catch(e){console.warn('localStorage save error:',e);showToast('Ошибка сохранения: localStorage недоступен');return}
 var inp=document.getElementById('syncTokenInput');
 if(inp){inp.value=DATA_SYNC_TOKEN}
-if(DATA_SYNC_TOKEN){debouncedSync()}
+if(DATA_SYNC_TOKEN){updateSyncStatus('pending');syncDataToGitHub(true)}else{updateSyncStatus('idle')}
 }
 
 // Initialize

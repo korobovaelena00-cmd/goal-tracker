@@ -361,7 +361,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .an-chart-tabs{display:flex;gap:4px}
 .an-chart-tab{padding:3px 8px;border-radius:12px;font-size:10px;font-weight:600;background:var(--glass-bg);border:1px solid var(--glass-border);color:var(--text-secondary);cursor:pointer;transition:var(--transition)}
 .an-chart-tab.active{background:var(--accent-grad);background-size:140% 140%;background-position:30% 30%;color:#fff;border-color:transparent}
-.an-chart-scroll{overflow-x:auto;overflow-y:hidden;margin-top:10px;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.an-chart-scroll{overflow-x:auto;overflow-y:hidden;padding-bottom:6px;-webkit-overflow-scrolling:touch;flex:1 1 auto;min-width:0}.an-line-wrap{display:flex;align-items:flex-start;gap:4px;margin-top:10px}.an-line-yaxis{flex:0 0 auto;width:28px;position:relative;font-size:9px;color:var(--text-muted)}.an-line-yaxis span{position:absolute;right:2px;transform:translateY(-50%)}.an-line-inner{height:150px}
 .an-chart-inner{display:flex;align-items:flex-end;gap:4px;height:150px}
 .an-chart-col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;flex:0 0 auto}
 .an-chart-bar-wrap{height:112px;display:flex;align-items:flex-end}
@@ -654,7 +654,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.7.3</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.7.4</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -681,7 +681,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 <div class="view" id="view-habits"><div id="habitsList"></div></div>
 <div class="view" id="view-analytics">
 <div class="card stagger"><div class="card-title" style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span>Годовая активность</span><div class="an-heat-controls"><select class="an-heat-select" id="anHeatMode" onchange="setAnHeatMode(this.value)"></select><button class="an-year-btn" id="anYearBtn" onclick="openAnYearFilter()">2026</button></div></div><div class="year-heatmap-grid" id="yearHeatmapGrid"></div><div class="year-heat-legend"><span>0%</span><div class="scale"><div style="background:var(--bg-elevated)"></div><div style="background:rgba(46,139,255,0.15)"></div><div style="background:rgba(46,139,255,0.35)"></div><div style="background:rgba(46,139,255,0.6)"></div><div style="background:rgba(46,139,255,0.9)"></div></div><span>100%</span></div></div>
-<div class="card stagger"><div class="card-title" style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span>Активность по дням</span><div class="an-chart-tabs" id="anChartTabs"></div></div><div class="an-chart-scroll" id="anChartScroll"><div class="an-chart-inner" id="anChartInner"></div></div></div>
+<div class="card stagger"><div class="card-title" style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span>Активность по дням</span><div class="an-chart-tabs" id="anChartTabs"></div></div><div class="an-line-wrap"><div class="an-line-yaxis" id="anChartYAxis"></div><div class="an-chart-scroll" id="anChartScroll"><div class="an-line-inner" id="anChartInner"></div></div></div></div>
 <div class="card stagger"><div class="card-title">Прогресс целей</div><div id="anGoalsProgress" style="display:flex;flex-direction:column;gap:10px"></div></div>
 <div id="reviewContent"></div>
 <div class="card stagger"><div class="card-title">Инсайты</div><div id="anInsights"></div></div>
@@ -1458,14 +1458,30 @@ function resetAnYear(){var n=new Date();anYear=n.getFullYear();renderYearHeatmap
 function closeAnYearFilter(){document.getElementById('anYearModal').classList.remove('active')}
 function updateAnYearBtn(){var b=document.getElementById('anYearBtn');if(!b)return;b.textContent=anYear;var n=new Date();b.classList.toggle('active',anYear!==n.getFullYear())}
 function setAnChartPeriod(p){anChartPeriod=p;renderAnChart();haptic('light')}
-function renderAnChart(){var inner=document.getElementById('anChartInner');if(!inner)return;var tabs=document.getElementById('anChartTabs');if(tabs){tabs.innerHTML=[['week','\u041d\u0435\u0434\u0435\u043b\u044f'],['month','\u041c\u0435\u0441\u044f\u0446'],['quarter','\u041a\u0432\u0430\u0440\u0442\u0430\u043b'],['year','\u0413\u043e\u0434']].map(function(p){return '<div class="an-chart-tab'+(anChartPeriod===p[0]?' active':'')+'" onclick="setAnChartPeriod(\''+p[0]+'\')">'+p[1]+'</div>'}).join('')}
-var nDays=anChartPeriod==='week'?7:anChartPeriod==='month'?30:anChartPeriod==='quarter'?90:365;
-var fixedW=anChartPeriod==='month'?16:anChartPeriod==='quarter'?9:anChartPeriod==='year'?4:0;
+function renderAnChart(){
+var inner=document.getElementById('anChartInner');if(!inner)return;
+var tabs=document.getElementById('anChartTabs');
+if(tabs){tabs.innerHTML=[['week','Неделя'],['month','Месяц'],['quarter','Квартал'],['year','Год']].map(function(p){return '<div class="an-chart-tab'+(anChartPeriod===p[0]?' active':'')+'" onclick="setAnChartPeriod(\''+p[0]+'\')">'+p[1]+'</div>'}).join('')}
+var nDays=365;
+var perView=anChartPeriod==='week'?7:anChartPeriod==='month'?30:anChartPeriod==='quarter'?90:365;
 var scrollEl=document.getElementById('anChartScroll');var avail=(scrollEl&&scrollEl.clientWidth)||320;
-var w=fixedW>0?fixedW:Math.max(12,Math.floor(avail/nDays)-4);
-var maxH=112;var html='';
-for(var i=nDays-1;i>=0;i--){var dd=new Date();dd.setDate(dd.getDate()-i);var ds=dateStr(dd);var sc=calcDailyScore(ds);var hgt=Math.max(4,Math.round(Math.min(100,sc)/100*maxH));var lbl=(anChartPeriod==='week')?['\u0412\u0441','\u041f\u043d','\u0412\u0442','\u0421\u0440','\u0427\u0442','\u041f\u0442','\u0421\u0431'][dd.getDay()]:'';var dim=sc<=0?' style="opacity:0.25"':'';html+='<div class="an-chart-col" style="width:'+w+'px"><div class="an-chart-bar-wrap"><div class="an-chart-bar"'+dim+' style="height:'+hgt+'px"></div></div>'+(lbl?'<div class="an-chart-lbl">'+lbl+'</div>':'')+'</div>'}
-inner.style.minWidth=(nDays*(w+4))+'px';inner.innerHTML=html;if(scrollEl)scrollEl.scrollLeft=scrollEl.scrollWidth}
+var ptW=Math.max(1,avail/perView);
+var chartH=104,topPad=10,svgH=chartH+topPad+16;
+var days=[];var maxv=1;
+for(var i=nDays-1;i>=0;i--){var dd=new Date();dd.setDate(dd.getDate()-i);var ds=dateStr(dd);var sc=calcDailyScore(ds);if(sc>maxv)maxv=sc;days.push({d:dd,v:sc});}
+var step;if(maxv<=10)step=2;else if(maxv<=25)step=5;else if(maxv<=50)step=10;else if(maxv<=100)step=25;else if(maxv<=200)step=50;else if(maxv<=400)step=100;else step=200;
+var top=Math.ceil(maxv/step)*step;if(top<=0)top=step;
+var yaxis=document.getElementById('anChartYAxis');
+if(yaxis){var yl='';for(var t=top;t>=0;t-=step){var yy=topPad+(1-t/top)*chartH;yl+='<span style="top:'+yy.toFixed(1)+'px">'+t+'</span>';}yaxis.style.height=svgH+'px';yaxis.innerHTML=yl;}
+var svgW=Math.round(nDays*ptW);
+var grid='';for(var t2=top;t2>=0;t2-=step){var gy=topPad+(1-t2/top)*chartH;grid+='<line x1="0" y1="'+gy.toFixed(1)+'" x2="'+svgW+'" y2="'+gy.toFixed(1)+'" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>';}
+var pts=[];var circles='';var labels='';
+var labEvery=ptW>=10?1:Math.max(1,Math.ceil(22/ptW));
+for(var i2=0;i2<nDays;i2++){var d2=days[i2];var x=i2*ptW+ptW/2;var y=topPad+(1-d2.v/top)*chartH;pts.push(x.toFixed(1)+','+y.toFixed(1));if(ptW>=6)circles+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="2" fill="var(--blue-bright)"/>';if(i2%labEvery===0||i2===nDays-1){var lb=ptW>=10?String(d2.d.getDate()):(String(d2.d.getDate()).padStart(2,'0')+'.'+String(d2.d.getMonth()+1).padStart(2,'0'));labels+='<text x="'+x.toFixed(1)+'" y="'+(topPad+chartH+12)+'" text-anchor="middle" font-size="9" fill="var(--text-muted)">'+lb+'</text>';}}
+inner.style.width=svgW+'px';
+inner.innerHTML='<svg width="'+svgW+'" height="'+svgH+'" viewBox="0 0 '+svgW+' '+svgH+'" style="display:block">'+grid+'<polyline points="'+pts.join(' ')+'" fill="none" stroke="var(--blue-bright)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>'+circles+labels+'</svg>';
+if(scrollEl)scrollEl.scrollLeft=scrollEl.scrollWidth;
+}
 
 function openAgentChat(){document.getElementById('agentModal').classList.add('active');renderAgentTopics();renderAgentMessages();document.getElementById('agentChatInput').focus()}
 function renderAgentTopics(){const el=document.getElementById('agentTopics');let html=state.chatTopics.map(t=>'<div class="agent-topic-chip '+(state.activeTopic===t.id?'active':'')+'" onclick="switchTopic(\''+t.id+'\')">'+escapeHtml(t.name)+'</div>').join('');html+='<div class="agent-topic-add" onclick="addTopic()">+ Тема</div>';el.innerHTML=html}
@@ -1928,7 +1944,7 @@ h+='<div class="review-day-card'+(_dds===todayStr()?' today':'')+'">';
 h+='<div class="rdc-day">'+['\u0412\u0441','\u041f\u043d','\u0412\u0442','\u0421\u0440','\u0427\u0442','\u041f\u0442','\u0421\u0431'][_dc.getDay()]+'</div>';
 h+='<div class="rdc-score">'+_dsc+'</div>';
 h+='<div class="rdc-bar"><div class="rdc-bar-fill" style="width:'+Math.min(100,_dsc)+'%"></div></div>';
-h+='<div class="rdc-date">'+_dc.getDate()+'.'+String(_dc.getMonth()+1).padStart(2,'0')+'</div>';
+h+='<div class="rdc-date">'+_dc.getDate()+'.'+String(_dc.getMonth()+1).padStart(2,'0')+'<br><span style="opacity:0.55">'+_dc.getFullYear()+'</span></div>';
 h+='</div>';
 }
 h+='</div>';
@@ -2003,6 +2019,7 @@ h+='</div>';
 
 h+='</div>';
 el.innerHTML=h;
+var _rdcw=el.querySelector('.review-day-cards');var _rdct=el.querySelector('.review-day-card.today');if(_rdcw&&_rdct){_rdcw.scrollLeft=Math.max(0,_rdct.offsetLeft-_rdcw.clientWidth+_rdct.offsetWidth+16);}
 }
 
 // === Data Sync to GitHub ===

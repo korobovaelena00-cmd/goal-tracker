@@ -99,7 +99,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .icon-btn svg{width:20px;height:20px}
 .header-period{display:inline-flex;align-items:center;gap:3px;height:38px;padding:0 9px;border-radius:var(--radius-sm);border:1px solid var(--glass-border);background:var(--glass-bg);color:var(--text-secondary);font-size:12px;font-weight:600;cursor:pointer;transition:var(--transition);white-space:nowrap;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .header-period:hover,.header-period:active{background:var(--glass-hover);border-color:var(--glass-border-active)}
-.header-period.active{background:var(--accent-grad);background-size:140% 140%;border-color:transparent;color:#fff}
+.header-period.active{background:var(--accent-grad);background-size:140% 140%;background-position:30% 30%;border-color:transparent;color:#fff}
 .header-period svg{width:10px;height:10px;flex-shrink:0}
 
 .account-circle{width:38px;height:38px;border-radius:50%;background:var(--accent-grad);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:600;cursor:pointer;transition:var(--transition);box-shadow:0 2px 12px rgba(46,139,255,0.3);flex-shrink:0;position:relative}
@@ -300,7 +300,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .habits-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .habits-grid>.habit-card{min-width:0}
 .period-opt{padding:8px 12px;border-radius:var(--radius-sm);cursor:pointer;font-size:14px;color:var(--text-secondary);transition:var(--transition);text-align:center}
-.period-opt.active{background:var(--accent-grad);background-size:140% 140%;color:#fff;font-weight:600}
+.period-opt.active{background:var(--accent-grad);background-size:140% 140%;background-position:30% 30%;color:#fff;font-weight:600}
 .period-opt:hover{background:rgba(46,139,255,0.08)}
 
 /* v5.7.2: period picker as a compact chip in the app header (option B) */
@@ -354,6 +354,19 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .year-heat-legend span{font-size:10px;color:var(--text-muted)}
 .year-heat-legend .scale{display:flex;gap:3px}
 .year-heat-legend .scale div{width:12px;height:12px;border-radius:2px}
+.an-heat-controls{display:flex;align-items:center;gap:6px}
+.an-heat-select{background:var(--glass-bg);border:1px solid var(--glass-border);color:var(--text-secondary);border-radius:12px;font-size:11px;padding:3px 6px;max-width:108px}
+.an-year-btn{background:var(--glass-bg);border:1px solid var(--glass-border);color:var(--text-secondary);border-radius:12px;font-size:11px;font-weight:600;padding:3px 9px;cursor:pointer;transition:var(--transition)}
+.an-year-btn.active{background:var(--accent-grad);background-size:140% 140%;background-position:30% 30%;color:#fff;border-color:transparent}
+.an-chart-tabs{display:flex;gap:4px}
+.an-chart-tab{padding:3px 8px;border-radius:12px;font-size:10px;font-weight:600;background:var(--glass-bg);border:1px solid var(--glass-border);color:var(--text-secondary);cursor:pointer;transition:var(--transition)}
+.an-chart-tab.active{background:var(--accent-grad);background-size:140% 140%;background-position:30% 30%;color:#fff;border-color:transparent}
+.an-chart-scroll{overflow-x:auto;overflow-y:hidden;margin-top:10px;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.an-chart-inner{display:flex;align-items:flex-end;gap:4px;height:150px}
+.an-chart-col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;flex:0 0 auto}
+.an-chart-bar-wrap{height:112px;display:flex;align-items:flex-end}
+.an-chart-bar{width:100%;min-width:3px;background:var(--accent-grad);border-radius:3px 3px 0 0}
+.an-chart-lbl{font-size:9px;color:var(--text-muted);margin-top:3px}
 
 .month-detail-overlay{position:fixed;inset:0;background:rgba(5,8,16,0.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:225;display:none;align-items:flex-start;justify-content:center;padding-top:50px;animation:fadeIn 0.2s ease}
 .month-detail-overlay.open{display:flex}
@@ -549,7 +562,8 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .review-section-title{font-size:13px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px}
 .review-week-range{font-size:18px;font-weight:700;color:var(--blue-bright);margin-bottom:4px}
 .review-day-cards{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px}
-.review-day-card{flex:1;min-width:42px;background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:8px 4px;text-align:center}
+.review-day-card{flex:0 0 auto;min-width:44px;background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:8px 4px;text-align:center}
+.review-day-card .rdc-date{font-size:9px;color:var(--text-muted);margin-top:2px}
 .review-day-card .rdc-day{font-size:10px;color:var(--text-secondary);font-weight:500}
 .review-day-card .rdc-score{font-size:16px;font-weight:700;color:var(--text-secondary);margin-top:2px}
 .review-day-card .rdc-bar{height:3px;border-radius:2px;margin-top:4px;background:rgba(46,139,255,0.15)}
@@ -592,7 +606,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 <div class="header-actions">
 <button class="icon-btn" onclick="exportData()" title="Экспорт"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></button>
 <button class="icon-btn" onclick="document.getElementById('importFile').click()" title="Импорт"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg></button>
-<button class="header-period" id="headerPeriodBtn" onclick="openHabitPeriodFilter()" title="Период привычек"><span id="headerPeriodLabel"></span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 4 L6 8 L10 4" stroke-linecap="round"/></svg></button><button class="icon-btn" onclick="toggleCalPopup()" title="Календарь"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></button>
+<button class="header-period" id="headerPeriodBtn" onclick="openHabitPeriodFilter()" title="Период привычек" style="display:none"><span id="headerPeriodLabel"></span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 4 L6 8 L10 4" stroke-linecap="round"/></svg></button><button class="icon-btn" onclick="toggleCalPopup()" title="Календарь"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></button>
 <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
 <div class="account-circle" id="accountCircle" onclick="toggleSettings()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
 </div>
@@ -640,7 +654,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.7.2</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.7.3</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -666,11 +680,11 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 <div class="view" id="view-goals"><div class="view-toggle"><button class="view-toggle-btn active" id="toggleGoals" onclick="setGoalsTab('goals')">Цели</button><button class="view-toggle-btn" id="toggleTasks" onclick="setGoalsTab('tasks')">Задачи</button></div><div id="goalFilters" class="filter-tabs"></div><div id="goalsList"></div><div id="tasksList" style="display:none"></div></div>
 <div class="view" id="view-habits"><div id="habitsList"></div></div>
 <div class="view" id="view-analytics">
-<div class="card stagger"><div class="card-title">Годовая активность</div><div class="year-heatmap-grid" id="yearHeatmapGrid"></div><div class="year-heat-legend"><span>0%</span><div class="scale"><div style="background:var(--bg-elevated)"></div><div style="background:rgba(46,139,255,0.15)"></div><div style="background:rgba(46,139,255,0.35)"></div><div style="background:rgba(46,139,255,0.6)"></div><div style="background:rgba(46,139,255,0.9)"></div></div><span>100%</span></div></div>
+<div class="card stagger"><div class="card-title" style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span>Годовая активность</span><div class="an-heat-controls"><select class="an-heat-select" id="anHeatMode" onchange="setAnHeatMode(this.value)"></select><button class="an-year-btn" id="anYearBtn" onclick="openAnYearFilter()">2026</button></div></div><div class="year-heatmap-grid" id="yearHeatmapGrid"></div><div class="year-heat-legend"><span>0%</span><div class="scale"><div style="background:var(--bg-elevated)"></div><div style="background:rgba(46,139,255,0.15)"></div><div style="background:rgba(46,139,255,0.35)"></div><div style="background:rgba(46,139,255,0.6)"></div><div style="background:rgba(46,139,255,0.9)"></div></div><span>100%</span></div></div>
+<div class="card stagger"><div class="card-title" style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span>Активность по дням</span><div class="an-chart-tabs" id="anChartTabs"></div></div><div class="an-chart-scroll" id="anChartScroll"><div class="an-chart-inner" id="anChartInner"></div></div></div>
 <div class="card stagger"><div class="card-title">Прогресс целей</div><div id="anGoalsProgress" style="display:flex;flex-direction:column;gap:10px"></div></div>
-<div class="card stagger"><div class="card-title">Инсайты</div><div id="anInsights"></div></div>
-
 <div id="reviewContent"></div>
+<div class="card stagger"><div class="card-title">Инсайты</div><div id="anInsights"></div></div>
 </div>
 
 
@@ -690,6 +704,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 
 <div class="modal-overlay" id="habitModal"><div class="modal"><div class="modal-handle"></div><div class="modal-title" id="habitModalTitle">Новая привычка</div><input type="hidden" id="habitId"><div class="form-group"><label class="form-label">Название</label><input type="text" class="form-input" id="habitTitle" placeholder="Что отслеживать?"></div><div class="form-group"><label class="form-label">Категория</label><div class="category-selector" id="habitCatSelector"></div></div><div class="form-group"><label class="form-label">Расписание</label><div class="habit-days-selector" id="habitDaysSelector"></div><div style="font-size:11px;color:var(--text-muted);margin-top:4px" id="scheduleHint">Выберите дни недели для выполнения.</div></div><div class="form-group"><label class="form-label">Дата начала</label><input type="date" class="form-input" id="habitStartDate"></div><div class="form-group"><label class="form-label">Дата окончания (необязательно)</label><input type="date" class="form-input" id="habitEndDate"></div><button class="btn-primary" onclick="saveHabit()">Сохранить</button><button id="habitDeleteBtn" style="display:none;margin-top:12px;width:100%;background:transparent;border:none;color:var(--text-muted);font-size:13px;cursor:pointer;padding:8px" onclick="deleteHabitFromModal()">Удалить привычку</button></div></div>
 <div class="modal-overlay" id="periodModal" onclick="if(event.target===this)closeHabitPeriodFilter()"><div class="modal"><div class="modal-handle"></div><div class="modal-title">Период</div><div id="periodModalBody"></div></div></div>
+<div class="modal-overlay" id="anYearModal" onclick="if(event.target===this)closeAnYearFilter()"><div class="modal"><div class="modal-handle"></div><div class="modal-title">Год</div><div id="anYearModalBody"></div></div></div>
 
 <div class="modal-overlay" id="catModal"><div class="modal"><div class="modal-handle"></div><div class="modal-title" id="catModalTitle">Новая категория</div><div class="form-group"><label class="form-label">Название</label><input type="text" class="form-input" id="catName" placeholder="Например: Финансы"></div><div class="form-group"><label class="form-label">Цвет</label><div class="color-picker" id="catColorPicker"></div><button class="color-picker-toggle" onclick="toggleColorPicker(this)"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 4 L6 8 L10 4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></button></div><button class="btn-primary" onclick="saveCustomCategory()">Создать</button><div id="catEditListWrap" style="display:none;margin-top:16px"><div class="settings-section-title" style="margin-bottom:8px">Существующие категории</div><div id="catEditList"></div></div></div></div>
 
@@ -744,6 +759,10 @@ let habitViewYear=new Date().getFullYear();
 let habitViewMonth=new Date().getMonth();
 const HABIT_MONTH_NAMES=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
 const HABIT_MONTH_SHORT=['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'];
+let anYear=new Date().getFullYear();
+let anHeatMode='__score__';
+let anChartPeriod='week';
+let _anHabitList=[];
 let goalsTab='goals';
 let taskFilter='active';
 let editingGoalCat='health';
@@ -826,7 +845,7 @@ return Math.round(((doneScheduled+doneTasks+doneExtra)/baseTotal)*100);
 function getDailyScoreLevel(score){if(score===0)return 0;if(score<25)return 1;if(score<50)return 2;if(score<75)return 3;return 4}
 function getDowOffset(y,m){const fd=new Date(y,m,1);return fd.getDay()===0?6:fd.getDay()-1}
 
-function switchView(v){currentView=v;document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));document.getElementById('view-'+v).classList.add('active');document.querySelectorAll('.nav-item').forEach(el=>el.classList.toggle('active',el.dataset.view===v));if(v==='dashboard')renderDashboard();else if(v==='goals')renderGoals();else if(v==='habits')renderHabits();else if(v==='analytics')renderAnalytics();document.getElementById('fab').style.display=(v==='goals'||v==='habits')?'flex':'none';window.scrollTo(0,0);}
+function switchView(v){currentView=v;document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));document.getElementById('view-'+v).classList.add('active');document.querySelectorAll('.nav-item').forEach(el=>el.classList.toggle('active',el.dataset.view===v));if(v==='dashboard')renderDashboard();else if(v==='goals')renderGoals();else if(v==='habits')renderHabits();else if(v==='analytics')renderAnalytics();document.getElementById('fab').style.display=(v==='goals'||v==='habits')?'flex':'none';var _hpb=document.getElementById('headerPeriodBtn');if(_hpb)_hpb.style.display=(v==='habits')?'inline-flex':'none';window.scrollTo(0,0);}
 function fabAction(){if(currentView==='goals'){if(goalsTab==='tasks')openTaskModal();else openGoalModal()}else if(currentView==='habits')openHabitModal()}
 function setGoalsTab(tab){goalsTab=tab;document.getElementById('toggleGoals').classList.toggle('active',tab==='goals');document.getElementById('toggleTasks').classList.toggle('active',tab==='tasks');document.getElementById('goalsList').style.display=tab==='goals'?'block':'none';document.getElementById('tasksList').style.display=tab==='tasks'?'block':'none';if(tab==='goals')renderGoals();else renderTasks();haptic('light')}
 function calcMaxStreak(){let max=0;state.habits.forEach(h=>{const s=calcHabitStreak(h);if(s>max)max=s});return max}
@@ -1326,7 +1345,7 @@ function renderAnalytics(){const goals=state.goals;const cats=getAllCategories()
 // [7] Removed: weekly chart, stat squares, tasks card — only goals progress + year heatmap remain
 const gp=document.getElementById('anGoalsProgress');
 gp.innerHTML=goals.length===0?'<div style="text-align:center;color:var(--text-muted);padding:12px">Нет целей</div>':goals.map(g=>{const cat=cats[g.category]||{color:'#2e8bff',label:''};const prog=calcGoalProgress(g);return'<div class="cat-bar-row"><div class="cat-bar-label"><span class="cat-dot" style="background:'+cat.color+'"></span>'+escapeHtml(g.title)+'</div><div class="cat-bar-track"><div class="cat-bar-fill" style="width:'+prog+'%;background:'+cat.color+'"></div></div><div class="cat-bar-pct">'+prog+'%</div></div>'}).join('');
-renderYearHeatmap();
+renderAnHeatModeOptions();updateAnYearBtn();renderYearHeatmap();renderAnChart();
 var ins=generateInsights();var insEl=document.getElementById("anInsights");if(insEl){
 var labelMap={'Тренд':'trend','Скор':'score','Паттерны':'patterns','Привычки':'habits','Сравнение':'compare','Категории':'categories','Серии':'streak','Риск серии':'risk','Цели':'goals','Прогноз':'forecast','Дедлайны':'deadlines','Задачи':'tasks','Баланс':'balance','Возврат':'return','Достижения':'achievements','Начало':'start'};
 insEl.innerHTML='<div class="insight-list">'+ins.map(function(i){
@@ -1340,7 +1359,7 @@ function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+
 
 // [1] Yearly heatmap — calendar-correct day positioning, click month to drill in
 function renderYearHeatmap(){
-const grid=document.getElementById('yearHeatmapGrid');const now=new Date();const y=now.getFullYear();
+const grid=document.getElementById('yearHeatmapGrid');if(!grid)return;const now=new Date();const y=(typeof anYear==='number'?anYear:now.getFullYear());var _habitMode=(anHeatMode&&anHeatMode!=='__score__');var _habitCat='#00d4ff';if(_habitMode){var _hm=state.habits.filter(function(h){return h.title===anHeatMode});if(_hm.length){var _cc=getAllCategories()[_hm[0].category];if(_cc)_habitCat=_cc.color}}
 const months=['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'];
 let html='';
 for(let m=0;m<12;m++){
@@ -1350,9 +1369,11 @@ const startDow=getDowOffset(y,m);const daysInMonth=new Date(y,m+1,0).getDate();
 for(let i=0;i<startDow;i++){html+='<div class="year-heat-day" style="visibility:hidden"></div>'}
 for(let d=1;d<=daysInMonth;d++){
 const ds=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-const score=calcDailyScore(ds);const isFuture=new Date(ds)>now;
-let bgStyle='';if(!isFuture&&score>0){var op=(score/100*0.9).toFixed(3);var glow=score>=90?'box-shadow:0 0 4px rgba(46,139,255,'+(score/100*0.3).toFixed(3)+');':'';bgStyle=' style="background:rgba(46,139,255,'+op+');'+glow+'"'}
-html+='<div class="year-heat-day"'+bgStyle+' title="'+ds+': '+score+'%"></div>';
+const isFuture=new Date(ds)>now;
+let bgStyle='';let _tt=ds;
+if(_habitMode){if(!isFuture&&habitDoneByName(anHeatMode,ds)){bgStyle=' style="background:'+_habitCat+';opacity:0.85"';_tt=ds+' \u2713'}}
+else{const score=calcDailyScore(ds);_tt=ds+': '+score+'%';if(!isFuture&&score>0){var op=(score/100*0.9).toFixed(3);var glow=score>=90?'box-shadow:0 0 4px rgba(46,139,255,'+(score/100*0.3).toFixed(3)+');':'';bgStyle=' style="background:rgba(46,139,255,'+op+');'+glow+'"'}}
+html+='<div class="year-heat-day"'+bgStyle+' title="'+_tt+'"></div>';
 }
 const totalCells=startDow+daysInMonth;const remaining=(7-(totalCells%7))%7;
 for(let i=0;i<remaining;i++){html+='<div class="year-heat-day" style="visibility:hidden"></div>'}
@@ -1428,6 +1449,23 @@ document.getElementById('monthDayDetailItems').innerHTML=items;
 detail.classList.add('show');
 }
 function closeMonthDetail(){document.getElementById('monthDetailOverlay').classList.remove('open')}
+function habitDoneByName(name,ds){return state.habits.some(function(h){return h.title===name&&(h.checkoffs||[]).includes(ds)})}
+function renderAnHeatModeOptions(){var sel=document.getElementById('anHeatMode');if(!sel)return;var map={};state.habits.forEach(function(h){map[h.title]=1});var names=Object.keys(map).sort();_anHabitList=names;var html='<option value="__score__">\u0414\u043d\u0435\u0432\u043d\u043e\u0439 \u0441\u043a\u043e\u0440</option>'+names.map(function(nm,i){return '<option value="h'+i+'">'+escapeHtml(nm)+'</option>'}).join('');sel.innerHTML=html;var idx=names.indexOf(anHeatMode);sel.value=(idx>=0)?('h'+idx):'__score__'}
+function setAnHeatMode(v){if(v==='__score__')anHeatMode='__score__';else anHeatMode=_anHabitList[parseInt(v.slice(1),10)]||'__score__';renderYearHeatmap();haptic('light')}
+function openAnYearFilter(){var n=new Date();var curY=n.getFullYear();var years=[curY-3,curY-2,curY-1,curY,curY+1];var html='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">'+years.map(function(y){return '<div class="period-opt '+(anYear===y?'active':'')+'" onclick="pickAnYear('+y+')">'+y+'</div>'}).join('')+'</div>';html+='<div style="display:flex;gap:8px;margin-top:14px"><button class="btn-secondary" style="flex:1 1 0;width:auto" onclick="closeAnYearFilter()">\u0417\u0430\u043a\u0440\u044b\u0442\u044c</button><button class="btn-primary" style="flex:1 1 0;width:auto" onclick="resetAnYear();closeAnYearFilter()">\u0421\u0435\u0433\u043e\u0434\u043d\u044f</button></div>';document.getElementById('anYearModalBody').innerHTML=html;document.getElementById('anYearModal').classList.add('active');haptic('light')}
+function pickAnYear(y){anYear=y;renderYearHeatmap();updateAnYearBtn();haptic('light')}
+function resetAnYear(){var n=new Date();anYear=n.getFullYear();renderYearHeatmap();updateAnYearBtn();showToast('\u0422\u0435\u043a\u0443\u0449\u0438\u0439 \u0433\u043e\u0434');haptic('light')}
+function closeAnYearFilter(){document.getElementById('anYearModal').classList.remove('active')}
+function updateAnYearBtn(){var b=document.getElementById('anYearBtn');if(!b)return;b.textContent=anYear;var n=new Date();b.classList.toggle('active',anYear!==n.getFullYear())}
+function setAnChartPeriod(p){anChartPeriod=p;renderAnChart();haptic('light')}
+function renderAnChart(){var inner=document.getElementById('anChartInner');if(!inner)return;var tabs=document.getElementById('anChartTabs');if(tabs){tabs.innerHTML=[['week','\u041d\u0435\u0434\u0435\u043b\u044f'],['month','\u041c\u0435\u0441\u044f\u0446'],['quarter','\u041a\u0432\u0430\u0440\u0442\u0430\u043b'],['year','\u0413\u043e\u0434']].map(function(p){return '<div class="an-chart-tab'+(anChartPeriod===p[0]?' active':'')+'" onclick="setAnChartPeriod(\''+p[0]+'\')">'+p[1]+'</div>'}).join('')}
+var nDays=anChartPeriod==='week'?7:anChartPeriod==='month'?30:anChartPeriod==='quarter'?90:365;
+var fixedW=anChartPeriod==='month'?16:anChartPeriod==='quarter'?9:anChartPeriod==='year'?4:0;
+var scrollEl=document.getElementById('anChartScroll');var avail=(scrollEl&&scrollEl.clientWidth)||320;
+var w=fixedW>0?fixedW:Math.max(12,Math.floor(avail/nDays)-4);
+var maxH=112;var html='';
+for(var i=nDays-1;i>=0;i--){var dd=new Date();dd.setDate(dd.getDate()-i);var ds=dateStr(dd);var sc=calcDailyScore(ds);var hgt=Math.max(4,Math.round(Math.min(100,sc)/100*maxH));var lbl=(anChartPeriod==='week')?['\u0412\u0441','\u041f\u043d','\u0412\u0442','\u0421\u0440','\u0427\u0442','\u041f\u0442','\u0421\u0431'][dd.getDay()]:'';var dim=sc<=0?' style="opacity:0.25"':'';html+='<div class="an-chart-col" style="width:'+w+'px"><div class="an-chart-bar-wrap"><div class="an-chart-bar"'+dim+' style="height:'+hgt+'px"></div></div>'+(lbl?'<div class="an-chart-lbl">'+lbl+'</div>':'')+'</div>'}
+inner.style.minWidth=(nDays*(w+4))+'px';inner.innerHTML=html;if(scrollEl)scrollEl.scrollLeft=scrollEl.scrollWidth}
 
 function openAgentChat(){document.getElementById('agentModal').classList.add('active');renderAgentTopics();renderAgentMessages();document.getElementById('agentChatInput').focus()}
 function renderAgentTopics(){const el=document.getElementById('agentTopics');let html=state.chatTopics.map(t=>'<div class="agent-topic-chip '+(state.activeTopic===t.id?'active':'')+'" onclick="switchTopic(\''+t.id+'\')">'+escapeHtml(t.name)+'</div>').join('');html+='<div class="agent-topic-add" onclick="addTopic()">+ Тема</div>';el.innerHTML=html}
@@ -1884,14 +1922,15 @@ h+='</div>';
 h+='<div class="review-section">';
 h+='<div class="review-section-title">Оценки по дням</div>';
 h+='<div class="review-day-cards">';
-scores.forEach(function(s){
-var isToday=s.date===todayStr();
-h+='<div class="review-day-card'+(isToday?' today':'')+'">';
-h+='<div class="rdc-day">'+s.dayName+'</div>';
-h+='<div class="rdc-score">'+s.score+'</div>';
-h+='<div class="rdc-bar"><div class="rdc-bar-fill" style="width:'+s.score+'%"></div></div>';
+for(var _di=27;_di>=0;_di--){
+var _dc=new Date();_dc.setDate(_dc.getDate()-_di);var _dds=dateStr(_dc);var _dsc=calcDailyScore(_dds);
+h+='<div class="review-day-card'+(_dds===todayStr()?' today':'')+'">';
+h+='<div class="rdc-day">'+['\u0412\u0441','\u041f\u043d','\u0412\u0442','\u0421\u0440','\u0427\u0442','\u041f\u0442','\u0421\u0431'][_dc.getDay()]+'</div>';
+h+='<div class="rdc-score">'+_dsc+'</div>';
+h+='<div class="rdc-bar"><div class="rdc-bar-fill" style="width:'+Math.min(100,_dsc)+'%"></div></div>';
+h+='<div class="rdc-date">'+_dc.getDate()+'.'+String(_dc.getMonth()+1).padStart(2,'0')+'</div>';
 h+='</div>';
-});
+}
 h+='</div>';
 // Average + comparison
 var deltaCls=delta>0?'up':(delta<0?'down':'flat');

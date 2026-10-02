@@ -358,15 +358,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .an-heat-select{background:var(--glass-bg);border:1px solid var(--glass-border);color:var(--text-secondary);border-radius:12px;font-size:11px;padding:3px 6px;max-width:108px}
 .an-year-btn{background:var(--glass-bg);border:1px solid var(--glass-border);color:var(--text-secondary);border-radius:12px;font-size:11px;font-weight:600;padding:3px 9px;cursor:pointer;transition:var(--transition)}
 .an-year-btn.active{background:var(--accent-grad);background-size:140% 140%;background-position:30% 30%;color:#fff;border-color:transparent}
-.an-chart-tabs{display:flex;gap:4px}
-.an-chart-tab{padding:3px 8px;border-radius:12px;font-size:10px;font-weight:600;background:var(--glass-bg);border:1px solid var(--glass-border);color:var(--text-secondary);cursor:pointer;transition:var(--transition)}
-.an-chart-tab.active{background:var(--accent-grad);background-size:140% 140%;background-position:30% 30%;color:#fff;border-color:transparent}
-.an-chart-scroll{overflow-x:auto;overflow-y:hidden;padding-bottom:6px;-webkit-overflow-scrolling:touch;flex:1 1 auto;min-width:0}.an-line-wrap{display:flex;align-items:flex-start;gap:4px;margin-top:10px}.an-line-yaxis{flex:0 0 auto;width:28px;position:relative;font-size:9px;color:var(--text-muted)}.an-line-yaxis span{position:absolute;right:2px;transform:translateY(-50%)}.an-line-inner{height:150px}
-.an-chart-inner{display:flex;align-items:flex-end;gap:4px;height:150px}
-.an-chart-col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;flex:0 0 auto}
-.an-chart-bar-wrap{height:112px;display:flex;align-items:flex-end}
-.an-chart-bar{width:100%;min-width:3px;background:var(--accent-grad);border-radius:3px 3px 0 0}
-.an-chart-lbl{font-size:9px;color:var(--text-muted);margin-top:3px}
+.an-chart-scroll{overflow-x:auto;overflow-y:hidden;padding-bottom:6px;-webkit-overflow-scrolling:touch;flex:1 1 auto;min-width:0}.an-line-wrap{display:flex;align-items:flex-start;gap:4px;margin-top:10px}.an-line-yaxis{flex:0 0 auto;width:28px;position:relative;font-size:9px;color:var(--text-muted)}.an-line-yaxis span{position:absolute;right:2px;transform:translateY(-50%)}.an-line-inner{height:150px;position:relative}.an-tip{position:absolute;top:2px;transform:translateX(-50%);background:rgba(14,22,40,0.97);border:1px solid var(--glass-border);border-radius:8px;padding:6px 9px;font-size:10px;line-height:1.45;color:var(--text-secondary);pointer-events:none;z-index:6;min-width:92px;max-width:172px;box-shadow:0 4px 14px rgba(0,0,0,0.45)}.an-tip-date{font-weight:700;color:var(--text-primary)}.an-tip-score{margin-bottom:2px}.an-tip-h{display:flex;align-items:center;gap:5px}.an-tip-dot{width:7px;height:7px;border-radius:50%;flex:0 0 auto}.an-tip-empty{opacity:0.6}
 
 .month-detail-overlay{position:fixed;inset:0;background:rgba(5,8,16,0.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:225;display:none;align-items:flex-start;justify-content:center;padding-top:50px;animation:fadeIn 0.2s ease}
 .month-detail-overlay.open{display:flex}
@@ -654,7 +646,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.7.4</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.7.5</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -681,7 +673,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 <div class="view" id="view-habits"><div id="habitsList"></div></div>
 <div class="view" id="view-analytics">
 <div class="card stagger"><div class="card-title" style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span>Годовая активность</span><div class="an-heat-controls"><select class="an-heat-select" id="anHeatMode" onchange="setAnHeatMode(this.value)"></select><button class="an-year-btn" id="anYearBtn" onclick="openAnYearFilter()">2026</button></div></div><div class="year-heatmap-grid" id="yearHeatmapGrid"></div><div class="year-heat-legend"><span>0%</span><div class="scale"><div style="background:var(--bg-elevated)"></div><div style="background:rgba(46,139,255,0.15)"></div><div style="background:rgba(46,139,255,0.35)"></div><div style="background:rgba(46,139,255,0.6)"></div><div style="background:rgba(46,139,255,0.9)"></div></div><span>100%</span></div></div>
-<div class="card stagger"><div class="card-title" style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span>Активность по дням</span><div class="an-chart-tabs" id="anChartTabs"></div></div><div class="an-line-wrap"><div class="an-line-yaxis" id="anChartYAxis"></div><div class="an-chart-scroll" id="anChartScroll"><div class="an-line-inner" id="anChartInner"></div></div></div></div>
+<div class="card stagger"><div class="card-title" style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span>Активность по дням</span><select class="an-heat-select" id="anChartSel" onchange="setAnChartPeriod(this.value)"><option value="week">Неделя</option><option value="month">Месяц</option><option value="quarter">Квартал</option><option value="year">Год</option></select></div><div class="an-line-wrap"><div class="an-line-yaxis" id="anChartYAxis"></div><div class="an-chart-scroll" id="anChartScroll"><div class="an-line-inner" id="anChartInner"></div></div></div></div>
 <div class="card stagger"><div class="card-title">Прогресс целей</div><div id="anGoalsProgress" style="display:flex;flex-direction:column;gap:10px"></div></div>
 <div id="reviewContent"></div>
 <div class="card stagger"><div class="card-title">Инсайты</div><div id="anInsights"></div></div>
@@ -761,7 +753,7 @@ const HABIT_MONTH_NAMES=['Январь','Февраль','Март','Апрел�
 const HABIT_MONTH_SHORT=['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'];
 let anYear=new Date().getFullYear();
 let anHeatMode='__score__';
-let anChartPeriod='week';
+let anChartPeriod='week';var anChartData=[],anChartPtW=1,anChartTopPad=54,anChartChartH=100,anChartTop=1,anChartWidth=320;
 let _anHabitList=[];
 let goalsTab='goals';
 let taskFilter='active';
@@ -1457,29 +1449,41 @@ function pickAnYear(y){anYear=y;renderYearHeatmap();updateAnYearBtn();haptic('li
 function resetAnYear(){var n=new Date();anYear=n.getFullYear();renderYearHeatmap();updateAnYearBtn();showToast('\u0422\u0435\u043a\u0443\u0449\u0438\u0439 \u0433\u043e\u0434');haptic('light')}
 function closeAnYearFilter(){document.getElementById('anYearModal').classList.remove('active')}
 function updateAnYearBtn(){var b=document.getElementById('anYearBtn');if(!b)return;b.textContent=anYear;var n=new Date();b.classList.toggle('active',anYear!==n.getFullYear())}
-function setAnChartPeriod(p){anChartPeriod=p;renderAnChart();haptic('light')}
+var anChartData=[],anChartPtW=1,anChartTopPad=54,anChartChartH=100,anChartTop=1,anChartWidth=320;
+function setAnChartPeriod(p){anChartPeriod=p;var s=document.getElementById('anChartSel');if(s)s.value=p;renderAnChart();haptic('light')}
+function anDayDoneHabits(ds){var cats=getAllCategories();var seen={};var out=[];state.habits.forEach(function(h){if(seen[h.title])return;if(!(h.checkoffs||[]).includes(ds))return;seen[h.title]=1;var cc=cats[h.category]||{color:'#2e8bff'};out.push({t:h.title,c:cc.color})});return out}
+function anChartTap(e){var inner=document.getElementById('anChartInner');if(!inner||!anChartData.length)return;var rect=inner.getBoundingClientRect();var x=e.clientX-rect.left;var idx=Math.round((x-anChartPtW/2)/anChartPtW);idx=Math.max(0,Math.min(anChartData.length-1,idx));anChartShowTip(idx)}
+function anChartShowTip(idx){var item=anChartData[idx];if(!item)return;var svgW=anChartWidth;var x=idx*anChartPtW+anChartPtW/2;var y=anChartTopPad+(1-item.v/anChartTop)*anChartChartH;var cur=document.getElementById('anChartCursor');if(cur){cur.setAttribute('x1',x.toFixed(1));cur.setAttribute('x2',x.toFixed(1));cur.setAttribute('y1',anChartTopPad);cur.setAttribute('y2',(anChartTopPad+anChartChartH));cur.style.display=''}var dot=document.getElementById('anChartDot');if(dot){dot.setAttribute('cx',x.toFixed(1));dot.setAttribute('cy',y.toFixed(1));dot.style.display=''}var tip=document.getElementById('anChartTip');if(!tip)return;var d=item.d;var habits=anDayDoneHabits(item.ds);var hh=habits.length?habits.map(function(o){return '<div class="an-tip-h"><span class="an-tip-dot" style="background:'+o.c+'"></span>'+escapeHtml(o.t)+'</div>'}).join(''):'<div class="an-tip-empty">\u041f\u0440\u0438\u0432\u044b\u0447\u0435\u043a \u043d\u0435 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u043e</div>';tip.innerHTML='<div class="an-tip-date">'+d.getDate()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+d.getFullYear()+'</div><div class="an-tip-score">\u0421\u043a\u043e\u0440: <b>'+item.v+'</b></div>'+hh;var half=82;var left=Math.max(half,Math.min(svgW-half,x));tip.style.left=left+'px';tip.style.display='block';haptic('light')}
+function anChartSmoothPath(p){if(p.length<2)return '';var d='M'+p[0].x.toFixed(1)+','+p[0].y.toFixed(1);for(var i=0;i<p.length-1;i++){var p0=p[i-1]||p[i],p1=p[i],p2=p[i+1],p3=p[i+2]||p2;var c1x=p1.x+(p2.x-p0.x)/6,c1y=p1.y+(p2.y-p0.y)/6;var c2x=p2.x-(p3.x-p1.x)/6,c2y=p2.y-(p3.y-p1.y)/6;d+=' C'+c1x.toFixed(1)+','+c1y.toFixed(1)+' '+c2x.toFixed(1)+','+c2y.toFixed(1)+' '+p2.x.toFixed(1)+','+p2.y.toFixed(1)}return d}
 function renderAnChart(){
 var inner=document.getElementById('anChartInner');if(!inner)return;
-var tabs=document.getElementById('anChartTabs');
-if(tabs){tabs.innerHTML=[['week','Неделя'],['month','Месяц'],['quarter','Квартал'],['year','Год']].map(function(p){return '<div class="an-chart-tab'+(anChartPeriod===p[0]?' active':'')+'" onclick="setAnChartPeriod(\''+p[0]+'\')">'+p[1]+'</div>'}).join('')}
+var sel=document.getElementById('anChartSel');if(sel)sel.value=anChartPeriod;
 var nDays=365;
 var perView=anChartPeriod==='week'?7:anChartPeriod==='month'?30:anChartPeriod==='quarter'?90:365;
 var scrollEl=document.getElementById('anChartScroll');var avail=(scrollEl&&scrollEl.clientWidth)||320;
 var ptW=Math.max(1,avail/perView);
-var chartH=104,topPad=10,svgH=chartH+topPad+16;
+var topPad=54,chartH=100;var isYear=(anChartPeriod==='year');var svgH=topPad+chartH+(isYear?32:18);
 var days=[];var maxv=1;
-for(var i=nDays-1;i>=0;i--){var dd=new Date();dd.setDate(dd.getDate()-i);var ds=dateStr(dd);var sc=calcDailyScore(ds);if(sc>maxv)maxv=sc;days.push({d:dd,v:sc});}
+for(var i=nDays-1;i>=0;i--){var dd=new Date();dd.setDate(dd.getDate()-i);var ds=dateStr(dd);var sc=calcDailyScore(ds);if(sc>maxv)maxv=sc;days.push({d:dd,v:sc,ds:ds})}
 var step;if(maxv<=10)step=2;else if(maxv<=25)step=5;else if(maxv<=50)step=10;else if(maxv<=100)step=25;else if(maxv<=200)step=50;else if(maxv<=400)step=100;else step=200;
 var top=Math.ceil(maxv/step)*step;if(top<=0)top=step;
+anChartData=days;anChartPtW=ptW;anChartTopPad=topPad;anChartChartH=chartH;anChartTop=top;
+var svgW=Math.round(nDays*ptW);anChartWidth=svgW;
 var yaxis=document.getElementById('anChartYAxis');
-if(yaxis){var yl='';for(var t=top;t>=0;t-=step){var yy=topPad+(1-t/top)*chartH;yl+='<span style="top:'+yy.toFixed(1)+'px">'+t+'</span>';}yaxis.style.height=svgH+'px';yaxis.innerHTML=yl;}
-var svgW=Math.round(nDays*ptW);
-var grid='';for(var t2=top;t2>=0;t2-=step){var gy=topPad+(1-t2/top)*chartH;grid+='<line x1="0" y1="'+gy.toFixed(1)+'" x2="'+svgW+'" y2="'+gy.toFixed(1)+'" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>';}
-var pts=[];var circles='';var labels='';
-var labEvery=ptW>=10?1:Math.max(1,Math.ceil(22/ptW));
-for(var i2=0;i2<nDays;i2++){var d2=days[i2];var x=i2*ptW+ptW/2;var y=topPad+(1-d2.v/top)*chartH;pts.push(x.toFixed(1)+','+y.toFixed(1));if(ptW>=6)circles+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="2" fill="var(--blue-bright)"/>';if(i2%labEvery===0||i2===nDays-1){var lb=ptW>=10?String(d2.d.getDate()):(String(d2.d.getDate()).padStart(2,'0')+'.'+String(d2.d.getMonth()+1).padStart(2,'0'));labels+='<text x="'+x.toFixed(1)+'" y="'+(topPad+chartH+12)+'" text-anchor="middle" font-size="9" fill="var(--text-muted)">'+lb+'</text>';}}
-inner.style.width=svgW+'px';
-inner.innerHTML='<svg width="'+svgW+'" height="'+svgH+'" viewBox="0 0 '+svgW+' '+svgH+'" style="display:block">'+grid+'<polyline points="'+pts.join(' ')+'" fill="none" stroke="var(--blue-bright)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>'+circles+labels+'</svg>';
+if(yaxis){var yl='';for(var t=top;t>=0;t-=step){var yy=topPad+(1-t/top)*chartH;yl+='<span style="top:'+yy.toFixed(1)+'px">'+t+'</span>'}yaxis.style.height=svgH+'px';yaxis.innerHTML=yl}
+var grid='';for(var t2=top;t2>=0;t2-=step){var gy=topPad+(1-t2/top)*chartH;grid+='<line x1="0" y1="'+gy.toFixed(1)+'" x2="'+svgW+'" y2="'+gy.toFixed(1)+'" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>'}
+var pts=[];for(var i2=0;i2<nDays;i2++){var d2=days[i2];pts.push({x:i2*ptW+ptW/2,y:topPad+(1-d2.v/top)*chartH})}
+var lineD=anChartSmoothPath(pts);
+var areaD=lineD+' L'+(nDays*ptW-ptW/2).toFixed(1)+','+(topPad+chartH).toFixed(1)+' L'+(ptW/2).toFixed(1)+','+(topPad+chartH).toFixed(1)+' Z';
+var vlines='';var labels='';
+if(isYear){var segs=[];for(var i3=0;i3<nDays;i3++){var mo=days[i3].d.getMonth();if(!segs.length||segs[segs.length-1].m!==mo)segs.push({m:mo,s:i3,e:i3});else segs[segs.length-1].e=i3}var MN=['\u042f\u043d\u0432','\u0424\u0435\u0432','\u041c\u0430\u0440','\u0410\u043f\u0440','\u041c\u0430\u0439','\u0418\u044e\u043d','\u0418\u044e\u043b','\u0410\u0432\u0433','\u0421\u0435\u043d','\u041e\u043a\u0442','\u041d\u043e\u044f','\u0414\u0435\u043a'];segs.forEach(function(sg){if(sg.s>0)vlines+='<line x1="'+(sg.s*ptW).toFixed(1)+'" y1="'+topPad+'" x2="'+(sg.s*ptW).toFixed(1)+'" y2="'+(topPad+chartH)+'" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>';var cxs=((sg.s+sg.e)/2)*ptW+ptW/2;labels+='<text x="'+cxs.toFixed(1)+'" y="'+(topPad+chartH+26)+'" text-anchor="middle" font-size="9" fill="var(--text-muted)">'+MN[sg.m]+'</text>'})}
+else{var labEvery=anChartPeriod==='week'?1:anChartPeriod==='month'?5:Math.max(1,Math.ceil(30/ptW));for(var i4=0;i4<nDays;i4++){if(i4%labEvery===0||i4===nDays-1){var d4=days[i4].d;var lx=i4*ptW+ptW/2;labels+='<text x="'+lx.toFixed(1)+'" y="'+(topPad+chartH+13)+'" text-anchor="middle" font-size="9" fill="var(--text-muted)">'+String(d4.getDate()).padStart(2,'0')+'.'+String(d4.getMonth()+1).padStart(2,'0')+'</text>'}}}
+var circles='';if(ptW>=6){for(var i5=0;i5<nDays;i5++){circles+='<circle cx="'+pts[i5].x.toFixed(1)+'" cy="'+pts[i5].y.toFixed(1)+'" r="2" fill="var(--blue-bright)"/>'}}
+var defs='<defs><linearGradient id="anAreaGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(46,139,255,0.34)"/><stop offset="100%" stop-color="rgba(46,139,255,0)"/></linearGradient><filter id="anGlow" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="3.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>';
+var svg='<svg width="'+svgW+'" height="'+svgH+'" viewBox="0 0 '+svgW+' '+svgH+'" style="display:block">'+defs+grid+vlines+'<path d="'+areaD+'" fill="url(#anAreaGrad)" stroke="none"/><path d="'+lineD+'" fill="none" stroke="var(--blue-bright)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" filter="url(#anGlow)"/>'+circles+'<line id="anChartCursor" x1="0" y1="'+topPad+'" x2="0" y2="'+(topPad+chartH)+'" stroke="rgba(232,240,255,0.55)" stroke-width="1" stroke-dasharray="3 3" style="display:none"/><circle id="anChartDot" cx="0" cy="0" r="4" fill="#fff" stroke="var(--blue-bright)" stroke-width="2" style="display:none"/>'+labels+'</svg>';
+inner.style.width=svgW+'px';inner.style.height=svgH+'px';
+inner.innerHTML=svg+'<div class="an-tip" id="anChartTip" style="display:none"></div>';
+inner.onclick=anChartTap;
 if(scrollEl)scrollEl.scrollLeft=scrollEl.scrollWidth;
 }
 

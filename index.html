@@ -657,7 +657,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.7.9</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.8.0</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -2070,7 +2070,8 @@ if(ss){ss.textContent=msg||({ok:'Синхронизировано',err:'Ошиб
 }
 function _b64(s){return btoa(unescape(encodeURIComponent(s)))}
 function _ghHeaders(extra){
-var h={'Authorization':'token '+DATA_SYNC_TOKEN,'Accept':'application/vnd.github+json'};
+var tok=String(DATA_SYNC_TOKEN||'').replace(/\s+/g,'');
+var h={'Authorization':'token '+tok,'Accept':'application/vnd.github+json'};
 if(extra){for(var k in extra){h[k]=extra[k]}}
 return h;
 }
@@ -2080,6 +2081,19 @@ if(force){syncDataToGitHub(true);return}
 if(syncDebounceTimer)clearTimeout(syncDebounceTimer);
 syncDebounceTimer=setTimeout(function(){syncDataToGitHub()},8000);
 }
+function ensureSyncRef(base,headers){
+return fetch(base+'/git/ref/heads/main',{headers:headers})
+.then(function(r){if(r.ok)return r.json();if(r.status===404||r.status===409)return null;throw new Error('ref '+r.status)})
+.then(function(ref){
+if(ref){var p=ref.object.sha;return fetch(base+'/git/commits/'+p,{headers:headers}).then(function(r){if(!r.ok)throw new Error('commit '+r.status);return r.json()}).then(function(c){return{parent:p,baseTree:c.tree.sha}})}
+return fetch(base+'/git/trees',{method:'POST',headers:headers,body:JSON.stringify({tree:[]})})
+.then(function(r){if(!r.ok)throw new Error('inittree '+r.status);return r.json()})
+.then(function(t){return fetch(base+'/git/commits',{method:'POST',headers:headers,body:JSON.stringify({message:'init user data',tree:t.sha,parents:[]})})
+.then(function(r){if(!r.ok)throw new Error('initcommit '+r.status);return r.json()})
+.then(function(c){return fetch(base+'/git/refs',{method:'POST',headers:headers,body:JSON.stringify({ref:'refs/heads/main',sha:c.sha})})
+.then(function(r){if(!r.ok)throw new Error('initref '+r.status);return{parent:c.sha,baseTree:t.sha}})})});
+});
+}
 function syncDataToGitHub(force){
 if(!DATA_SYNC_TOKEN){return}
 var payload=JSON.stringify(state);
@@ -2088,14 +2102,7 @@ if(!force&&(Date.now()-lastSyncTs<SYNC_INTERVAL)){return}
 if(syncInFlight){syncPendingAgain=true;return}
 syncInFlight=true;lastSyncTs=Date.now();updateSyncStatus('syncing');
 var base='https://api.github.com/repos/'+DATA_SYNC_REPO;
-fetch(base+'/git/ref/heads/main',{headers:_ghHeaders()})
-.then(function(r){if(!r.ok)throw new Error('ref '+r.status);return r.json()})
-.then(function(ref){
-var parent=ref.object.sha;
-return fetch(base+'/git/commits/'+parent,{headers:_ghHeaders()})
-.then(function(r){if(!r.ok)throw new Error('commit '+r.status);return r.json()})
-.then(function(c){return{parent:parent,baseTree:c.tree.sha}});
-})
+ensureSyncRef(base,_ghHeaders())
 .then(function(ctx){
 return fetch(base+'/git/blobs',{method:'POST',headers:_ghHeaders({'Content-Type':'application/json'}),body:JSON.stringify({content:_b64(payload),encoding:'base64'})})
 .then(function(r){if(!r.ok)throw new Error('blob '+r.status);return r.json()})
@@ -2118,8 +2125,13 @@ updateSyncStatus('ok','Синхронизировано '+new Date().toLocaleTim
 if(syncPendingAgain){syncPendingAgain=false;scheduleGitHubSync(true)}
 })
 .catch(function(e){
-syncInFlight=false;updateSyncStatus('err','Ошибка синхронизации');
-console.warn('GitHub sync error:',e);
+syncInFlight=false;var msg=(e&&e.message)||String(e);var hint='';
+if(/401|bad credentials/i.test(msg))hint=' - токен неверный или пустой';
+else if(/403/.test(msg))hint=' - нет доступа к приватному репо';
+else if(/404/.test(msg))hint=' - репозиторий не найден';
+else if(/invalid header/i.test(msg))hint=' - лишний пробел в токене';
+updateSyncStatus('err','Ошибка синхронизации'+hint);
+console.warn('GitHub sync error:',msg);
 if(syncPendingAgain){syncPendingAgain=false}
 });
 }

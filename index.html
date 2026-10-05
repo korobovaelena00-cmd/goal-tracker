@@ -648,6 +648,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 <input type="password" id="syncTokenInput" class="form-input" placeholder="ghp_..." value="">
 <button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="saveSyncToken(document.getElementById('syncTokenInput').value);showToast('Токен сохранён')">Сохранить токен</button>
 <button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="syncDataToGitHub(true)">Синхронизировать сейчас</button>
+<button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="checkSyncConnection()">Проверить подключение</button>
 <div style="font-size:11px;color:var(--text-secondary);opacity:0.75;margin-top:8px;line-height:1.5">Данные хранятся в приватном репозитории goal-tracker-data</div>
 </div>
 <div class="sync-status" id="syncStatusDiv">
@@ -657,7 +658,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.8.0</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.8.1</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -2130,8 +2131,10 @@ if(/401|bad credentials/i.test(msg))hint=' - токен неверный или 
 else if(/403/.test(msg))hint=' - нет доступа к приватному репо';
 else if(/404/.test(msg))hint=' - репозиторий не найден';
 else if(/invalid header/i.test(msg))hint=' - лишний пробел в токене';
+else if(/failed to fetch|networkerror|load failed|network request failed/i.test(msg))hint=' - нет сети или запрос к GitHub заблокирован';
+else hint=' - '+msg;
 updateSyncStatus('err','Ошибка синхронизации'+hint);
-console.warn('GitHub sync error:',msg);
+console.error('GitHub sync error:',msg);
 if(syncPendingAgain){syncPendingAgain=false}
 });
 }
@@ -2152,6 +2155,24 @@ showToast('Данные восстановлены из GitHub');return;
 }
 syncDataToGitHub(true);
 });
+}
+
+function checkSyncConnection(){
+if(!DATA_SYNC_TOKEN){updateSyncStatus('err','Ошибка синхронизации - токен не введён');showToast('Сначала введи токен и нажми «Сохранить токен»');return}
+updateSyncStatus('syncing','Проверка подключения...');
+fetch('https://api.github.com/user',{headers:_ghHeaders()})
+.then(function(r){if(r.status===401)throw new Error('токен неверный или пустой (401)');if(!r.ok)throw new Error('запрос user: '+r.status);return r.json()})
+.then(function(u){
+return fetch('https://api.github.com/repos/'+DATA_SYNC_REPO,{headers:_ghHeaders()})
+.then(function(r){if(r.status===403)throw new Error('нет доступа к приватному репо (403)');if(r.status===404)throw new Error('репозиторий не найден или недоступен (404)');if(!r.ok)throw new Error('запрос repo: '+r.status);return r.json()})
+.then(function(rep){return{u:u,rep:rep}});
+})
+.then(function(x){
+if(x.rep && x.rep.private===false){updateSyncStatus('ok','Подключение OK: '+x.u.login+' → '+x.rep.full_name+' (репо публичный!)')}
+else{updateSyncStatus('ok','Подключение OK: '+x.u.login+' → '+(x.rep&&x.rep.full_name||DATA_SYNC_REPO))}
+showToast('Подключение к GitHub работает');
+})
+.catch(function(e){var m=(e&&e.message)||String(e);updateSyncStatus('err','Ошибка синхронизации - '+m);showToast('Ошибка: '+m)});
 }
 
 // Initialize

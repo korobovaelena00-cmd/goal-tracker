@@ -628,6 +628,15 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 
 <div class="settings-overlay" id="settingsOverlay" onclick="toggleSettings()"></div>
+<div class="settings-overlay" id="exportOverlay" onclick="if(event.target===this)closeExportCopy()"></div>
+<div class="settings-panel" id="exportPanel">
+<div class="settings-header"><div><div class="settings-name">Экспорт данных</div><div class="settings-sub">Резервная копия (JSON)</div></div></div>
+<div class="settings-section">
+<div class="settings-desc">Файл скачался? Если нет (бывает в Telegram) — выдели текст и скопируй его в заметки или файл. Данные останутся у тебя.</div>
+<textarea id="exportJsonArea" class="form-input" readonly style="width:100%;height:230px;margin-top:10px;font-size:11px;font-family:monospace;resize:vertical"></textarea>
+<button class="btn btn-secondary btn-sm" style="margin-top:10px" onclick="copyExport()">Скопировать текст</button>
+<button class="btn btn-secondary btn-sm" style="margin-top:10px" onclick="closeExportCopy()">Готово</button>
+</div></div>
 <div class="settings-panel" id="settingsPanel">
 <div class="settings-header"><div class="settings-avatar" id="settingsAvatar">A</div><div><div class="settings-name" id="settingsName">Пользователь</div><div class="settings-sub" id="settingsSub">Аккаунт не привязан</div></div></div>
 <div class="settings-section"><div class="settings-section-title">Внешний вид</div>
@@ -648,7 +657,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.7.8</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.7.9</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -1810,7 +1819,10 @@ return insights;
 }
 
 
-function exportData(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='pupsai-backup-'+todayStr()+'.json';a.click();URL.revokeObjectURL(url);showToast('Экспортировано')}
+function exportData(){var json=JSON.stringify(state,null,2);try{var blob=new Blob([json],{type:'application/json'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='pupsai-backup-'+todayStr()+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},2000);showToast('Экспортировано')}catch(e){showToast('Ошибка экспорта',true)}var tg=window.Telegram&&Telegram.WebApp&&Telegram.WebApp.platform&&Telegram.WebApp.platform!=='unknown';if(tg){showExportCopy(json)}}
+function showExportCopy(json){var ta=document.getElementById('exportJsonArea');if(ta){ta.value=json}document.getElementById('exportOverlay').classList.add('open');document.getElementById('exportPanel').classList.add('open')}
+function closeExportCopy(){document.getElementById('exportOverlay').classList.remove('open');document.getElementById('exportPanel').classList.remove('open')}
+function copyExport(){var ta=document.getElementById('exportJsonArea');if(!ta)return;var j=ta.value;function legacy(){try{ta.focus();ta.select();var ok=document.execCommand('copy');showToast(ok?'Скопировано':'Выдели и скопируй вручную',!ok)}catch(e){showToast('Выдели и скопируй вручную',true)}}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(j).then(function(){showToast('Скопировано')},legacy)}else{legacy()}}
 function importData(e){const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=ev=>{try{const p=JSON.parse(ev.target.result);if(p&&Array.isArray(p.goals)&&Array.isArray(p.habits)){state=p;state.goals.forEach(g=>{if(!g.subtasks)g.subtasks=[];if(!g.priority)g.priority='med';g.subtasks.forEach(s=>{if(!s.dueDate)s.dueDate=null})});state.habits.forEach(h=>{if(h.targetPerWeek===undefined)h.targetPerWeek=7;if(!h.daysOfWeek)h.daysOfWeek=[1,2,3,4,5,6,0];if(!h.scheduleMode)h.scheduleMode='week';if(!h.weekInterval)h.weekInterval=1});if(!state.tasks)state.tasks=[];if(!state.customCategories)state.customCategories=[];if(!state.settings)state.settings={theme:'dark',lang:'ru',healthSynced:false,healthData:null};if(!state.dailyScores)state.dailyScores={};if(!state.chatTopics)state.chatTopics=[{id:'general',name:'Общее'}];if(!state.chatHistory)state.chatHistory={general:[{role:'system',text:'Привет! Я твой агент.',ts:Date.now()}]};if(!state.activeTopic)state.activeTopic='general';saveData();applySettings();renderDashboard();showToast('Импортировано');startAutoSave()}else{showToast('Неверный формат',true)}}catch(err){showToast('Ошибка чтения',true)}};r.readAsText(file);e.target.value=''}
 
 function showConfirmModal(html){document.getElementById('confirmText').innerHTML=html;document.getElementById('confirmOkBtn').style.display='none';document.getElementById('confirmModal').classList.add('active')}

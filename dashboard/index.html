@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Dashboard - Goal Tracker</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#0e1628;--card:#162038;--mut:#8a94a6;--acc:#c93545;--ok:#2ecc71;--ln:#243050}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#e8f0ff;font:14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:12px}
+h1{font-size:18px;margin:0}
+h2{font-size:13px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em;margin:18px 0 8px}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{background:var(--card);border:1px solid var(--ln);color:#e8f0ff;border-radius:9px;padding:7px 11px;font-size:13px}
+.btn.on{background:var(--acc);border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:12px;margin-top:10px}
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+.kpi{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:12px}
+.kpi .v{font-size:22px;font-weight:700}
+.kpi .l{color:var(--mut);font-size:12px;margin-top:2px}
+svg{width:100%;height:auto;display:block}
+.row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--ln);font-size:13px}
+.row:last-child{border-bottom:0}
+.mut{color:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+td,th{padding:6px 4px;text-align:left;border-bottom:1px solid var(--ln)}
+th{color:var(--mut);font-weight:500}
+tr.tap{cursor:pointer}
+.ev{font-size:12px;padding:5px 0;border-bottom:1px solid var(--ln);display:flex;gap:8px}
+.ev .k{color:var(--acc);min-width:74px}
+.hide{display:none}
+.err{background:#3a1620;border:1px solid var(--acc);color:#ffd7dc;border-radius:10px;padding:10px;margin-top:10px;font-size:13px;white-space:pre-wrap}
+</style>
+</head>
+<body>
+<div class="bar">
+  <h1>Dashboard</h1>
+  <span style="flex:1"></span>
+  <button class="btn" id="range7">7d</button>
+  <button class="btn on" id="range14">14d</button>
+  <button class="btn" id="range30">30d</button>
+  <button class="btn" id="refresh">Refresh</button>
+</div>
+<div id="kpis" class="kpis"></div>
+<div id="err" class="err hide"></div>
+
+<h2>Activity (DAU)</h2>
+<div class="card"><svg id="chDau" viewBox="0 0 600 160" preserveAspectRatio="none"></svg></div>
+
+<h2>Screen time, sec/day</h2>
+<div class="card"><svg id="chSec" viewBox="0 0 600 160" preserveAspectRatio="none"></svg></div>
+
+<h2>Opens/day</h2>
+<div class="card"><svg id="chOpen" viewBox="0 0 600 160" preserveAspectRatio="none"></svg></div>
+
+<h2>Clicks by screen</h2>
+<div class="card" id="screens"></div>
+
+<h2>Event types</h2>
+<div class="card" id="kinds"></div>
+
+<h2>Users</h2>
+<div class="card"><table id="users"><thead><tr><th>ID</th><th>Name</th><th>Days</th><th>Sec</th></tr></thead><tbody></tbody></table></div>
+
+<div id="detail" class="hide"></div>
+
+<h2>Raw events</h2>
+<div class="bar"><select class="btn" id="evKind"><option value="">all kinds</option></select><button class="btn" id="export">Export JSON</button></div>
+<div class="card" id="events"></div>
+
+<script>
+var API='https://goal-tracker-api.korobovaelena.workers.dev', DAYS=14;
+function H(){return {'X-Init-Data':(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.initData)||''}}
+function api(p){return fetch(API+p,{headers:H()}).then(function(r){if(!r.ok){return r.json().catch(function(){return{}}).then(function(j){throw new Error((j&&j.error)||('HTTP '+r.status))})}return r.json()})}
+function fmtDate(ms){try{return new Date(ms).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}catch(e){return ''}}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function kpi(v,l){return '<div class="kpi"><div class="v">'+v+'</div><div class="l">'+l+'</div></div>'}
+function chart(el,rows,key,color){var svg=document.getElementById(el);if(!rows||!rows.length){svg.innerHTML='';return}
+ var max=1;rows.forEach(function(r){if((r[key]||0)>max)max=r[key]||0});var n=rows.length;var W=600,Hh=160,pad=10;
+ var step=(W-pad*2)/Math.max(1,n-1);var pts=[];rows.forEach(function(r,i){var x=pad+i*step;var y=Hh-pad-((r[key]||0)/max)*(Hh-pad*2);pts.push([x,y])});
+ var d=pts.map(function(p,i){return (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)}).join(' ');
+ svg.innerHTML='<path d="'+d+'" fill="none" stroke="'+color+'" stroke-width="2"/><text x="6" y="12" fill="#8a94a6" font-size="11">max '+max+'</text>';
+}
+function loadStats(){return api('/api/dash/stats?days='+DAYS).then(function(j){
+ document.getElementById('kpis').innerHTML=
+  kpi(j.dau_today,'DAU today')+kpi(j.mau30,'MAU 30d')+kpi(j.total_users,'Total users')+
+  kpi(Math.round((j.today_row&&j.today_row.sec)||0)+'s','Screen today')+kpi((j.today_row&&j.today_row.opens)||0,'Opens today')+kpi((j.today_row&&j.today_row.calls)||0,'API calls today');
+ chart('chDau',j.daily,'dau','#2ecc71');chart('chSec',j.daily,'sec','#00d4ff');chart('chOpen',j.daily,'opens','#c93545');
+ document.getElementById('screens').innerHTML=(j.by_screen||[]).map(function(s){return '<div class="row"><span>'+esc(s.screen)+'</span><b>'+s.n+'</b></div>'}).join('')||'<div class="mut">no data</div>';
+ document.getElementById('kinds').innerHTML=(j.by_kind||[]).map(function(s){return '<div class="row"><span>'+esc(s.kind)+'</span><b>'+s.n+'</b></div>'}).join('')||'<div class="mut">no data</div>';
+ var sel=document.getElementById('evKind');var cur=sel.value;sel.innerHTML='<option value="">all kinds</option>'+(j.by_kind||[]).map(function(s){return '<option value="'+esc(s.kind)+'">'+esc(s.kind)+' ('+s.n+')</option>'}).join('');sel.value=cur;
+});}
+function loadUsers(){return api('/api/dash/users').then(function(j){
+ var tb=document.querySelector('#users tbody');tb.innerHTML=(j.users||[]).map(function(u){
+  return '<tr class="tap" data-id="'+u.user_id+'"><td>'+u.user_id+'</td><td>'+esc(u.first_name||u.username||'-')+'</td><td>'+u.active_days+'</td><td>'+Math.round(u.total_sec||0)+'</td></tr>'}).join('')||'<tr><td colspan="4" class="mut">no users</td></tr>';
+});}
+function loadEvents(){var k=document.getElementById('evKind').value;return api('/api/dash/events?days='+DAYS+'&limit=160'+(k?('&kind='+encodeURIComponent(k)):'')).then(function(j){
+ document.getElementById('events').innerHTML=(j.events||[]).map(function(e){return '<div class="ev"><span class="k">'+esc(e.kind)+'</span><span class="mut">'+fmtDate(e.ts)+'</span><span>u'+e.user_id+(e.screen?(' / '+esc(e.screen)):'')+'</span></div>'}).join('')||'<div class="mut">no events</div>';
+});}
+function openUser(id){api('/api/dash/user/'+id).then(function(j){
+ var d=document.getElementById('detail');var u=j.user;
+ var act=(j.activity||[]).map(function(a){return '<div class="row"><span>'+esc(a.day)+'</span><span class="mut">'+a.opens+' opens / '+Math.round(a.screen_sec)+'s / '+a.api_calls+' api</span></div>'}).join('');
+ d.innerHTML='<h2>User '+u.user_id+' <button class="btn" id="closeD">close</button></h2><div class="card"><div class="row"><span>Name</span><b>'+esc(u.first_name||u.username||'-')+'</b></div><div class="row"><span>Goals</span><b>'+j.summary.goals+'</b></div><div class="row"><span>Habits</span><b>'+j.summary.habits+'</b></div><div class="row"><span>Tasks (done)</span><b>'+j.summary.done_tasks+'/'+j.summary.tasks+'</b></div><div class="row"><span>Updated</span><b>'+fmtDate(u.updated_at)+'</b></div></div><h2>Activity by day</h2><div class="card">'+act+'</div>';
+ d.classList.remove('hide');document.getElementById('closeD').onclick=function(){d.classList.add('hide')};window.scrollTo(0,0);
+});}
+function bindRange(){[7,14,30].forEach(function(n){var b=document.getElementById('range'+n);if(b)b.onclick=function(){DAYS=n;[7,14,30].forEach(function(m){var e=document.getElementById('range'+m);e.classList.toggle('on',m===n)});loadAll()}});}
+function setErr(m){var e=document.getElementById('err');if(!e)return;if(m){e.textContent=m;e.classList.remove('hide')}else{e.classList.add('hide')}}
+function hasInit(){try{return !!((window.Telegram&&Telegram.WebApp&&Telegram.WebApp.initData)||'')}catch(e){return false}}
+var _triedHard=false;
+function loadAll(){setErr('');Promise.all([loadStats(),loadUsers(),loadEvents()]).then(function(){setErr('')},function(e){
+ var msg=String((e&&e.message)||e);
+ if(!_triedHard&&(msg.indexOf('missing_init_data')>=0||msg.indexOf('401')>=0)){_triedHard=true;setErr('Ждём доступ Telegram…');setTimeout(loadAll,900);return}
+ setErr('Ошибка загрузки: '+msg+(hasInit()?'':' — нет доступа Telegram (initData пуст). Открой через кнопку бота.'));
+})
+}
+function whenReady(cb){var t=0;var iv=setInterval(function(){t++;if(hasInit()||t>=24){clearInterval(iv);cb()}},125);
+ try{if(window.Telegram&&Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand()}}catch(e){}}
+document.getElementById('refresh').onclick=loadAll;
+document.getElementById('export').onclick=function(){api('/api/dash/events?days=90&limit=500').then(function(j){var b=new Blob([JSON.stringify(j.events,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='goal-tracker-events.json';a.click()})};
+document.getElementById('evKind').onchange=loadEvents;
+document.addEventListener('click',function(e){var tr=e.target.closest?e.target.closest('tr.tap'):null;if(tr)openUser(tr.getAttribute('data-id'))});
+bindRange();
+whenReady(function(){
+ loadAll();
+ try{if(hasInit())fetch(API+'/track',{method:'POST',headers:Object.assign({'Content-Type':'application/json'},H()),body:JSON.stringify({kind:'open',screen:'dashboard'})}).catch(function(){})}catch(e){}
+});
+</script>
+</body>
+</html>

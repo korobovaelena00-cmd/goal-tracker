@@ -658,7 +658,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.8.4</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.8.5</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -807,7 +807,8 @@ var bp=loadFromBackups();if(bp){state=bp;localTs=bp.lastModified||0;if(!state.ve
 }
 loadFromCloud(function(cp,cloudTs){
 if(cp&&isValidState(cp)){
-if(cloudTs>localTs){
+// v5.8.5: never adopt an EMPTY cloud over a device that still holds real data
+if(cloudTs>localTs&&(!isEmptyData(cp)||isEmptyData(state))){
 state=cp;if(!state.version||state.version<4.21)state.version=4.21;migrateState(cp);
 showToast('Данные восстановлены из облака Telegram');saveData();renderDashboard();return
 }else if(cloudTs>0&&cloudTs<=localTs){

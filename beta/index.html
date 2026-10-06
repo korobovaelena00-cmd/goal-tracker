@@ -14,6 +14,9 @@
   var BACKEND="https://goal-tracker-api.korobovaelena.workers.dev", MINE="beta";
   function id(){try{return (window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initData)||"";}catch(e){return "";}}
   try{
+    var q=location.search||"";
+    var m=q.match(/[?&]cohort=(beta|preview)/);
+    if(m&&m[1]===MINE){return;}
     var t=id();
     if(t){
       var x=new XMLHttpRequest(); x.timeout=6000;

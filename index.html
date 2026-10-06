@@ -14,6 +14,9 @@
   var BACKEND="https://goal-tracker-api.korobovaelena.workers.dev";
   function id(){try{return (window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initData)||"";}catch(e){return "";}}
   function go(){
+    var q=location.search||"";
+    var m=q.match(/[?&]cohort=(beta|preview)/);
+    if(m){location.replace("./"+m[1]+"/"+q);return;}
     var t=id();
     if(!t){return;}
     try{

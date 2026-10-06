@@ -9,26 +9,24 @@
 <meta http-equiv="Expires" content="0">
 <title>Пупс-ай — Трекер целей</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script><script>
-/* --- Level 1 cohort router (fail-open: any error -> stay stable) --- */
+/* --- Level 1 cohort guard: bounce to stable if cohort changed --- */
 (function(){
-  var BACKEND="https://goal-tracker-api.korobovaelena.workers.dev";
+  var BACKEND="https://goal-tracker-api.korobovaelena.workers.dev", MINE="beta";
   function id(){try{return (window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initData)||"";}catch(e){return "";}}
-  function go(){
+  try{
     var t=id();
-    if(!t){return;}
-    try{
+    if(t){
       var x=new XMLHttpRequest(); x.timeout=6000;
       x.open("GET",BACKEND+"/cohort/me",true);
       x.setRequestHeader("X-Init-Data",t);
       x.onload=function(){
         var c="stable";
         try{if(x.status===200){var j=JSON.parse(x.responseText);if(j&&j.cohort)c=j.cohort;}}catch(e){return;}
-        if(c==="beta"||c==="preview"){location.replace("./"+c+"/"+(location.search||""));}
+        if(c!==MINE){location.replace("../");}
       };
       x.send();
-    }catch(e){}
-  }
-  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",go);}else{go();}
+    }
+  }catch(e){}
 })();
 </script>
 
@@ -614,7 +612,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 
 </style>
 </head>
-<body>
+<body><div style="position:fixed;top:0;left:0;right:0;z-index:99999;text-align:center;font:600 11px/22px -apple-system,Segoe UI,Roboto,sans-serif;letter-spacing:.12em;color:#00121a;background:linear-gradient(90deg,#3fd0ff,#38e0a0);">BETA BUILD</div>
 <div id="app">
 <div class="app-header">
 <div class="app-title">Пупс-ай</div>

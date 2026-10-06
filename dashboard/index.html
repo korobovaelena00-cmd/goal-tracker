@@ -71,7 +71,8 @@ tr.tap{cursor:pointer}
 
 <script>
 var API='https://goal-tracker-api.korobovaelena.workers.dev', DAYS=14;
-function H(){return {'X-Init-Data':(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.initData)||''}}
+function KEY(){try{return new URLSearchParams(location.search).get('key')||''}catch(e){return ''}}
+function H(){return {'X-Init-Data':(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.initData)||'','X-Dash-Key':KEY()}}
 function api(p){return fetch(API+p,{headers:H()}).then(function(r){if(!r.ok){return r.json().catch(function(){return{}}).then(function(j){throw new Error((j&&j.error)||('HTTP '+r.status))})}return r.json()})}
 function fmtDate(ms){try{return new Date(ms).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}catch(e){return ''}}
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
@@ -106,7 +107,7 @@ function openUser(id){api('/api/dash/user/'+id).then(function(j){
 });}
 function bindRange(){[7,14,30].forEach(function(n){var b=document.getElementById('range'+n);if(b)b.onclick=function(){DAYS=n;[7,14,30].forEach(function(m){var e=document.getElementById('range'+m);e.classList.toggle('on',m===n)});loadAll()}});}
 function setErr(m){var e=document.getElementById('err');if(!e)return;if(m){e.textContent=m;e.classList.remove('hide')}else{e.classList.add('hide')}}
-function hasInit(){try{return !!((window.Telegram&&Telegram.WebApp&&Telegram.WebApp.initData)||'')}catch(e){return false}}
+function hasInit(){try{return !!KEY()||!!((window.Telegram&&Telegram.WebApp&&Telegram.WebApp.initData)||'')}catch(e){return false}}
 var _triedHard=false;
 function loadAll(){setErr('');Promise.all([loadStats(),loadUsers(),loadEvents()]).then(function(){setErr('')},function(e){
  var msg=String((e&&e.message)||e);

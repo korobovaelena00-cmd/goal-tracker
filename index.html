@@ -648,7 +648,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 <input type="password" id="syncTokenInput" class="form-input" placeholder="ghp_..." value="">
 <button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="saveSyncToken(document.getElementById('syncTokenInput').value);showToast('Токен сохранён')">Сохранить токен</button>
 <button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="syncDataToGitHub(true)">Синхронизировать сейчас</button>
-<button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="checkSyncConnection()">Проверить подключение</button>
+<button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="checkSyncConnection()">Проверить подключение</button> <div id="backendStatusText" style="font-size:12px;color:var(--text-secondary);margin-top:8px;min-height:16px"></div>
 <div style="font-size:11px;color:var(--text-secondary);opacity:0.75;margin-top:8px;line-height:1.5">Данные хранятся в приватном репозитории goal-tracker-data</div>
 </div>
 <div class="sync-status" id="syncStatusDiv">
@@ -658,7 +658,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.8.3</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.8.4</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -2162,6 +2162,14 @@ syncDataToGitHub(true);
 }
 
 function checkSyncConnection(){
+if(backendAvailable()){
+updateSyncStatus('syncing','Проверка облака Telegram...');
+fetch(BACKEND_URL+'/data',{headers:_beHeaders()})
+.then(function(r){if(!r.ok)throw new Error('облако HTTP '+r.status);return r.json()})
+.then(function(){updateSyncStatus('ok','Облако Telegram подключено');updateBackendStatus('ok','Облако Telegram подключено');showToast('Облачная синхронизация работает')})
+.catch(function(e){var m=(e&&e.message)||String(e);updateSyncStatus('err','Ошибка синхронизации - '+m);showToast('Ошибка: '+m)});
+return;
+}
 if(!DATA_SYNC_TOKEN){updateSyncStatus('err','Ошибка синхронизации - токен не введён');showToast('Сначала введи токен и нажми «Сохранить токен»');return}
 updateSyncStatus('syncing','Проверка подключения...');
 fetch('https://api.github.com/user',{headers:_ghHeaders()})
@@ -2206,8 +2214,14 @@ function reconcileBackend(){
 if(!backendAvailable())return;
 loadFromBackend(function(bs,bts){
 var localTs=0;try{localTs=state.lastModified||0}catch(e){}
-var localEmpty=(!state.goals||state.goals.length===0)&&(!state.habits||state.habits.length===0);
-if(bs&&bts>localTs){
+var localEmpty=isEmptyData(state);
+var remoteTs=0;try{remoteTs=(bs&&bs.lastModified)||0}catch(e){}
+var remoteEmpty=!bs||isEmptyData(bs);
+// v5.8.4: adopt remote ONLY when it holds strictly NEWER real data AND
+// (remote is non-empty OR local is empty). NEVER use server last_modified (bts)
+// for the comparison - it changes on every write and would let an empty cloud
+// overwrite a device that still holds the user's real data.
+if(bs&&remoteTs>localTs&&(!remoteEmpty||localEmpty)){
 state=bs;if(!state.version||state.version<4.21)state.version=4.21;migrateState(state);
 try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}
 applySettings();renderDashboard();updateBackendStatus('ok','Восстановлено из облака');showToast('Данные восстановлены из облака');return;
@@ -2215,6 +2229,7 @@ applySettings();renderDashboard();updateBackendStatus('ok','Восстановл
 if(!localEmpty){syncDataToBackend(true)}
 });
 }
+function isEmptyData(s){try{return (!s.goals||s.goals.length===0)&&(!s.habits||s.habits.length===0)&&(!s.tasks||s.tasks.length===0)}catch(e){return true}}
 
 // Initialize
 loadSyncToken();

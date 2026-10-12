@@ -2289,7 +2289,7 @@ showToast('Подключение к GitHub работает');
 }
 
 // === v5.8.3: Telegram-backend sync helpers ===
-function tgInit(){try{if(window.__tgInit!=null)return window.__tgInit;var t=(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.initData)||'';if(t){window.__tgInit=t;return t}try{var s=sessionStorage.getItem('pupsai_initdata');if(s){window.__tgInit=s;return s}}catch(e){}try{var h=location.hash||'';var m=h.match(/tgWebAppData=([^&]+)/);if(m){var d=decodeURIComponent(m[1]);window.__tgInit=d;return d}}catch(e){}return ''}catch(e){return ''}}
+function tgInit(){try{if(window.__tgInit!=null)return (typeof window.__tgInit==='function')?window.__tgInit():window.__tgInit;var t=(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.initData)||'';if(t){window.__tgInit=t;return t}try{var s=sessionStorage.getItem('pupsai_initdata');if(s){window.__tgInit=s;return s}}catch(e){}try{var h=location.hash||'';var m=h.match(/tgWebAppData=([^&]+)/);if(m){var d=decodeURIComponent(m[1]);window.__tgInit=d;return d}}catch(e){}return ''}catch(e){return ''}}
 function backendAvailable(){try{return !!tgInit()}catch(e){return false}}
 function _beHeaders(extra){var h={'X-Init-Data':tgInit()||''};if(extra){for(var k in extra){h[k]=extra[k]}}return h}
 // === v5.9.1: analytics tracker (POST /track) ===

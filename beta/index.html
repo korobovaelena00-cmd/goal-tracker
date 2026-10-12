@@ -83,21 +83,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
 --shadow-glow:0 0 20px rgba(var(--accent-rgb),0.15);
 --scrim:rgba(5,8,16,0.68);--scrim-soft:rgba(5,8,16,0.5);--scrim-strong:rgba(5,8,16,0.74);
 }
-body.light-theme{--accent-rgb:37,99,235;--cyan-rgb:14,165,233;--ink-rgb:42,36,30;--veil-rgb:255,255,255;
-
---bg-primary:#f5f3ef;
---bg-secondary:#fffdfa;
---bg-tertiary:#eae6df;
---bg-card-hover:#f2eee7;
---bg-elevated:#e3ddd3;
---glass-bg:rgba(255,253,250,0.72);
---glass-bg-strong:rgba(255,253,250,0.93);
---glass-border:rgba(58,50,42,0.09);
---glass-border-active:rgba(37,99,235,0.35);
---glass-hover:rgba(37,99,235,0.055);
---text-primary:#2a241e;
---text-secondary:rgba(42,36,30,0.66);
---text-muted:rgba(42,36,30,0.42);
+body.light-theme{
+--accent-rgb:37,99,235;--cyan-rgb:14,165,233;--ink-rgb:42,36,30;--veil-rgb:255,255,255;
+--bg-primary:#f6f4f0;
+--bg-secondary:#fffefb;
+--bg-tertiary:#ece7de;
+--bg-card-hover:#f1ede4;
+--bg-elevated:#e6e0d5;
+--glass-bg:rgba(255,254,251,0.74);
+--glass-bg-strong:rgba(255,254,251,0.94);
+--glass-border:rgba(60,52,44,0.10);
+--glass-border-active:rgba(37,99,235,0.32);
+--glass-hover:rgba(37,99,235,0.05);
+--text-primary:#26211b;
+--text-secondary:rgba(38,33,27,0.66);
+--text-muted:rgba(38,33,27,0.42);
 --blue-electric:#2563eb;
 --blue-bright:#3b82f6;
 --blue-soft:#60a5fa;
@@ -374,7 +374,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .heatmap::-webkit-scrollbar{display:none}
 .heatmap-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
 .heatmap-cell{aspect-ratio:1;border-radius:3px;background:var(--bg-elevated);transition:var(--transition);display:flex;align-items:center;justify-content:center;font-size:13px;color:rgba(var(--ink-rgb),0.35);font-weight:500}
-.heatmap-cell.checked{background:#2e8bff;color:rgba(var(--veil-rgb),0.4)}
+.heatmap-cell.checked{background:var(--accent);color:rgba(var(--veil-rgb),0.4)}
 .heatmap-cell.today{outline:1.5px solid var(--blue-bright);outline-offset:1px}
 .heatmap-cell.not-scheduled{opacity:0.35}
 .heatmap-cell.missed{border:1px solid rgba(232,93,111,0.4);box-sizing:border-box}
@@ -571,7 +571,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
   font-size:13px;line-height:1.5;color:var(--text-primary);
 }
 /* Color coding by insight type */
-.insight-trend{border-left-color:#2e8bff}
+.insight-trend{border-left-color:var(--accent)}
 .insight-trend .insight-card-label{color:#5ba3ff}
 .insight-risk{border-left-color:#f56565}
 .insight-risk .insight-card-label{color:#fc8181}
@@ -597,7 +597,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .insight-return .insight-card-label{color:#b794f4}
 .insight-achievements{border-left-color:#ecc94b}
 .insight-achievements .insight-card-label{color:#f6e05e}
-.insight-score{border-left-color:#2e8bff}
+.insight-score{border-left-color:var(--accent)}
 .insight-score .insight-card-label{color:#5ba3ff}
 .insight-start{border-left-color:#4a5568}
 .insight-start .insight-card-label{color:#a0aec0}
@@ -719,7 +719,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
 <div class="settings-section"><div class="settings-section-title">Данные и конфиденциальность</div><button class="health-sync-btn" onclick="openInfo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span id="infoRowText">Что мы храним и согласие</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.11.1</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.11.2</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -787,14 +787,15 @@ const STORAGE_KEY='pupsai_data';
 const BACKUP_KEYS=['pupsai_bak_1','pupsai_bak_2','pupsai_bak_3'];
 const CLOUD_KEY='pupsai_cloud_data';
 const CLOUD_TS_KEY='pupsai_cloud_ts';
+const RESET_TS_KEY='pupsai_reset_ts';
 const AUTOSAVE_INTERVAL=60000;
 let lastSaveTs=0;
 let cloudSyncPending=false;
 const DEFAULT_CATEGORIES={
-health:{label:'Здоровье',color:'#00d4ff',cls:'health'},
-work:{label:'Работа',color:'#2e8bff',cls:'work'},
-learning:{label:'Обучение',color:'#6bb5ff',cls:'learning'},
-personal:{label:'Личное',color:'#8ec5ff',cls:'personal'}
+health:{label:'Здоровье',color:'#00d4ff',tokv:'--cyan',cls:'health'},
+work:{label:'Работа',color:'#2e8bff',tokv:'--blue-electric',cls:'work'},
+learning:{label:'Обучение',color:'#6bb5ff',tokv:'--learning',cls:'learning'},
+personal:{label:'Личное',color:'#8ec5ff',tokv:'--personal',cls:'personal'}
 };
 const CAT_COLORS=['#2e8bff','#00d4ff','#6bb5ff','#8ec5ff','#2ecc71','#f0a020','#c9a84c','#e85d6f','#8ec5ff','#5ce8ff','#FFB3BA','#BAFFC9','#BAE1FF','#FFFFBA','#FFDFBA','#E8BAFF','#FFBAE8','#BAFFFF','#D4BAFF','#F0BAE0'];
 const PRIORITIES={high:{label:'Высокий',cls:'high'},med:{label:'Средний',cls:'med'},low:{label:'Низкий',cls:'low'}};
@@ -848,7 +849,7 @@ let catModalContext='goal';
 let yearHeatmapSelectedMonth=null;
 let yearHeatmapSelectedDate=null;
 
-function getAllCategories(){const cats={};const deleted=state.deletedDefaultCats||[];Object.entries(DEFAULT_CATEGORIES).forEach(([id,dc])=>{if(deleted.includes(id))return;cats[id]={label:dc.label,color:(state.defaultCatColors&&state.defaultCatColors[id])||dc.color,cls:dc.cls}});(state.customCategories||[]).forEach(c=>{cats[c.id]={label:c.name,color:c.color,cls:'custom-'+c.id}});return cats}
+function getAllCategories(){const cats={};const deleted=state.deletedDefaultCats||[];Object.entries(DEFAULT_CATEGORIES).forEach(([id,dc])=>{if(deleted.includes(id))return;cats[id]={label:dc.label,color:(state.defaultCatColors&&state.defaultCatColors[id])||(dc.tokv?tok(dc.tokv,dc.color):dc.color),cls:dc.cls}});(state.customCategories||[]).forEach(c=>{cats[c.id]={label:c.name,color:c.color,cls:'custom-'+c.id}});return cats}
 function migrateState(p){if(!state.tasks)state.tasks=[];if(!state.customCategories)state.customCategories=[];if(!state.deletedDefaultCats)state.deletedDefaultCats=[];if(!state.settings)state.settings={theme:'dark',lang:'ru',healthSynced:false,healthData:null};if(!state.dailyScores)state.dailyScores={};if(!state.weeklyReviews)state.weeklyReviews={};if(!state.chatTopics)state.chatTopics=[{id:'general',name:'Общее'}];if(!state.chatHistory)state.chatHistory={general:[{role:'system',text:'Привет! Я твой агент. Спроси меня о целях, привычках, или попроси рекомендации.',ts:Date.now()}]};if(!state.activeTopic)state.activeTopic='general';state.goals.forEach(g=>{if(!g.subtasks)g.subtasks=[];if(!g.priority)g.priority='med';g.subtasks.forEach(s=>{if(!s.dueDate)s.dueDate=null})});state.habits.forEach(h=>{if(h.targetPerWeek===undefined)h.targetPerWeek=7;if(!h.daysOfWeek)h.daysOfWeek=[1,2,3,4,5,6,0];if(h.startDate===undefined)h.startDate=null;if(h.endDate===undefined)h.endDate=null});if(state.lastModified===undefined)state.lastModified=0}
 function isValidState(p){return p&&Array.isArray(p.goals)&&Array.isArray(p.habits)}
 function loadFromBackups(){for(const key of BACKUP_KEYS){try{const raw=localStorage.getItem(key);if(raw){const p=JSON.parse(raw);if(isValidState(p)){console.log('Restored from '+key);return p}}}catch(e){}}return null}
@@ -882,6 +883,9 @@ syncToCloud();scheduleGitHubSync();return
 if(state.goals.length===0&&state.habits.length===0){
 loadFromGitHub(function(gs){
 if(gs){state=gs;if(!state.version||state.version<4.21)state.version=4.21;migrateState(gs);showToast('Данные восстановлены из GitHub');saveData();renderDashboard();return}
+if(backendAvailable()){
+return
+}
 if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.CloudStorage){
 showRestorePrompt()
 }else{
@@ -931,14 +935,14 @@ function fabAction(){if(currentView==='goals'){if(goalsTab==='tasks')openTaskMod
 function setGoalsTab(tab){goalsTab=tab;document.getElementById('toggleGoals').classList.toggle('active',tab==='goals');document.getElementById('toggleTasks').classList.toggle('active',tab==='tasks');document.getElementById('goalsList').style.display=tab==='goals'?'block':'none';document.getElementById('tasksList').style.display=tab==='tasks'?'block':'none';if(tab==='goals')renderGoals();else renderTasks();haptic('light')}
 function calcMaxStreak(){let max=0;state.habits.forEach(h=>{const s=calcHabitStreak(h);if(s>max)max=s});return max}
 function calcBestStreak(h){if(!h.checkoffs||!h.checkoffs.length)return 0;const sorted=[...h.checkoffs].sort();const days=h.daysOfWeek||[1,2,3,4,5,6,0];let best=0;let cur=0;let d=new Date(sorted[0]);const end=new Date();while(d<=end){const ds=dateStr(d);const dow=d.getDay();const scheduled=days.length>0?days.includes(dow):true;if(scheduled){if(sorted.includes(ds)){cur++;best=Math.max(best,cur)}else if(ds!==todayStr()){cur=0}}d.setDate(d.getDate()+1)}return best}
-function showHabitHistory(hid){const h=state.habits.find(x=>x.id===hid);if(!h)return;const streak=calcHabitStreak(h);const best=calcBestStreak(h);const cat=getAllCategories()[h.category]||{color:'#2e8bff',label:''};const checkoffs=(h.checkoffs||[]).sort().reverse();const periods=[];let curStart=null;let curLen=0;const days=h.daysOfWeek||[1,2,3,4,5,6,0];const sorted=[...(h.checkoffs||[])].sort();let d=sorted.length?new Date(sorted[0]):new Date();const end=new Date();let pStart=null;let pLen=0;while(d<=end){const ds=dateStr(d);const dow=d.getDay();const scheduled=days.length>0?days.includes(dow):true;if(scheduled){if(sorted.includes(ds)){if(!pStart)pStart=ds;pLen++}else if(ds!==todayStr()){if(pLen>0)periods.push({start:pStart,len:pLen});pStart=null;pLen=0}}d.setDate(d.getDate()+1)}if(pLen>0)periods.push({start:pStart,len:pLen});periods.sort((a,b)=>b.len-a.len||b.start.localeCompare(a.start));let html='<div style="text-align:center;margin-bottom:12px"><div style="font-size:14px;font-weight:600;color:'+cat.color+'">'+escapeHtml(h.title)+'</div><div style="font-size:32px;font-weight:700;color:'+cat.color+'">'+streak+'</div><div style="font-size:11px;color:var(--text-secondary)">текущая серия (дн.)</div><div style="font-size:20px;font-weight:600;color:var(--blue-pale);margin-top:8px">'+best+'</div><div style="font-size:11px;color:var(--text-secondary)">лучшая серия</div></div>';if(periods.length>0){html+='<div style="font-size:12px;font-weight:600;margin-bottom:6px;color:var(--text-secondary)">История серий:</div>';periods.slice(0,10).forEach(p=>{html+='<div style="display:flex;justify-content:space-between;padding:6px 10px;background:rgba(var(--accent-rgb),0.03);border-radius:8px;margin-bottom:4px;font-size:12px"><span>'+formatDate(p.start)+'</span><span style="font-weight:600;color:'+cat.color+'">'+p.len+' дн.</span></div>'})}showConfirmModal(html)}
+function showHabitHistory(hid){const h=state.habits.find(x=>x.id===hid);if(!h)return;const streak=calcHabitStreak(h);const best=calcBestStreak(h);const cat=getAllCategories()[h.category]||{color:tok('--blue-electric','#2e8bff'),label:''};const checkoffs=(h.checkoffs||[]).sort().reverse();const periods=[];let curStart=null;let curLen=0;const days=h.daysOfWeek||[1,2,3,4,5,6,0];const sorted=[...(h.checkoffs||[])].sort();let d=sorted.length?new Date(sorted[0]):new Date();const end=new Date();let pStart=null;let pLen=0;while(d<=end){const ds=dateStr(d);const dow=d.getDay();const scheduled=days.length>0?days.includes(dow):true;if(scheduled){if(sorted.includes(ds)){if(!pStart)pStart=ds;pLen++}else if(ds!==todayStr()){if(pLen>0)periods.push({start:pStart,len:pLen});pStart=null;pLen=0}}d.setDate(d.getDate()+1)}if(pLen>0)periods.push({start:pStart,len:pLen});periods.sort((a,b)=>b.len-a.len||b.start.localeCompare(a.start));let html='<div style="text-align:center;margin-bottom:12px"><div style="font-size:14px;font-weight:600;color:'+cat.color+'">'+escapeHtml(h.title)+'</div><div style="font-size:32px;font-weight:700;color:'+cat.color+'">'+streak+'</div><div style="font-size:11px;color:var(--text-secondary)">текущая серия (дн.)</div><div style="font-size:20px;font-weight:600;color:var(--blue-pale);margin-top:8px">'+best+'</div><div style="font-size:11px;color:var(--text-secondary)">лучшая серия</div></div>';if(periods.length>0){html+='<div style="font-size:12px;font-weight:600;margin-bottom:6px;color:var(--text-secondary)">История серий:</div>';periods.slice(0,10).forEach(p=>{html+='<div style="display:flex;justify-content:space-between;padding:6px 10px;background:rgba(var(--accent-rgb),0.03);border-radius:8px;margin-bottom:4px;font-size:12px"><span>'+formatDate(p.start)+'</span><span style="font-weight:600;color:'+cat.color+'">'+p.len+' дн.</span></div>'})}showConfirmModal(html)}
 function calcHabitStreak(h){if(!h.checkoffs||!h.checkoffs.length)return 0;const sorted=[...h.checkoffs].sort();let streak=0;let d=new Date();for(;;){const ds=dateStr(d);const dow=d.getDay();const scheduled=h.daysOfWeek&&h.daysOfWeek.length>0?h.daysOfWeek.includes(dow):true;if(sorted.includes(ds)){streak++;d.setDate(d.getDate()-1);continue}if(ds===todayStr()){d.setDate(d.getDate()-1);continue}if(!scheduled){d.setDate(d.getDate()-1);continue}break}return streak}
 function calcWeeklyCount(h){if(!h.checkoffs)return 0;const now=new Date();let c=0;for(let i=0;i<7;i++){const d=new Date(now);d.setDate(d.getDate()-i);if(h.checkoffs.includes(dateStr(d)))c++}return c}
 function calcGoalProgress(g){const subs=g.subtasks||[];if(subs.length===0)return g.progress||0;const done=subs.filter(s=>s.done).length;return Math.round((done/subs.length)*100)}
 
 function toggleSettings(){document.getElementById('settingsPanel').classList.toggle('open');document.getElementById('settingsOverlay').classList.toggle('open')}
 
-/* === v5.10.1: legal moves into app ===*/
+/* === v5.10.2: legal moves into app ===*/
 var CONSENT_TEXT="Пупс-ай — трекер целей и привычек.\n\nЧто храним: твои цели, привычки и задачи; из Telegram — ID, имя и username; аналитику использования (заходы, экранное время, нажатия).\n\nГде: сервер Cloudflare (база D1) и облако Telegram — за пределами РФ (трансграничная передача). Ключ — твой Telegram-аккаунт. Данные не публичны.\n\nЧто можно: выгрузить всё в JSON (экспорт) и удалить в любой момент; отозвать согласие.\n\nОператор — физлицо. Приложение не медицинское.\n\nПолные тексты: Пользовательское соглашение и Политика обработки персональных данных — кнопки на экране согласия.";
 var _consentTimer=null;
 function openInfo(){var b=document.getElementById('infoBody');if(b)b.textContent=CONSENT_TEXT;document.getElementById('infoModal').classList.add('active');loadConsentStatus();_trkPost({kind:'event',screen:_trkScreen,meta:{el:'info_open'}})}
@@ -947,7 +951,7 @@ function openConsentGate(){var b=document.getElementById('consentGateBody');if(b
 function closeConsentGate(){try{if(state&&state.settings&&state.settings.consentAt){document.getElementById('consentGate').classList.remove('active')}else{showToast('Чтобы продолжить, примите условия',true)}}catch(e){}}
 function loadConsentStatus(){var el=document.getElementById('consentStateLine');if(!el)return;if(!backendAvailable()){el.textContent='Вне Telegram согласие не записывается.';return}fetch(BACKEND_URL+'/consent/me',{headers:_beHeaders()}).then(function(r){return r.json()}).then(function(j){if(j&&j.consent){el.textContent='Согласие записано: '+new Date(j.consent_at).toLocaleDateString()+' (v'+j.version+')';var btn=document.getElementById('infoConsentBtn');if(btn)btn.style.display='none'}else{el.textContent='Согласие ещё не записано.'}}).catch(function(){el.textContent='Статус недоступен.'})}
 function giveConsent(){var c=document.getElementById('consentAgree');if(c&&!c.checked){showToast('Отметьте согласие галочкой',true);return}if(!backendAvailable()){showToast('Открой приложение в Telegram',true);return}fetch(BACKEND_URL+'/consent',{method:'POST',headers:_beHeaders({'Content-Type':'application/json'}),body:'{}'}).then(function(r){return r.json()}).then(function(j){if(j&&j.ok){showToast('Согласие записано');try{state.settings.consentAt=j.consent_at;saveData()}catch(e){}closeConsentGate();closeInfo();loadConsentStatus()}else{showToast('Не удалось записать согласие',true)}}).catch(function(){showToast('Нет сети',true)})}
-function deleteMyData(){if(!backendAvailable()){showToast('Открой приложение в Telegram',true);return}if(!confirm('Удалить все ваши данные из облака? Локальную копию тоже очистим. Отменить нельзя.'))return;fetch(BACKEND_URL+'/data',{method:'DELETE',headers:_beHeaders()}).then(function(r){return r.json()}).then(function(j){try{state.goals=[];state.habits=[];state.tasks=[];saveData();renderDashboard();if(currentView==='habits')renderHabits();if(currentView==='goals')renderGoals();}catch(e){}showToast('Данные удалены');closeInfo()}).catch(function(){showToast('Нет сети',true)})}
+function deleteMyData(){if(!backendAvailable()){showToast('Открой приложение в Telegram',true);return}if(!confirm('Очистить локальную копию на этом устройстве? Данные из облака восстановятся при следующем открытии — полный сброс аккаунта выполняет только владелец.'))return;try{localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(CLOUD_KEY);localStorage.removeItem(CLOUD_TS_KEY);for(var _b=0;_b<BACKUP_KEYS.length;_b++)localStorage.removeItem(BACKUP_KEYS[_b])}catch(e){}showToast('Локальный кэш очищен');closeInfo();setTimeout(function(){try{location.reload()}catch(e){}},700)}
 var CONSENT_VERSION_LIVE='2.0';
 var CONSENT_GATE_INTRO="Пупс-ай помогает вести цели, привычки и задачи.\n\nЧтобы пользоваться трекером, нужно принять условия.\n\nЧто хранится: твои цели, привычки и задачи; из Telegram — ID, имя и username; аналитика использования (заходы, время, нажатия).\n\nГде: сервер Cloudflare (база D1) и облако Telegram — за пределами РФ (трансграничная передача). Ключ — твой Telegram-аккаунт. Данные не публичны.\n\nТвои права: выгрузить всё в JSON и удалить в любой момент (Настройки → «Данные и конфиденциальность»), отозвать согласие.\n\nПриложение не медицинское. Оператор — физлицо.";
 var LEGAL_TERMS="# ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ (ПУБЛИЧНАЯ ОФЕРТА)\n\n**мини-приложения «Пупс-ай» — трекер целей и привычек**\n\nРедакция 2.0 от 07.10.2026\n\n---\n\n## 1. Общие положения\n\n1.1. Настоящее Пользовательское соглашение (далее — **Соглашение**) является публичной офертой в смысле статьи 437 Гражданского кодекса Российской Федерации (далее — ГК РФ) и определяет условия использования мини-приложения «Пупс-ай» (далее — **Приложение**).\n\n1.2. **Оператор (Правообладатель)** — физическое лицо — владелец Приложения «Пупс-ай». Оператор не является юридическим лицом; в части обработки персональных данных Оператор действует как оператор персональных данных в смысле Федерального закона от 27.07.2006 № 152-ФЗ «О персональных данных» (далее — **152-ФЗ**).\n\n1.3. **Приложение** — программное обеспечение «Пупс-ай», доступное как мини-приложение (Telegram Web App) через бота **Pups_AI_bot**, предназначенное для ведения целей, привычек, задач и просмотра личной статистики.\n\n1.4. **Пользователь** — дееспособное физическое лицо, использующее Приложение.\n\n1.5. **Использование Приложения допускается исключительно при условии полного и безоговорочного принятия (акцепта) настоящего Соглашения.** До момента акцепта доступ к функциям Приложения технически не предоставляется.\n\n## 2. Предмет соглашения\n\n2.1. Оператор предоставляет Пользователю безвозмездное право использования Приложения по его функциональному назначению: создание и ведение целей, привычек и задач, отметки выполнения, просмотр личной статистики, получение напоминаний в Telegram, синхронизацию данных между устройствами и сессиями.\n\n2.2. Приложение предоставляется на условиях «как есть» (as is). Оператор вправе изменять, дополнять или прекращать работу отдельных функций без предварительного уведомления.\n\n2.3. Приложение **не является** медицинским изделием, средством диагностики или лечения. Сведения о здоровье, питании и активности носят исключительно информационный характер и не заменяют консультацию специалиста.\n\n## 3. Порядок акцепта и заключение Соглашения\n\n3.1. Акцептом настоящей оферты (п. 3 ст. 438 ГК РФ) признаётся совершение Пользователем конклюдентного действия — нажатия кнопки **«Согласен и продолжить»** в Приложении либо кнопки **«✅ Согласен»** в чате бота.\n\n3.2. С момента акцепта Соглашение считается заключённым между Оператором и Пользователем в письменной форме (п. 2 ст. 434, п. 3 ст. 438 ГК РФ) на неопределённый срок.\n\n3.3. Пользователь вправе не принимать условия Соглашения. В этом случае он обязан прекратить использование Приложения. Акцепт на иных условиях не допускается.\n\n3.4. Факт акцепта фиксируется Оператором (дата, версия Соглашения, источник) и хранится в течение срока, установленного законодательством.\n\n## 4. Персональные данные\n\n4.1. Обработка персональных данных осуществляется в соответствии с отдельным документом — **«Политика в отношении обработки персональных данных и Согласие на обработку персональных данных»**, являющимся неотъемлемой частью настоящего Соглашения, а также со статьями 9, 12, 18.1 152-ФЗ.\n\n4.2. Совершая акцепт (п. 3.1), Пользователь даёт Оператору **конкретное, предметное, информированное и сознательное согласие** на обработку своих персональных данных в целях и объёме, указанных в Политике.\n\n4.3. Согласие может быть отозвано в любой момент (п. 7 Политики).\n\n## 5. Права и обязанности Пользователя\n\n5.1. Пользователь обязуется:\n   - предоставлять достоверные данные и не нарушать права третьих лиц;\n   - не использовать Приложение для противоправных действий;\n   - не предпринимать попыток несанкционированного доступа, взлома, реверс-инжиниринга или обхода технических ограничений Приложения.\n\n5.2. Пользователь вправе:\n   - в любой момент **выгрузить** все свои данные в формате JSON (кнопка экспорта в Приложении);\n   - в любой момент **удалить** свои данные из облака и с устройства (кнопка «Удалить мои данные»);\n   - **отозвать согласие** и прекратить использование Приложения;\n   - обратиться к Оператору по контакту из п. 1.2.\n\n## 6. Интеллектуальная собственность\n\n6.1. Исключительные права на Приложение, его код, дизайн и наименование принадлежат Оператору. Пользователю предоставляется простое (неисключительное) право использования в личных некоммерческих целях.\n\n6.2. Данные, созданные Пользователем (цели, привычки, задачи), принадлежат Пользователю. Оператор обрабатывает их исключительно для работы функций Приложения.\n\n## 7. Ответственность и отказ от гарантий\n\n7.1. Оператор не гарантирует бесперебойную и безошибочную работу Приложения и не несёт ответственности за перерывы в работе, вызванные действиями третьих лиц (Telegram, Cloudflare) или обстоятельствами непреодолимой силы.\n\n7.2. Оператор не несёт ответственности за утрату данных вследствие очистки хранилища браузера, удаления аккаунта Telegram или сбоев третьих сторон. Пользователю рекомендуется периодически делать экспорт данных (п. 5.2).\n\n7.3. Приложение не является средством хранения критически важной информации. Оператор не отвечает за решения, принятые Пользователем на основе данных Приложения.\n\n## 8. Изменение Соглашения\n\n8.1. Оператор вправе изменять Соглашение в одностороннем порядке. Актуальная редакция всегда доступна в Приложении.\n\n8.2. При существенных изменениях Оператор присваивает Соглашению новую редакцию и, при необходимости, запрашивает повторное согласие Пользователя.\n\n8.3. Продолжение использования Приложения после изменения Соглашения означает согласие с новой редакцией.\n\n## 9. Заключительные положения\n\n9.1. К Соглашению применяется право Российской Федерации.\n\n9.2. Все споры разрешаются путём переговоров, а при недостижении согласия — в порядке, установленном законодательством РФ.\n\n9.3. Контакт Оператора для обращений: Telegram-бот Приложения **Pups_AI_bot**.\n\n## 10. Реквизиты Оператора\n\n**Оператор:** физическое лицо — владелец Приложения «Пупс-ай».\n**Контакт:** Telegram-бот Приложения **Pups_AI_bot**.\n**Приложение:** мини-приложение Telegram «Пупс-ай» (бот Pups_AI_bot).\n\n_Редакция 2.0 от 07.10.2026._\n";
@@ -957,8 +961,10 @@ function openLegal(kind){var t=document.getElementById('legalTitle'),b=document.
 function closeLegal(){document.getElementById('legalModal').classList.remove('active')}
 function maybeShowConsentGate(){if(!backendAvailable())return;fetch(BACKEND_URL+'/consent/me',{headers:_beHeaders()}).then(function(r){return r.json()}).then(function(j){if(j&&j.consent&&j.version===CONSENT_VERSION_LIVE){try{state.settings.consentAt=j.consent_at}catch(e){}return}try{delete state.settings.consentAt}catch(e){}openConsentGate()}).catch(function(){if(!(state&&state.settings&&state.settings.consentAt))openConsentGate()})}
 
+function tok(n,fb){try{var v=getComputedStyle(document.body).getPropertyValue(n).trim();return v||fb}catch(e){return fb}}
+function tokRgb(n,fb){try{var v=getComputedStyle(document.body).getPropertyValue(n).trim();return v||fb}catch(e){return fb}}
 function syncThemeColor(isLight){var m=document.getElementById('metaThemeColor');if(m)m.setAttribute('content',isLight?'#f5f3ef':'#050810')}
-function toggleTheme(){const isLight=document.body.classList.toggle('light-theme');state.settings.theme=isLight?'light':'dark';saveData();document.getElementById('themeToggle').classList.toggle('on',isLight);syncThemeColor(isLight);haptic('light')}
+function toggleTheme(){const isLight=document.body.classList.toggle('light-theme');state.settings.theme=isLight?'light':'dark';saveData();document.getElementById('themeToggle').classList.toggle('on',isLight);syncThemeColor(isLight);haptic('light');if(currentView==='dashboard')renderDashboard();else if(currentView==='goals')renderGoals();else if(currentView==='habits')renderHabits();else if(currentView==='analytics')renderAnalytics();}
 function setLang(l){state.settings.lang=l;saveData();document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase()===l));haptic('light');showToast(l==='ru'?'Язык: Русский':'Language: English')}
 function applySettings(){if(state.settings.theme==='light'){document.body.classList.add('light-theme');document.getElementById('themeToggle').classList.add('on')}document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase()===(state.settings.lang||'ru')));if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.initDataUnsafe&&Telegram.WebApp.initDataUnsafe.user){const u=Telegram.WebApp.initDataUnsafe.user;document.getElementById('settingsName').textContent=u.first_name||u.username||'Пользователь';document.getElementById('settingsAvatar').textContent=(u.first_name||'A')[0].toUpperCase();document.getElementById('settingsSub').textContent='ID: '+u.id}if(state.settings.healthSynced){document.getElementById('accountCircle').classList.add('has-health');document.getElementById('healthSyncText').textContent='Данные синхронизированы'}}
 
@@ -1012,7 +1018,7 @@ html+='<div style="background:var(--glass-bg);border:1px solid var(--glass-borde
 html+='</div>';
 if(goalsActive.length>0){
 html+='<div style="font-size:13px;font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Активные цели (до этой даты):</div>';
-goalsActive.forEach(g=>{const prog=calcGoalProgress(g);const cat=getAllCategories()[g.category]||{color:'#2e8bff',label:''};html+='<div class="cal-popup-detail-item"><span class="cat-dot" style="background:'+cat.color+'"></span>'+escapeHtml(g.title)+' — '+prog+'%</div>'});
+goalsActive.forEach(g=>{const prog=calcGoalProgress(g);const cat=getAllCategories()[g.category]||{color:tok('--blue-electric','#2e8bff'),label:''};html+='<div class="cal-popup-detail-item"><span class="cat-dot" style="background:'+cat.color+'"></span>'+escapeHtml(g.title)+' — '+prog+'%</div>'});
 }
 return html;
 }
@@ -1030,8 +1036,8 @@ let items=renderDayAnalytics(ds);
 if(habitsDone.length===0&&goalsDue.length===0&&subtasksDue.length===0){
 items+='<div style="text-align:center;color:var(--text-muted);padding:12px;font-size:13px">Нет событий в этот день</div>';
 }else{
-if(habitsDone.length>0){items+='<div style="font-size:13px;font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Выполненные привычки:</div>';habitsDone.forEach(h=>{items+='<div class="cal-popup-detail-item"><span class="cat-dot" style="background:#00d4ff"></span>'+escapeHtml(h.title)+' — выполнено</div>'})}
-if(goalsDue.length>0){items+='<div style="font-size:13px;font-weight:600;margin:8px 0 6px;color:var(--text-secondary)">Дедлайны целей:</div>';goalsDue.forEach(g=>{const cat=getAllCategories()[g.category]||{color:'#2e8bff',label:''};items+='<div class="cal-popup-detail-item"><span class="cat-dot" style="background:'+cat.color+'"></span>'+escapeHtml(g.title)+' — '+calcGoalProgress(g)+'%</div>'})}
+if(habitsDone.length>0){items+='<div style="font-size:13px;font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Выполненные привычки:</div>';habitsDone.forEach(h=>{items+='<div class="cal-popup-detail-item"><span class="cat-dot" style="background:'+tok('--cyan','#00d4ff')+'"></span>'+escapeHtml(h.title)+' — выполнено</div>'})}
+if(goalsDue.length>0){items+='<div style="font-size:13px;font-weight:600;margin:8px 0 6px;color:var(--text-secondary)">Дедлайны целей:</div>';goalsDue.forEach(g=>{const cat=getAllCategories()[g.category]||{color:tok('--blue-electric','#2e8bff'),label:''};items+='<div class="cal-popup-detail-item"><span class="cat-dot" style="background:'+cat.color+'"></span>'+escapeHtml(g.title)+' — '+calcGoalProgress(g)+'%</div>'})}
 if(subtasksDue.length>0){items+='<div style="font-size:13px;font-weight:600;margin:8px 0 6px;color:var(--text-secondary)">Дедлайны подзадач:</div>';subtasksDue.forEach(({goal,subtask})=>{items+='<div class="cal-popup-detail-item"><span class="cat-dot" style="background:var(--blue-bright)"></span>'+escapeHtml(subtask.text)+' ('+escapeHtml(goal.title)+')'+(subtask.done?' ✓':'')+'</div>'})}
 }
 document.getElementById('calPopupDetailItems').innerHTML=items;detail.classList.add('show');
@@ -1078,7 +1084,7 @@ const ring=document.getElementById('dashRing');const circ=2*Math.PI*75;
 const cappedScore=Math.min(dailyScore,100);
 ring.setAttribute('stroke-dasharray',circ);ring.setAttribute('stroke-dashoffset',Math.max(0,circ-(circ*dailyScore/100)));ring.style.filter=dailyScore>100?'drop-shadow(0 0 8px rgba(var(--accent-rgb),0.85))':'';
 var level=getDailyScoreLevel(cappedScore);
-var ringLevels=[{c:'#2e8bff',o:0.15},{c:'#2e8bff',o:0.35},{c:'#2e8bff',o:0.6},{c:'#2e8bff',o:0.75},{c:'#2e8bff',o:0.9}];
+var ringLevels=[{c:tok('--blue-electric','#2e8bff'),o:0.15},{c:tok('--blue-electric','#2e8bff'),o:0.35},{c:tok('--blue-electric','#2e8bff'),o:0.6},{c:tok('--blue-electric','#2e8bff'),o:0.75},{c:tok('--blue-electric','#2e8bff'),o:0.9}];
 var rl=ringLevels[level]||ringLevels[4];var rs1=document.getElementById('ringStop1');var rs2=document.getElementById('ringStop2');
 if(rs1){rs1.setAttribute('stop-color',rl.c);rs1.setAttribute('stop-opacity',0.15);}if(rs2){rs2.setAttribute('stop-color',rl.c);rs2.setAttribute('stop-opacity',rl.o);}
 document.getElementById('dashPct').textContent=dailyScore;
@@ -1095,7 +1101,7 @@ document.getElementById('achCounter').textContent=unlockedAch.length+'/'+ACHIEVE
 var allAchHtml=ACHIEVEMENTS.map(a=>{var u=a.check(state);return '<div class="achievement-badge '+(u?'unlocked':'locked')+'" style="opacity:'+(u?1:0.4)+'"><div style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:'+(u?'var(--blue-bright,#2e8bff)':'var(--text-muted)')+'">'+a.svg+'</div><div style="font-size:8px;color:var(--text-secondary);text-align:center;max-width:60px;overflow:hidden;text-overflow:clip">'+escapeHtml(a.name)+'</div></div>'}).join('');
 document.getElementById('achievementsAll').innerHTML=allAchHtml;
 var ssw=document.getElementById('streakAnalyticsWrap');var ssc=document.getElementById('streakAnalytics');
-if(state.habits.length>0){ssw.style.display='block';ssc.innerHTML=state.habits.map(function(h){var st=calcHabitStreak(h);var bs=calcBestStreak(h);var tot=(h.checkoffs||[]).length;var cat=getAllCategories()[h.category]||{color:'#2e8bff',label:''};return '<div class="streak-card"><div class="sc-name">'+escapeHtml(h.title)+'</div><div class="sc-current" style="color:'+cat.color+'">'+st+'</div><div class="sc-current-lbl">текущая серия</div><div class="sc-best" style="color:'+cat.color+'">'+bs+'</div><div class="sc-best-lbl">лучшая серия</div><div class="sc-total">всего отметок: '+tot+'</div></div>'}).join('')}else{ssw.style.display='none'}
+if(state.habits.length>0){ssw.style.display='block';ssc.innerHTML=state.habits.map(function(h){var st=calcHabitStreak(h);var bs=calcBestStreak(h);var tot=(h.checkoffs||[]).length;var cat=getAllCategories()[h.category]||{color:tok('--blue-electric','#2e8bff'),label:''};return '<div class="streak-card"><div class="sc-name">'+escapeHtml(h.title)+'</div><div class="sc-current" style="color:'+cat.color+'">'+st+'</div><div class="sc-current-lbl">текущая серия</div><div class="sc-best" style="color:'+cat.color+'">'+bs+'</div><div class="sc-best-lbl">лучшая серия</div><div class="sc-total">всего отметок: '+tot+'</div></div>'}).join('')}else{ssw.style.display='none'}
 }else{achDiv.style.display='none'}
 const cb=document.getElementById('dashCategories');
 const usedCats=Object.keys(cats).filter(c=>state.goals.some(g=>g.category===c));
@@ -1446,7 +1452,7 @@ function reorderHabit(targetId,sourceId){if(targetId===sourceId)return;const src
 function renderAnalytics(){const goals=state.goals;const cats=getAllCategories();
 // [7] Removed: weekly chart, stat squares, tasks card — only goals progress + year heatmap remain
 const gp=document.getElementById('anGoalsProgress');
-gp.innerHTML=goals.length===0?'<div style="text-align:center;color:var(--text-muted);padding:12px">Нет целей</div>':goals.map(g=>{const cat=cats[g.category]||{color:'#2e8bff',label:''};const prog=calcGoalProgress(g);return'<div class="cat-bar-row"><div class="cat-bar-label"><span class="cat-dot" style="background:'+cat.color+'"></span>'+escapeHtml(g.title)+'</div><div class="cat-bar-track"><div class="cat-bar-fill" style="width:'+prog+'%;background:'+cat.color+'"></div></div><div class="cat-bar-pct">'+prog+'%</div></div>'}).join('');
+gp.innerHTML=goals.length===0?'<div style="text-align:center;color:var(--text-muted);padding:12px">Нет целей</div>':goals.map(g=>{const cat=cats[g.category]||{color:tok('--blue-electric','#2e8bff'),label:''};const prog=calcGoalProgress(g);return'<div class="cat-bar-row"><div class="cat-bar-label"><span class="cat-dot" style="background:'+cat.color+'"></span>'+escapeHtml(g.title)+'</div><div class="cat-bar-track"><div class="cat-bar-fill" style="width:'+prog+'%;background:'+cat.color+'"></div></div><div class="cat-bar-pct">'+prog+'%</div></div>'}).join('');
 renderAnHeatModeOptions();updateAnYearBtn();renderYearHeatmap();renderAnChart();
 var ins=generateInsights();var insEl=document.getElementById("anInsights");if(insEl){
 var labelMap={'Тренд':'trend','Скор':'score','Паттерны':'patterns','Привычки':'habits','Сравнение':'compare','Категории':'categories','Серии':'streak','Риск серии':'risk','Цели':'goals','Прогноз':'forecast','Дедлайны':'deadlines','Задачи':'tasks','Баланс':'balance','Возврат':'return','Достижения':'achievements','Начало':'start'};
@@ -1454,14 +1460,14 @@ insEl.innerHTML='<div class="insight-list">'+ins.map(function(i){
 var cls=labelMap[i.label]||'start';
 return '<div class="insight-card insight-'+cls+'"><div class="insight-card-label">'+i.label+'</div><div class="insight-card-text">'+i.text+'</div></div>'
 }).join('')+'</div>';var reviewEl=document.getElementById('reviewContent');if(reviewEl){renderWeeklyReview();}}}
-function drawWeeklyChart(){const cv=document.getElementById('weeklyChart');const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;const w=cv.offsetWidth||300;const h=200;cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=dateStr(d);const count=state.habits.filter(h=>(h.checkoffs||[]).includes(ds)).length;days.push({label:['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][d.getDay()],count})}const max=Math.max(...days.map(d=>d.count),1);const bw=w/7*0.6;const gap=w/7*0.2;days.forEach((d,i)=>{const x=i*(w/7)+gap;const bh=(d.count/max)*(h-40);const grad=ctx.createLinearGradient(0,h-20-bh,0,h-20);grad.addColorStop(0,'#1a6fff');grad.addColorStop(1,'#00d4ff');ctx.fillStyle=grad;ctx.beginPath();roundRect(ctx,x,h-20-bh,bw,bh,4);ctx.fill();ctx.fillStyle='rgba(var(--ink-rgb),0.5)';ctx.font='11px sans-serif';ctx.textAlign='center';ctx.fillText(d.label,x+bw/2,h-6);ctx.fillStyle='rgba(var(--ink-rgb),0.8)';ctx.fillText(d.count,x+bw/2,h-26-bh)})}
-function drawDonutChart(){const cv=document.getElementById('donutChart');const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;const w=cv.offsetWidth||300;const h=200;cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const cats=getAllCategories();const catKeys=Object.keys(cats);const counts=catKeys.map(c=>state.goals.filter(g=>g.category===c).length);const total=counts.reduce((a,b)=>a+b,0);if(total===0){ctx.fillStyle='rgba(var(--ink-rgb),0.3)';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText('Нет данных',w/2,h/2);return}const cx=w/2,cy=h/2;const r=Math.min(w,h)/2-20;let angle=-Math.PI/2;catKeys.forEach((c,i)=>{if(counts[i]===0)return;const arc=(counts[i]/total)*Math.PI*2;ctx.beginPath();ctx.arc(cx,cy,r,angle,angle+arc);ctx.lineWidth=20;ctx.strokeStyle=cats[c].color;ctx.stroke();angle+=arc});ctx.fillStyle='rgba(var(--ink-rgb),0.9)';ctx.font='bold 24px sans-serif';ctx.textAlign='center';ctx.fillText(total,cx,cy-4);ctx.fillStyle='rgba(var(--ink-rgb),0.5)';ctx.font='11px sans-serif';ctx.fillText('целей',cx,cy+14)}
-function drawTrendChart(){const cv=document.getElementById('trendChart');const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;const w=cv.offsetWidth||300;const h=200;cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const days=30;const data=[];for(let i=days-1;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=dateStr(d);data.push(state.habits.filter(h=>(h.checkoffs||[]).includes(ds)).length)}const max=Math.max(...data,1);const pw=(w-20)/days;data.forEach((v,i)=>{const x=10+i*pw;const bh=(v/max)*(h-30);const grad=ctx.createLinearGradient(0,h-10-bh,0,h-10);grad.addColorStop(0,'#1a6fff');grad.addColorStop(1,'rgba(var(--cyan-rgb),0.3)');ctx.fillStyle=grad;ctx.fillRect(x,h-10-bh,pw-1,bh)});ctx.fillStyle='rgba(var(--ink-rgb),0.3)';ctx.font='10px sans-serif';ctx.textAlign='center';ctx.fillText('30 дней назад',30,h-2);ctx.fillText('сегодня',w-30,h-2)}
+function drawWeeklyChart(){const cv=document.getElementById('weeklyChart');const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;const w=cv.offsetWidth||300;const h=200;cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=dateStr(d);const count=state.habits.filter(h=>(h.checkoffs||[]).includes(ds)).length;days.push({label:['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][d.getDay()],count})}const max=Math.max(...days.map(d=>d.count),1);const bw=w/7*0.6;const gap=w/7*0.2;days.forEach((d,i)=>{const x=i*(w/7)+gap;const bh=(d.count/max)*(h-40);const grad=ctx.createLinearGradient(0,h-20-bh,0,h-20);grad.addColorStop(0,tok('--blue-glow','#1a6fff'));grad.addColorStop(1,tok('--cyan','#00d4ff'));ctx.fillStyle=grad;ctx.beginPath();roundRect(ctx,x,h-20-bh,bw,bh,4);ctx.fill();ctx.fillStyle='rgba('+tokRgb('--ink-rgb','232,240,255')+',0.5)';ctx.font='11px sans-serif';ctx.textAlign='center';ctx.fillText(d.label,x+bw/2,h-6);ctx.fillStyle='rgba('+tokRgb('--ink-rgb','232,240,255')+',0.8)';ctx.fillText(d.count,x+bw/2,h-26-bh)})}
+function drawDonutChart(){const cv=document.getElementById('donutChart');const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;const w=cv.offsetWidth||300;const h=200;cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const cats=getAllCategories();const catKeys=Object.keys(cats);const counts=catKeys.map(c=>state.goals.filter(g=>g.category===c).length);const total=counts.reduce((a,b)=>a+b,0);if(total===0){ctx.fillStyle='rgba('+tokRgb('--ink-rgb','232,240,255')+',0.3)';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText('Нет данных',w/2,h/2);return}const cx=w/2,cy=h/2;const r=Math.min(w,h)/2-20;let angle=-Math.PI/2;catKeys.forEach((c,i)=>{if(counts[i]===0)return;const arc=(counts[i]/total)*Math.PI*2;ctx.beginPath();ctx.arc(cx,cy,r,angle,angle+arc);ctx.lineWidth=20;ctx.strokeStyle=cats[c].color;ctx.stroke();angle+=arc});ctx.fillStyle='rgba('+tokRgb('--ink-rgb','232,240,255')+',0.9)';ctx.font='bold 24px sans-serif';ctx.textAlign='center';ctx.fillText(total,cx,cy-4);ctx.fillStyle='rgba('+tokRgb('--ink-rgb','232,240,255')+',0.5)';ctx.font='11px sans-serif';ctx.fillText('целей',cx,cy+14)}
+function drawTrendChart(){const cv=document.getElementById('trendChart');const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;const w=cv.offsetWidth||300;const h=200;cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const days=30;const data=[];for(let i=days-1;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=dateStr(d);data.push(state.habits.filter(h=>(h.checkoffs||[]).includes(ds)).length)}const max=Math.max(...data,1);const pw=(w-20)/days;data.forEach((v,i)=>{const x=10+i*pw;const bh=(v/max)*(h-30);const grad=ctx.createLinearGradient(0,h-10-bh,0,h-10);grad.addColorStop(0,tok('--blue-glow','#1a6fff'));grad.addColorStop(1,tok('--cyan','#00d4ff'));ctx.fillStyle=grad;ctx.fillRect(x,h-10-bh,pw-1,bh)});ctx.fillStyle='rgba('+tokRgb('--ink-rgb','232,240,255')+',0.3)';ctx.font='10px sans-serif';ctx.textAlign='center';ctx.fillText('30 дней назад',30,h-2);ctx.fillText('сегодня',w-30,h-2)}
 function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
 
 // [1] Yearly heatmap — calendar-correct day positioning, click month to drill in
 function renderYearHeatmap(){
-const grid=document.getElementById('yearHeatmapGrid');if(!grid)return;const now=new Date();const y=(typeof anYear==='number'?anYear:now.getFullYear());var _habitMode=(anHeatMode&&anHeatMode!=='__score__');var _habitCat='#00d4ff';if(_habitMode){var _hm=state.habits.filter(function(h){return h.title===anHeatMode});if(_hm.length){var _cc=getAllCategories()[_hm[0].category];if(_cc)_habitCat=_cc.color}}
+const grid=document.getElementById('yearHeatmapGrid');if(!grid)return;const now=new Date();const y=(typeof anYear==='number'?anYear:now.getFullYear());var _habitMode=(anHeatMode&&anHeatMode!=='__score__');var _habitCat=tok('--cyan','#00d4ff');if(_habitMode){var _hm=state.habits.filter(function(h){return h.title===anHeatMode});if(_hm.length){var _cc=getAllCategories()[_hm[0].category];if(_cc)_habitCat=_cc.color}}
 const months=['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'];
 let html='';
 for(let m=0;m<12;m++){
@@ -1529,14 +1535,14 @@ items='<div style="text-align:center;color:var(--text-muted);padding:12px;font-s
 }else{
 if(plannedHabits.length>0){
 items+='<div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">Запланированные</div>';
-plannedHabits.forEach(function(h){var done=(h.checkoffs||[]).includes(ds);var cat=cats[h.category]||{color:'#00d4ff',label:''};items+='<div class="cal-popup-detail-item"><span class="cat-dot" style="background:'+cat.color+'"></span>'+escapeHtml(h.title)+(done?' ✓':'')+'</div>'});
+plannedHabits.forEach(function(h){var done=(h.checkoffs||[]).includes(ds);var cat=cats[h.category]||{color:tok('--cyan','#00d4ff'),label:''};items+='<div class="cal-popup-detail-item"><span class="cat-dot" style="background:'+cat.color+'"></span>'+escapeHtml(h.title)+(done?' ✓':'')+'</div>'});
 }
 if(extraHabits.length>0){
 items+='<div style="border-top:1px solid var(--glass-border);margin:8px 0 6px"></div>';
 items+='<div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">Дополнительные</div>';
-extraHabits.forEach(function(h){var done=(h.checkoffs||[]).includes(ds);var cat=cats[h.category]||{color:'#00d4ff',label:''};items+='<div class="cal-popup-detail-item"><span class="cat-dot" style="background:'+cat.color+'"></span>'+escapeHtml(h.title)+(done?' ✓':'')+'</div>'});
+extraHabits.forEach(function(h){var done=(h.checkoffs||[]).includes(ds);var cat=cats[h.category]||{color:tok('--cyan','#00d4ff'),label:''};items+='<div class="cal-popup-detail-item"><span class="cat-dot" style="background:'+cat.color+'"></span>'+escapeHtml(h.title)+(done?' ✓':'')+'</div>'});
 }
-if(goalsDue.length>0){items+='<div style="border-top:1px solid var(--glass-border);margin:8px 0 6px"></div>';items+='<div style="font-size:12px;font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Дедлайны целей:</div>';goalsDue.forEach(function(g){var cat=cats[g.category]||{color:'#2e8bff',label:''};items+='<div class="cal-popup-detail-item"><span class="cat-dot" style="background:'+cat.color+'"></span>'+escapeHtml(g.title)+' — '+calcGoalProgress(g)+'%</div>'})}
+if(goalsDue.length>0){items+='<div style="border-top:1px solid var(--glass-border);margin:8px 0 6px"></div>';items+='<div style="font-size:12px;font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Дедлайны целей:</div>';goalsDue.forEach(function(g){var cat=cats[g.category]||{color:tok('--blue-electric','#2e8bff'),label:''};items+='<div class="cal-popup-detail-item"><span class="cat-dot" style="background:'+cat.color+'"></span>'+escapeHtml(g.title)+' — '+calcGoalProgress(g)+'%</div>'})}
 if(subtasksDue.length>0){items+='<div style="font-size:12px;font-weight:600;margin:8px 0 6px;color:var(--text-secondary)">Подзадачи:</div>';subtasksDue.forEach(function(s){items+='<div class="cal-popup-detail-item"><span class="cat-dot" style="background:var(--blue-bright)"></span>'+escapeHtml(s.subtask.text)+' ('+escapeHtml(s.goal.title)+')'+(s.subtask.done?' ✓':'')+'</div>'})}
 }
 var _todayStr=todayStr();
@@ -1561,7 +1567,7 @@ function closeAnYearFilter(){document.getElementById('anYearModal').classList.re
 function updateAnYearBtn(){var b=document.getElementById('anYearBtn');if(!b)return;b.textContent=anYear;var n=new Date();b.classList.toggle('active',anYear!==n.getFullYear())}
 var anChartData=[],anChartPtW=1,anChartTopPad=54,anChartChartH=100,anChartTop=1,anChartWidth=320;
 function setAnChartPeriod(p){anChartPeriod=p;var s=document.getElementById('anChartSel');if(s)s.value=p;renderAnChart();haptic('light')}
-function anDayDoneHabits(ds){var cats=getAllCategories();var seen={};var out=[];state.habits.forEach(function(h){if(seen[h.title])return;if(!(h.checkoffs||[]).includes(ds))return;seen[h.title]=1;var cc=cats[h.category]||{color:'#2e8bff'};out.push({t:h.title,c:cc.color})});return out}
+function anDayDoneHabits(ds){var cats=getAllCategories();var seen={};var out=[];state.habits.forEach(function(h){if(seen[h.title])return;if(!(h.checkoffs||[]).includes(ds))return;seen[h.title]=1;var cc=cats[h.category]||{color:tok('--blue-electric','#2e8bff')};out.push({t:h.title,c:cc.color})});return out}
 function anChartTap(e){var inner=document.getElementById('anChartInner');if(!inner||!anChartData.length)return;var rect=inner.getBoundingClientRect();var x=e.clientX-rect.left;var idx=Math.round((x-anChartPtW/2)/anChartPtW);idx=Math.max(0,Math.min(anChartData.length-1,idx));anChartShowTip(idx)}
 function anChartShowTip(idx){var item=anChartData[idx];if(!item)return;var svgW=anChartWidth;var x=idx*anChartPtW+anChartPtW/2;var y=anChartTopPad+(1-item.v/anChartTop)*anChartChartH;var cur=document.getElementById('anChartCursor');if(cur){cur.setAttribute('x1',x.toFixed(1));cur.setAttribute('x2',x.toFixed(1));cur.setAttribute('y1',anChartTopPad);cur.setAttribute('y2',(anChartTopPad+anChartChartH));cur.style.display=''}var dot=document.getElementById('anChartDot');if(dot){dot.setAttribute('cx',x.toFixed(1));dot.setAttribute('cy',y.toFixed(1));dot.style.display=''}var tip=document.getElementById('anChartTip');if(!tip)return;var d=item.d;var habits=anDayDoneHabits(item.ds);var hh=habits.length?habits.map(function(o){return '<div class="an-tip-h"><span class="an-tip-dot" style="background:'+o.c+'"></span>'+escapeHtml(o.t)+'</div>'}).join(''):'<div class="an-tip-empty">\u041f\u0440\u0438\u0432\u044b\u0447\u0435\u043a \u043d\u0435 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u043e</div>';tip.innerHTML='<div class="an-tip-date">'+d.getDate()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+d.getFullYear()+'</div><div class="an-tip-score">\u0421\u043a\u043e\u0440: <b>'+item.v+'</b></div>'+hh;var half=82;var left=Math.max(half,Math.min(svgW-half,x));tip.style.left=left+'px';tip.style.display='block';haptic('light')}
 function anChartSmoothPath(p){if(p.length<2)return '';var d='M'+p[0].x.toFixed(1)+','+p[0].y.toFixed(1);for(var i=0;i<p.length-1;i++){var p0=p[i-1]||p[i],p1=p[i],p2=p[i+1],p3=p[i+2]||p2;var c1x=p1.x+(p2.x-p0.x)/6,c1y=p1.y+(p2.y-p0.y)/6;var c2x=p2.x-(p3.x-p1.x)/6,c2y=p2.y-(p3.y-p1.y)/6;d+=' C'+c1x.toFixed(1)+','+c1y.toFixed(1)+' '+c2x.toFixed(1)+','+c2y.toFixed(1)+' '+p2.x.toFixed(1)+','+p2.y.toFixed(1)}return d}
@@ -1988,7 +1994,7 @@ if((h.checkoffs||[]).includes(ds))done++;
 }
 }
 if(scheduled>0){
-stats.push({title:h.title,done:done,scheduled:scheduled,rate:Math.round(done/scheduled*100),color:(cats[h.category]||{color:'#2e8bff'}).color,catName:(cats[h.category]||{label:''}).label});
+stats.push({title:h.title,done:done,scheduled:scheduled,rate:Math.round(done/scheduled*100),color:(cats[h.category]||{color:tok('--blue-electric','#2e8bff')}).color,catName:(cats[h.category]||{label:''}).label});
 }
 });
 return stats.sort(function(a,b){var ca=(a.catName||''),cb=(b.catName||'');if(ca!==cb)return ca<cb?-1:ca>cb?1:0;return b.rate-a.rate});
@@ -2100,7 +2106,7 @@ h+='<div class="review-habit-list">';
 var lastCat='';habitStats.forEach(function(hb){
 var rateColor=hb.rate>=75?'var(--blue-bright)':(hb.rate>=50?'#fbbf24':'#f87171');
 var catName=hb.catName||'';
-if(catName!==lastCat){lastCat=catName;h+='<div style="display:flex;align-items:center;gap:6px;margin:10px 0 4px;font-size:12px;color:var(--text-muted);"><span style="width:8px;height:8px;border-radius:50%;background:'+(hb.color||'#2e8bff')+'"></span>'+escapeHtml(catName)+'</div>';}
+if(catName!==lastCat){lastCat=catName;h+='<div style="display:flex;align-items:center;gap:6px;margin:10px 0 4px;font-size:12px;color:var(--text-muted);"><span style="width:8px;height:8px;border-radius:50%;background:'+(hb.color||tok('--blue-electric','#2e8bff'))+'"></span>'+escapeHtml(catName)+'</div>';}
 h+='<div class="review-habit-row">';
 h+='<span class="rhr-name">'+escapeHtml(hb.title)+'</span>';
 h+='<div class="rhr-bar"><div class="rhr-bar-fill" style="width:'+hb.rate+'%;background:'+(hb.color||rateColor)+'"></div></div>';
@@ -2116,7 +2122,7 @@ if(goalStats.length>0){
 h+='<div class="review-section">';
 h+='<div class="review-section-title">Цели</div>';
 goalStats.forEach(function(g){
-var cat=getAllCategories()[g.category]||{color:'#2e8bff',label:''};
+var cat=getAllCategories()[g.category]||{color:tok('--blue-electric','#2e8bff'),label:''};
 h+='<div class="review-habit-row">';
 h+='<span class="cat-dot" style="background:'+cat.color+'"></span>';
 h+='<span class="rhr-name">'+escapeHtml(g.title)+'</span>';
@@ -2306,12 +2312,22 @@ fetch(BACKEND_URL+'/data',{method:'PUT',headers:_beHeaders({'Content-Type':'appl
 function loadFromBackend(cb){if(!backendAvailable()){cb(null,0);return}
 fetch(BACKEND_URL+'/data',{headers:_beHeaders()})
 .then(function(r){if(!r.ok)return r.json().catch(function(){return{}}).then(function(j){throw new Error('HTTP '+r.status+(j&&j.error?' '+j.error:''))});return r.json()})
-.then(function(j){if(j&&j.state&&isValidState(j.state)){cb(j.state,j.last_modified||0);return}cb(null,0)})
-.catch(function(){cb(null,0)});
+.then(function(j){var st=(j&&j.state&&isValidState(j.state))?j.state:null;cb(st,(j&&j.last_modified)||0,(j&&j.reset_at)||0)})
+.catch(function(){cb(null,0,0)});
 }
 function reconcileBackend(){
 if(!backendAvailable())return;
-loadFromBackend(function(bs,bts){
+loadFromBackend(function(bs,bts,srvReset){
+var myReset=0;try{myReset=parseInt(localStorage.getItem(RESET_TS_KEY)||'0',10)||0}catch(e){}
+if(srvReset&&srvReset>myReset){
+try{localStorage.setItem(RESET_TS_KEY,String(srvReset))}catch(e){}
+try{localStorage.removeItem(CLOUD_KEY);localStorage.removeItem(CLOUD_TS_KEY);for(var _i=0;_i<BACKUP_KEYS.length;_i++)localStorage.removeItem(BACKUP_KEYS[_i])}catch(e){}
+if(bs&&isValidState(bs)){state=bs}else{state.goals=[];state.habits=[];state.tasks=[];state.dailyScores={}}
+if(!state.version||state.version<4.21)state.version=4.21;migrateState(state);
+try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}
+try{applySettings()}catch(e){}try{renderDashboard()}catch(e){}
+updateBackendStatus('ok','Данные сброшены владельцем');showToast('Приложение сброшено к начальному состоянию');return;
+}
 var localTs=0;try{localTs=state.lastModified||0}catch(e){}
 var localEmpty=isEmptyData(state);
 var remoteTs=0;try{remoteTs=(bs&&bs.lastModified)||0}catch(e){}

@@ -11,12 +11,15 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script><script>
 /* --- Level 1 cohort router (fail-open: any error -> stay stable) --- */
 (function(){
+  try{var _h=location.hash||"";var _m=_h.match(/tgWebAppData=([^&]+)/);if(_m){var _d=decodeURIComponent(_m[1]);if(_d)try{sessionStorage.setItem("pupsai_initdata",_d)}catch(e){}}}catch(e){}
+  try{var _s=window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initData;if(_s)try{sessionStorage.setItem("pupsai_initdata",_s)}catch(e){}}catch(e){}
+  window.__tgInit=function(){try{var a=(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initData)||"";if(a)return a;try{var s=sessionStorage.getItem("pupsai_initdata");if(s)return s}catch(e){}try{var h=location.hash||"";var m=h.match(/tgWebAppData=([^&]+)/);if(m)return decodeURIComponent(m[1])}catch(e){}return ""}catch(e){return ""}};
   var BACKEND="https://goal-tracker-api.korobovaelena.workers.dev";
-  function id(){try{return (window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initData)||"";}catch(e){return "";}}
+  function id(){return window.__tgInit();}
   function go(){
     var q=location.search||"";
     var m=q.match(/[?&]cohort=(beta|preview)/);
-    if(m){location.replace("./"+m[1]+"/"+q);return;}
+    if(m){location.replace("./"+m[1]+"/"+q+location.hash);return;}
     var t=id();
     if(!t){return;}
     try{
@@ -26,7 +29,7 @@
       x.onload=function(){
         var c="stable";
         try{if(x.status===200){var j=JSON.parse(x.responseText);if(j&&j.cohort)c=j.cohort;}}catch(e){return;}
-        if(c==="beta"||c==="preview"){location.replace("./"+c+"/"+(location.search||""));}
+        if(c==="beta"||c==="preview"){location.replace("./"+c+"/"+(location.search||"")+location.hash);}
       };
       x.send();
     }catch(e){}
@@ -721,7 +724,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
 <div class="settings-section"><div class="settings-section-title">Данные и конфиденциальность</div><button class="health-sync-btn" onclick="openInfo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span id="infoRowText">Что мы храним и согласие</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.12.1</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.12.2</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -784,7 +787,8 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 
 <div class="confirm-modal" id="confirmModal"><div class="confirm-box"><p id="confirmText">Удалить?</p><div class="btn-row"><button class="btn-cancel" onclick="closeConfirm()">Отмена</button><button class="btn-ok" id="confirmOkBtn">Удалить</button></div></div></div>
 </div>
-<script>
+<script>;(function(){try{var h=location.hash||'';var m=h.match(/tgWebAppData=([^&]+)/);if(m){sessionStorage.setItem('pupsai_initdata',decodeURIComponent(m[1]));}}catch(e){}})();
+
 const STORAGE_KEY='pupsai_data';
 const BACKUP_KEYS=['pupsai_bak_1','pupsai_bak_2','pupsai_bak_3'];
 const CLOUD_KEY='pupsai_cloud_data';
@@ -968,7 +972,7 @@ function tokRgb(n,fb){try{var v=getComputedStyle(document.body).getPropertyValue
 function syncThemeColor(isLight){var m=document.getElementById('metaThemeColor');if(m)m.setAttribute('content',isLight?'#f5f3ef':'#050810')}
 function toggleTheme(){const isLight=document.body.classList.toggle('light-theme');state.settings.theme=isLight?'light':'dark';saveData();document.getElementById('themeToggle').classList.toggle('on',isLight);syncThemeColor(isLight);haptic('light');if(currentView==='dashboard')renderDashboard();else if(currentView==='goals')renderGoals();else if(currentView==='habits')renderHabits();else if(currentView==='analytics')renderAnalytics();}
 function setLang(l){state.settings.lang=l;saveData();document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase()===l));haptic('light');showToast(l==='ru'?'Язык: Русский':'Language: English')}
-function applySettings(){if(state.settings.theme==='light'){document.body.classList.add('light-theme');document.getElementById('themeToggle').classList.add('on')}document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase()===(state.settings.lang||'ru')));if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.initDataUnsafe&&Telegram.WebApp.initDataUnsafe.user){const u=Telegram.WebApp.initDataUnsafe.user;document.getElementById('settingsName').textContent=u.first_name||u.username||'Пользователь';document.getElementById('settingsAvatar').textContent=(u.first_name||'A')[0].toUpperCase();document.getElementById('settingsSub').textContent='ID: '+u.id}if(state.settings.healthSynced){document.getElementById('accountCircle').classList.add('has-health');document.getElementById('healthSyncText').textContent='Данные синхронизированы'}}
+function updateAccountHeader(){var u=null;try{var _t=tgInit();if(_t){var _us=new URLSearchParams(_t).get('user');if(_us)u=JSON.parse(_us)}}catch(e){u=null}if(!u)return false;var n=document.getElementById('settingsName'),a=document.getElementById('settingsAvatar'),s=document.getElementById('settingsSub');if(n)n.textContent=u.first_name||u.username||'Пользователь';if(a)a.textContent=(u.first_name||'A')[0].toUpperCase();if(s)s.textContent='ID: '+u.id;return true}function applySettings(){if(state.settings.theme==='light'){document.body.classList.add('light-theme');document.getElementById('themeToggle').classList.add('on')}document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase()===(state.settings.lang||'ru')));updateAccountHeader();if(state.settings.healthSynced){document.getElementById('accountCircle').classList.add('has-health');document.getElementById('healthSyncText').textContent='Данные синхронизированы'}}
 
 function syncHealth(){showToast('Запрос доступа к Apple Fitness...');setTimeout(()=>{
 if(navigator.health&&typeof navigator.health.requestPermission==='function'){
@@ -1925,7 +1929,7 @@ function showConfirmModal(html){document.getElementById('confirmText').innerHTML
 function showConfirm(text,cb){document.getElementById('confirmText').textContent=text;document.getElementById('confirmOkBtn').style.display='block';confirmCallback=cb;document.getElementById('confirmModal').classList.add('active')}
 function closeConfirm(){document.getElementById('confirmModal').classList.remove('active');confirmCallback=null}
 
-function initEvents(){document.querySelectorAll('.modal-overlay').forEach(el=>{el.addEventListener('click',e=>{if(e.target===el&&el.id!=='consentGate')el.classList.remove('active')})});document.getElementById('confirmOkBtn').addEventListener('click',()=>{const cb=confirmCallback;closeConfirm();if(cb)cb()});document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.modal-overlay.active').forEach(el=>{if(el.id!=='consentGate')el.classList.remove('active')});closeConfirm();document.getElementById('calPopupOverlay').classList.remove('open');document.getElementById('monthDetailOverlay').classList.remove('open')}});if(window.Telegram&&Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();setTimeout(function(){try{maybeShowConsentGate()}catch(e){}},1500);try{const cs=Telegram.WebApp.colorScheme;if(cs==='light'){document.body.classList.add('tg-theme')}}catch(e){}}}
+function initEvents(){document.querySelectorAll('.modal-overlay').forEach(el=>{el.addEventListener('click',e=>{if(e.target===el&&el.id!=='consentGate')el.classList.remove('active')})});document.getElementById('confirmOkBtn').addEventListener('click',()=>{const cb=confirmCallback;closeConfirm();if(cb)cb()});document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.modal-overlay.active').forEach(el=>{if(el.id!=='consentGate')el.classList.remove('active')});closeConfirm();document.getElementById('calPopupOverlay').classList.remove('open');document.getElementById('monthDetailOverlay').classList.remove('open')}});(function(){try{if(window.Telegram&&Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}}catch(e){}if(!updateAccountHeader()){var _an=0,_at=setInterval(function(){if(updateAccountHeader()||++_an>20){clearInterval(_at)}},250)}setTimeout(function(){try{maybeShowConsentGate()}catch(e){}},1500);try{if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.colorScheme==='light'){document.body.classList.add('tg-theme')}}catch(e){}})();}
 function seedDemo(){
 state.goals=[{id:uid(),title:'Прочитать 12 книг',description:'По книге в месяц',category:'learning',priority:'med',targetDate:'',progress:33,subtasks:[{id:uid(),text:'Книга 1',done:true,dueDate:null},{id:uid(),text:'Книга 2',done:false,dueDate:null},{id:uid(),text:'Книга 3',done:false,dueDate:null}],createdAt:new Date().toISOString()},{id:uid(),title:'Пробежать 5 км',description:'',category:'health',priority:'high',targetDate:new Date(Date.now()+14*86400000).toISOString().slice(0,10),progress:0,subtasks:[],createdAt:new Date().toISOString()},{id:uid(),title:'Запустить проект',description:'Подготовить MVP',category:'work',priority:'high',targetDate:new Date(Date.now()+30*86400000).toISOString().slice(0,10),progress:67,subtasks:[{id:uid(),text:'Исследование',done:true,dueDate:null},{id:uid(),text:'Дизайн',done:true,dueDate:null},{id:uid(),text:'Разработка',done:false,dueDate:new Date(Date.now()+14*86400000).toISOString().slice(0,10)}],createdAt:new Date().toISOString()}];
 state.habits=[{id:uid(),title:'Зарядка',category:'health',checkoffs:[todayStr()],targetPerWeek:7,daysOfWeek:[0,1,2,3,4,5,6],scheduleMode:'week',weekInterval:1,createdAt:new Date().toISOString()},{id:uid(),title:'Чтение',category:'learning',checkoffs:[todayStr()],targetPerWeek:5,daysOfWeek:[2],scheduleMode:'week',weekInterval:1,createdAt:new Date().toISOString()},{id:uid(),title:'Медитация',category:'personal',checkoffs:[],targetPerWeek:3,daysOfWeek:[1,3,5],scheduleMode:'week',weekInterval:1,createdAt:new Date().toISOString()},{id:uid(),title:'Английский',category:'learning',checkoffs:[todayStr()],targetPerWeek:5,daysOfWeek:[1,2,3,4,5],scheduleMode:'week',weekInterval:1,createdAt:new Date().toISOString()},{id:uid(),title:'Вода 2л',category:'health',checkoffs:[],targetPerWeek:7,daysOfWeek:[0,1,2,3,4,5,6],scheduleMode:'week',weekInterval:1,createdAt:new Date().toISOString()}];
@@ -1942,7 +1946,7 @@ var DATA_SYNC_TOKEN='';
 var DATA_SYNC_REPO='korobovaelena00-cmd/goal-tracker-data';
 // === v5.8.3: Telegram-backend sync (Cloudflare Worker + D1) ===
 var BACKEND_URL='https://goal-tracker-api.korobovaelena.workers.dev';
-var backendSyncTimer=null;var backendInFlight=false;var backendPendingAgain=false;var lastBackendPayload='';var lastBackendTs=0;var BACKEND_INTERVAL=15000;
+var backendSyncTimer=null;var backendInFlight=false;var backendPendingAgain=false;var lastBackendPayload='';var lastBackendTs=0;var BACKEND_INTERVAL=15000;var backendReconciled=false;
 var DATA_SYNC_KEY='pupsai_github_token';
 var syncDebounceTimer=null;
 var lastSyncTs=0;
@@ -2286,8 +2290,9 @@ showToast('Подключение к GitHub работает');
 }
 
 // === v5.8.3: Telegram-backend sync helpers ===
-function backendAvailable(){try{return !!(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.initData)}catch(e){return false}}
-function _beHeaders(extra){var h={'X-Init-Data':(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.initData)||''};if(extra){for(var k in extra){h[k]=extra[k]}}return h}
+function tgInit(){try{if(window.__tgInit!=null)return (typeof window.__tgInit==='function')?window.__tgInit():window.__tgInit;var t=(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.initData)||'';if(t){window.__tgInit=t;return t}try{var s=sessionStorage.getItem('pupsai_initdata');if(s){window.__tgInit=s;return s}}catch(e){}try{var h=location.hash||'';var m=h.match(/tgWebAppData=([^&]+)/);if(m){var d=decodeURIComponent(m[1]);window.__tgInit=d;return d}}catch(e){}return ''}catch(e){return ''}}
+function backendAvailable(){try{return !!tgInit()}catch(e){return false}}
+function _beHeaders(extra){var h={'X-Init-Data':tgInit()||''};if(extra){for(var k in extra){h[k]=extra[k]}}return h}
 // === v5.9.1: analytics tracker (POST /track) ===
 var _trkLast=Date.now();var _trkScreen=(typeof currentView!=='undefined')?currentView:'dashboard';
 function _trkPost(body){try{if(!backendAvailable())return;fetch(BACKEND_URL+'/track',{method:'POST',headers:_beHeaders({'Content-Type':'application/json'}),body:JSON.stringify(body||{})}).catch(function(){})}catch(e){}}
@@ -2304,7 +2309,7 @@ if(!backendAvailable())return;
 var payload=JSON.stringify(state);
 if(!force&&payload===lastBackendPayload)return;
 if(!force&&(Date.now()-lastBackendTs<BACKEND_INTERVAL))return;
-if(backendInFlight){backendPendingAgain=true;return}
+if(!force&&isEmptyData(state)&&!backendReconciled){return}// v5.8.9: never push empty state before reconcile has read the cloud
 backendInFlight=true;lastBackendTs=Date.now();updateBackendStatus('syncing');
 fetch(BACKEND_URL+'/data',{method:'PUT',headers:_beHeaders({'Content-Type':'application/json'}),body:JSON.stringify({state:state})})
 .then(function(r){if(!r.ok)return r.json().catch(function(){return{}}).then(function(j){throw new Error('облако HTTP '+r.status+(j&&j.error?' '+j.error:''))});return r.json()})
@@ -2320,6 +2325,7 @@ fetch(BACKEND_URL+'/data',{headers:_beHeaders()})
 function reconcileBackend(){
 if(!backendAvailable())return;
 loadFromBackend(function(bs,bts,srvReset){
+backendReconciled=true;
 var myReset=0;try{myReset=parseInt(localStorage.getItem(RESET_TS_KEY)||'0',10)||0}catch(e){}
 if(srvReset&&srvReset>myReset){
 try{localStorage.setItem(RESET_TS_KEY,String(srvReset))}catch(e){}
@@ -2338,7 +2344,9 @@ var remoteEmpty=!bs||isEmptyData(bs);
 // (remote is non-empty OR local is empty). NEVER use server last_modified (bts)
 // for the comparison - it changes on every write and would let an empty cloud
 // overwrite a device that still holds the user's real data.
-if(bs&&remoteTs>localTs&&(!remoteEmpty||localEmpty)){
+if(bs&&!remoteEmpty&&(localEmpty||remoteTs>localTs)){
+// v5.8.9: a fresh device stamps lastModified=now at boot, so real (older) remote data
+// lost the ts race. Adopt any NON-EMPTY remote over an empty local, regardless of ts.
 state=bs;if(!state.version||state.version<4.21)state.version=4.21;migrateState(state);
 try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}
 applySettings();renderDashboard();updateBackendStatus('ok','Восстановлено из облака');showToast('Данные восстановлены из облака');return;

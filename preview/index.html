@@ -11,11 +11,8 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script><script>
 /* --- Level 1 cohort guard: bounce to stable if cohort changed --- */
 (function(){
-  try{var _h=location.hash||"";var _m=_h.match(/tgWebAppData=([^&]+)/);if(_m){var _d=decodeURIComponent(_m[1]);if(_d)try{sessionStorage.setItem("pupsai_initdata",_d)}catch(e){}}}catch(e){}
-  try{var _s=window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initData;if(_s)try{sessionStorage.setItem("pupsai_initdata",_s)}catch(e){}}catch(e){}
-  window.__tgInit=function(){try{var a=(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initData)||"";if(a)return a;try{var s=sessionStorage.getItem("pupsai_initdata");if(s)return s}catch(e){}try{var h=location.hash||"";var m=h.match(/tgWebAppData=([^&]+)/);if(m)return decodeURIComponent(m[1])}catch(e){}return ""}catch(e){return ""}};
   var BACKEND="https://goal-tracker-api.korobovaelena.workers.dev", MINE="preview";
-  function id(){return window.__tgInit();}
+  function id(){try{return (window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initData)||"";}catch(e){return "";}}
   try{
     var q=location.search||"";
     var m=q.match(/[?&]cohort=(beta|preview)/);
@@ -29,7 +26,7 @@
         var c="stable";
         try{if(x.status===200){var j=JSON.parse(x.responseText);if(j&&j.cohort)c=j.cohort;}}catch(e){return;}
         var ow="";try{ow=String((JSON.parse(new URLSearchParams(t).get("user")||"{}").id)||"");}catch(e){}
-        if(c!==MINE && ow!=="815804273"){location.replace("../"+location.hash);}
+        if(c!==MINE && ow!=="815804273"){location.replace("../");}
       };
       x.send();
     }
@@ -723,7 +720,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
 <div class="settings-section"><div class="settings-section-title">Данные и конфиденциальность</div><button class="health-sync-btn" onclick="openInfo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span id="infoRowText">Что мы храним и согласие</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.12.2</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.12.4</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -905,6 +902,7 @@ function rotateBackups(){try{for(let i=BACKUP_KEYS.length-1;i>0;i--){const prev=
 function syncToCloud(){if(cloudSyncPending)return;if(!(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.CloudStorage&&Telegram.WebApp.CloudStorage.setItem))return;cloudSyncPending=true;try{const data=JSON.stringify(state);Telegram.WebApp.CloudStorage.setItem(CLOUD_KEY,data,function(err,ok){cloudSyncPending=false;if(!err&&ok){localStorage.setItem(CLOUD_TS_KEY,Date.now().toString());console.log('Cloud sync OK')}else if(err){console.warn('Cloud sync err:',err)}else{console.warn('Cloud sync no-ok')}})}catch(e){cloudSyncPending=false;console.warn('Cloud sync:',e)}}
 function saveData(){try{state.lastModified=Date.now();const data=JSON.stringify(state);localStorage.setItem(STORAGE_KEY,data);lastSaveTs=Date.now()}catch(e){console.error('Save:',e)}try{rotateBackups()}catch(e){}try{syncToCloud()}catch(e){}try{if(backendAvailable())scheduleBackendSync();else scheduleGitHubSync()}catch(e){}}
 function startAutoSave(){setInterval(function(){try{if(Date.now()-lastSaveTs>AUTOSAVE_INTERVAL){saveData()}}catch(e){}},AUTOSAVE_INTERVAL);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'){saveData()}});window.addEventListener('beforeunload',function(){saveData()})}
+function startBackendPull(){setInterval(function(){try{if(!backendAvailable())return;if(document.visibilityState==='hidden')return;if(backendInFlight||backendSyncTimer)return;if(Date.now()-lastReconcileTs<8000)return;reconcileBackend()}catch(e){}},12000);}// v5.12.4: periodic cloud pull so a 2nd device sees edits
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
 function todayStr(){var d=new Date();var off=d.getTimezoneOffset();var local=new Date(d.getTime()-off*60000);return local.toISOString().slice(0,10)}
 function dateStr(d){var off=d.getTimezoneOffset();var local=new Date(d.getTime()-off*60000);return local.toISOString().slice(0,10)}
@@ -1934,7 +1932,7 @@ state.goals=[{id:uid(),title:'Прочитать 12 книг',description:'По 
 state.habits=[{id:uid(),title:'Зарядка',category:'health',checkoffs:[todayStr()],targetPerWeek:7,daysOfWeek:[0,1,2,3,4,5,6],scheduleMode:'week',weekInterval:1,createdAt:new Date().toISOString()},{id:uid(),title:'Чтение',category:'learning',checkoffs:[todayStr()],targetPerWeek:5,daysOfWeek:[2],scheduleMode:'week',weekInterval:1,createdAt:new Date().toISOString()},{id:uid(),title:'Медитация',category:'personal',checkoffs:[],targetPerWeek:3,daysOfWeek:[1,3,5],scheduleMode:'week',weekInterval:1,createdAt:new Date().toISOString()},{id:uid(),title:'Английский',category:'learning',checkoffs:[todayStr()],targetPerWeek:5,daysOfWeek:[1,2,3,4,5],scheduleMode:'week',weekInterval:1,createdAt:new Date().toISOString()},{id:uid(),title:'Вода 2л',category:'health',checkoffs:[],targetPerWeek:7,daysOfWeek:[0,1,2,3,4,5,6],scheduleMode:'week',weekInterval:1,createdAt:new Date().toISOString()}];
 state.tasks=[{id:uid(),title:'Купить продукты',done:false,date:todayStr(),createdAt:new Date().toISOString()},{id:uid(),title:'Позвонить врачу',done:true,date:todayStr(),createdAt:new Date().toISOString()},{id:uid(),title:'Подготовить презентацию',done:false,date:new Date(Date.now()+2*86400000).toISOString().slice(0,10),createdAt:new Date().toISOString()}];
 saveData()}
-loadData();applySettings();initEvents();renderDashboard();updateHeaderPeriodLabel();startAutoSave();
+loadData();applySettings();initEvents();renderDashboard();updateHeaderPeriodLabel();startAutoSave();startBackendPull();
 setTimeout(function(){trackOpen()},800);
 setInterval(function(){if(document.visibilityState!=='hidden')trackScreenTime()},30000);
 document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'){trackScreenTime();track('blur',_trkScreen)}else{_trkLast=Date.now();track('focus',_trkScreen)}});
@@ -1945,6 +1943,7 @@ var DATA_SYNC_TOKEN='';
 var DATA_SYNC_REPO='korobovaelena00-cmd/goal-tracker-data';
 // === v5.8.3: Telegram-backend sync (Cloudflare Worker + D1) ===
 var BACKEND_URL='https://goal-tracker-api.korobovaelena.workers.dev';
+var lastReconcileTs=0;// v5.12.4 periodic pull
 var backendSyncTimer=null;var backendInFlight=false;var backendPendingAgain=false;var lastBackendPayload='';var lastBackendTs=0;var BACKEND_INTERVAL=15000;var backendReconciled=false;
 var DATA_SYNC_KEY='pupsai_github_token';
 var syncDebounceTimer=null;
@@ -2323,8 +2322,10 @@ fetch(BACKEND_URL+'/data',{headers:_beHeaders()})
 }
 function reconcileBackend(){
 if(!backendAvailable())return;
+if(backendInFlight||backendSyncTimer)return;// v5.12.4: don't pull while a local push is pending
 loadFromBackend(function(bs,bts,srvReset){
 backendReconciled=true;
+lastReconcileTs=Date.now();// v5.12.4
 var myReset=0;try{myReset=parseInt(localStorage.getItem(RESET_TS_KEY)||'0',10)||0}catch(e){}
 if(srvReset&&srvReset>myReset){
 try{localStorage.setItem(RESET_TS_KEY,String(srvReset))}catch(e){}

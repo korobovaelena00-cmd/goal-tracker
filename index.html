@@ -11,15 +11,12 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script><script>
 /* --- Level 1 cohort router (fail-open: any error -> stay stable) --- */
 (function(){
-  try{var _h=location.hash||"";var _m=_h.match(/tgWebAppData=([^&]+)/);if(_m){var _d=decodeURIComponent(_m[1]);if(_d)try{sessionStorage.setItem("pupsai_initdata",_d)}catch(e){}}}catch(e){}
-  try{var _s=window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initData;if(_s)try{sessionStorage.setItem("pupsai_initdata",_s)}catch(e){}}catch(e){}
-  window.__tgInit=function(){try{var a=(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initData)||"";if(a)return a;try{var s=sessionStorage.getItem("pupsai_initdata");if(s)return s}catch(e){}try{var h=location.hash||"";var m=h.match(/tgWebAppData=([^&]+)/);if(m)return decodeURIComponent(m[1])}catch(e){}return ""}catch(e){return ""}};
   var BACKEND="https://goal-tracker-api.korobovaelena.workers.dev";
-  function id(){return window.__tgInit();}
+  function id(){try{return (window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initData)||"";}catch(e){return "";}}
   function go(){
     var q=location.search||"";
     var m=q.match(/[?&]cohort=(beta|preview)/);
-    if(m){location.replace("./"+m[1]+"/"+q+location.hash);return;}
+    if(m){location.replace("./"+m[1]+"/"+q);return;}
     var t=id();
     if(!t){return;}
     try{
@@ -29,7 +26,7 @@
       x.onload=function(){
         var c="stable";
         try{if(x.status===200){var j=JSON.parse(x.responseText);if(j&&j.cohort)c=j.cohort;}}catch(e){return;}
-        if(c==="beta"||c==="preview"){location.replace("./"+c+"/"+(location.search||"")+location.hash);}
+        if(c==="beta"||c==="preview"){location.replace("./"+c+"/"+(location.search||""));}
       };
       x.send();
     }catch(e){}
@@ -724,7 +721,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
 <div class="settings-section"><div class="settings-section-title">Данные и конфиденциальность</div><button class="health-sync-btn" onclick="openInfo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span id="infoRowText">Что мы храним и согласие</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.12.2</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.12.6</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -905,7 +902,8 @@ setTimeout(function(){try{reconcileBackend()}catch(e){}},1500);
 function rotateBackups(){try{for(let i=BACKUP_KEYS.length-1;i>0;i--){const prev=localStorage.getItem(BACKUP_KEYS[i-1]);if(prev)localStorage.setItem(BACKUP_KEYS[i],prev)}localStorage.setItem(BACKUP_KEYS[0],localStorage.getItem(STORAGE_KEY)||JSON.stringify(state))}catch(e){console.error('Backup rotate:',e)}}
 function syncToCloud(){if(cloudSyncPending)return;if(!(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.CloudStorage&&Telegram.WebApp.CloudStorage.setItem))return;cloudSyncPending=true;try{const data=JSON.stringify(state);Telegram.WebApp.CloudStorage.setItem(CLOUD_KEY,data,function(err,ok){cloudSyncPending=false;if(!err&&ok){localStorage.setItem(CLOUD_TS_KEY,Date.now().toString());console.log('Cloud sync OK')}else if(err){console.warn('Cloud sync err:',err)}else{console.warn('Cloud sync no-ok')}})}catch(e){cloudSyncPending=false;console.warn('Cloud sync:',e)}}
 function saveData(){try{state.lastModified=Date.now();const data=JSON.stringify(state);localStorage.setItem(STORAGE_KEY,data);lastSaveTs=Date.now()}catch(e){console.error('Save:',e)}try{rotateBackups()}catch(e){}try{syncToCloud()}catch(e){}try{if(backendAvailable())scheduleBackendSync();else scheduleGitHubSync()}catch(e){}}
-function startAutoSave(){setInterval(function(){try{if(Date.now()-lastSaveTs>AUTOSAVE_INTERVAL){saveData()}}catch(e){}},AUTOSAVE_INTERVAL);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'){saveData()}});window.addEventListener('beforeunload',function(){saveData()})}
+function startAutoSave(){setInterval(function(){try{if(Date.now()-lastSaveTs>AUTOSAVE_INTERVAL){saveData()}}catch(e){}},AUTOSAVE_INTERVAL);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'){saveData();flushPingBackend()}});window.addEventListener('beforeunload',function(){saveData();flushPingBackend()});window.addEventListener('pagehide',function(){saveData();flushPingBackend()})}
+function startBackendPull(){setInterval(function(){try{if(!backendAvailable())return;if(document.visibilityState==='hidden')return;if(backendInFlight||backendSyncTimer)return;if(Date.now()-lastReconcileTs<8000)return;reconcileBackend()}catch(e){}},12000);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible'){try{if(backendAvailable()&&!backendInFlight&&!backendSyncTimer&&Date.now()-lastReconcileTs>3000)reconcileBackend()}catch(e){}}});}// v5.12.5: periodic+focus pull + close flush
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
 function todayStr(){var d=new Date();var off=d.getTimezoneOffset();var local=new Date(d.getTime()-off*60000);return local.toISOString().slice(0,10)}
 function dateStr(d){var off=d.getTimezoneOffset();var local=new Date(d.getTime()-off*60000);return local.toISOString().slice(0,10)}
@@ -1935,7 +1933,7 @@ state.goals=[{id:uid(),title:'Прочитать 12 книг',description:'По 
 state.habits=[{id:uid(),title:'Зарядка',category:'health',checkoffs:[todayStr()],targetPerWeek:7,daysOfWeek:[0,1,2,3,4,5,6],scheduleMode:'week',weekInterval:1,createdAt:new Date().toISOString()},{id:uid(),title:'Чтение',category:'learning',checkoffs:[todayStr()],targetPerWeek:5,daysOfWeek:[2],scheduleMode:'week',weekInterval:1,createdAt:new Date().toISOString()},{id:uid(),title:'Медитация',category:'personal',checkoffs:[],targetPerWeek:3,daysOfWeek:[1,3,5],scheduleMode:'week',weekInterval:1,createdAt:new Date().toISOString()},{id:uid(),title:'Английский',category:'learning',checkoffs:[todayStr()],targetPerWeek:5,daysOfWeek:[1,2,3,4,5],scheduleMode:'week',weekInterval:1,createdAt:new Date().toISOString()},{id:uid(),title:'Вода 2л',category:'health',checkoffs:[],targetPerWeek:7,daysOfWeek:[0,1,2,3,4,5,6],scheduleMode:'week',weekInterval:1,createdAt:new Date().toISOString()}];
 state.tasks=[{id:uid(),title:'Купить продукты',done:false,date:todayStr(),createdAt:new Date().toISOString()},{id:uid(),title:'Позвонить врачу',done:true,date:todayStr(),createdAt:new Date().toISOString()},{id:uid(),title:'Подготовить презентацию',done:false,date:new Date(Date.now()+2*86400000).toISOString().slice(0,10),createdAt:new Date().toISOString()}];
 saveData()}
-loadData();applySettings();initEvents();renderDashboard();updateHeaderPeriodLabel();startAutoSave();
+loadData();applySettings();initEvents();renderDashboard();updateHeaderPeriodLabel();startAutoSave();startBackendPull();
 setTimeout(function(){trackOpen()},800);
 setInterval(function(){if(document.visibilityState!=='hidden')trackScreenTime()},30000);
 document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'){trackScreenTime();track('blur',_trkScreen)}else{_trkLast=Date.now();track('focus',_trkScreen)}});
@@ -1946,6 +1944,7 @@ var DATA_SYNC_TOKEN='';
 var DATA_SYNC_REPO='korobovaelena00-cmd/goal-tracker-data';
 // === v5.8.3: Telegram-backend sync (Cloudflare Worker + D1) ===
 var BACKEND_URL='https://goal-tracker-api.korobovaelena.workers.dev';
+var lastReconcileTs=0;// v5.12.5 periodic pull
 var backendSyncTimer=null;var backendInFlight=false;var backendPendingAgain=false;var lastBackendPayload='';var lastBackendTs=0;var BACKEND_INTERVAL=15000;var backendReconciled=false;
 var DATA_SYNC_KEY='pupsai_github_token';
 var syncDebounceTimer=null;
@@ -2166,14 +2165,17 @@ function loadSyncToken(){
 try{DATA_SYNC_TOKEN=localStorage.getItem(DATA_SYNC_KEY)||''}catch(e){DATA_SYNC_TOKEN=''}
 var inp=document.getElementById('syncTokenInput');
 if(inp){inp.value=DATA_SYNC_TOKEN}
-updateSyncStatus(DATA_SYNC_TOKEN?'pending':'idle');
+updateSyncStatus(DATA_SYNC_TOKEN?'pending':((typeof backendAvailable==='function'&&backendAvailable())?'pending':'idle'));
 if(DATA_SYNC_TOKEN&&!backendAvailable()){scheduleGitHubSync(true)}
 }
 function updateSyncStatus(kind,msg){
 var sd=document.getElementById('syncStatusDiv');
 if(sd){var dot=sd.querySelector('.dot');if(dot){dot.className='dot '+(kind==='ok'?'ok':(kind==='err'?'err':'pending'))}}
 var ss=document.getElementById('syncStatusText');
-if(ss){ss.textContent=msg||({ok:'Синхронизировано',err:'Ошибка синхронизации',syncing:'Синхронизация...',pending:'Синхронизация настроена',idle:'Синхронизация не настроена'}[kind]||'Синхронизация не настроена')}
+if(ss){var _cloud=!DATA_SYNC_TOKEN&&(typeof backendAvailable==='function')&&backendAvailable();
+var _m={ok:'Синхронизировано',err:'Ошибка синхронизации',syncing:'Синхронизация...',pending:'Синхронизация настроена',idle:'Синхронизация не настроена'};
+if(_cloud){_m.ok='Синхронизировано с облаком';_m.pending='Синхронизация с облаком...';_m.idle='Синхронизация с облаком'}
+ss.textContent=msg||(_m[kind]||(_cloud?'Синхронизация с облаком':'Синхронизация не настроена'))}
 }
 function _b64(s){return btoa(unescape(encodeURIComponent(s)))}
 function _ghHeaders(extra){
@@ -2303,7 +2305,7 @@ document.addEventListener('click',function(e){try{var t=e.target;var b=(t&&t.clo
 function trackScreenTime(){var now=Date.now();var sec=Math.round((now-_trkLast)/1000);_trkLast=now;if(sec>0)_trkPost({kind:'heartbeat',sec:sec,screen:_trkScreen})}
 function _beHint(raw){var m=String(raw||'');if(/bad_signature/.test(m))return ' - подпись Telegram не совпала (бот/токен)';if(/auth_date_in_future/.test(m))return ' - часы спешат (будущая дата)';if(/expired/.test(m))return ' - сессия Telegram истекла (>24ч), переоткрой';if(/missing_auth_date|missing_or_malformed_hash|missing_init_data/.test(m))return ' - Telegram не передал подпись, открой из бота';if(/no_user_in_init_data/.test(m))return ' - в данных нет пользователя';if(/server_misconfigured_no_bot_token/.test(m))return ' - сервер без токена бота';var st=(m.match(/(\d{3})/)||[])[1];if(st==='401')return ' - не авторизован (401) '+m;if(st==='403')return ' - нет доступа';if(st==='404')return ' - не найдено';if(/type ?error|failed to fetch|load failed|networkerror|network request failed/i.test(m))return ' - нет сети или запрос к облаку заблокирован';return ' - '+m}
 function updateBackendStatus(kind,msg){var el=document.getElementById('backendStatusText');if(el){el.textContent=msg||({ok:'Синхронизировано с облаком',err:'Ошибка синхронизации',syncing:'Синхронизация...'}[kind]||'')}}
-function scheduleBackendSync(force){if(!backendAvailable())return;if(force){syncDataToBackend(true);return}if(backendSyncTimer)clearTimeout(backendSyncTimer);backendSyncTimer=setTimeout(function(){syncDataToBackend()},6000)}
+function scheduleBackendSync(force){if(!backendAvailable())return;if(force){if(backendSyncTimer){clearTimeout(backendSyncTimer);backendSyncTimer=null}syncDataToBackend(true);return}if(backendSyncTimer){clearTimeout(backendSyncTimer);backendSyncTimer=null}backendSyncTimer=setTimeout(function(){backendSyncTimer=null;syncDataToBackend()},6000)}// v5.12.6: clear the fired/stale handle so reconcileBackend+startBackendPull stop being starved
 function syncDataToBackend(force){
 if(!backendAvailable())return;
 var payload=JSON.stringify(state);
@@ -2322,10 +2324,14 @@ fetch(BACKEND_URL+'/data',{headers:_beHeaders()})
 .then(function(j){var st=(j&&j.state&&isValidState(j.state))?j.state:null;cb(st,(j&&j.last_modified)||0,(j&&j.reset_at)||0)})
 .catch(function(){cb(null,0,0)});
 }
+function mergeCheckoffs(base,other){var changed=false;try{var omap={};(other.habits||[]).forEach(function(h){omap[h.id]=h.checkoffs||[]});(base.habits||[]).forEach(function(h){var o=omap[h.id];if(!o||!o.length)return;if(!h.checkoffs)h.checkoffs=[];for(var i=0;i<o.length;i++){if(h.checkoffs.indexOf(o[i])<0){h.checkoffs.push(o[i]);changed=true}}});}catch(e){}return changed}
+function flushPingBackend(){try{if(!backendAvailable())return;if(isEmptyData(state))return;var pl=JSON.stringify({state:state});fetch(BACKEND_URL+'/data',{method:'PUT',headers:_beHeaders({'Content-Type':'application/json'}),body:pl,keepalive:true}).then(function(){lastBackendPayload=JSON.stringify(state)}).catch(function(){});}catch(e){}}
 function reconcileBackend(){
 if(!backendAvailable())return;
+if(backendInFlight||backendSyncTimer)return;// v5.12.5: don't pull while a local push is pending
 loadFromBackend(function(bs,bts,srvReset){
 backendReconciled=true;
+lastReconcileTs=Date.now();// v5.12.5
 var myReset=0;try{myReset=parseInt(localStorage.getItem(RESET_TS_KEY)||'0',10)||0}catch(e){}
 if(srvReset&&srvReset>myReset){
 try{localStorage.setItem(RESET_TS_KEY,String(srvReset))}catch(e){}
@@ -2344,9 +2350,17 @@ var remoteEmpty=!bs||isEmptyData(bs);
 // (remote is non-empty OR local is empty). NEVER use server last_modified (bts)
 // for the comparison - it changes on every write and would let an empty cloud
 // overwrite a device that still holds the user's real data.
-if(bs&&!remoteEmpty&&(localEmpty||remoteTs>localTs)){
-// v5.8.9: a fresh device stamps lastModified=now at boot, so real (older) remote data
-// lost the ts race. Adopt any NON-EMPTY remote over an empty local, regardless of ts.
+if(bs&&!remoteEmpty&&!localEmpty){
+// v5.12.5: both sides hold real data -> UNION habit checkoffs so a mark made on one
+// device is never lost by "last write wins". Semantics: a checkoff exists if it was
+// checked on AT LEAST ONE device (habits merge by id).
+var base=state,other=bs;if(remoteTs>localTs){base=bs;other=state;}
+var changed=mergeCheckoffs(base,other);
+if(base!==state){state=base;if(!state.version||state.version<4.21)state.version=4.21;migrateState(state);try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}applySettings();renderDashboard();}
+if(changed){updateBackendStatus('ok','Объединено с другим устройством');syncDataToBackend(true);}
+return;
+}
+if(bs&&!remoteEmpty&&localEmpty){
 state=bs;if(!state.version||state.version<4.21)state.version=4.21;migrateState(state);
 try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}
 applySettings();renderDashboard();updateBackendStatus('ok','Восстановлено из облака');showToast('Данные восстановлены из облака');return;

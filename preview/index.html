@@ -2167,14 +2167,17 @@ function loadSyncToken(){
 try{DATA_SYNC_TOKEN=localStorage.getItem(DATA_SYNC_KEY)||''}catch(e){DATA_SYNC_TOKEN=''}
 var inp=document.getElementById('syncTokenInput');
 if(inp){inp.value=DATA_SYNC_TOKEN}
-updateSyncStatus(DATA_SYNC_TOKEN?'pending':'idle');
+updateSyncStatus(DATA_SYNC_TOKEN?'pending':((typeof backendAvailable==='function'&&backendAvailable())?'pending':'idle'));
 if(DATA_SYNC_TOKEN&&!backendAvailable()){scheduleGitHubSync(true)}
 }
 function updateSyncStatus(kind,msg){
 var sd=document.getElementById('syncStatusDiv');
 if(sd){var dot=sd.querySelector('.dot');if(dot){dot.className='dot '+(kind==='ok'?'ok':(kind==='err'?'err':'pending'))}}
 var ss=document.getElementById('syncStatusText');
-if(ss){ss.textContent=msg||({ok:'Синхронизировано',err:'Ошибка синхронизации',syncing:'Синхронизация...',pending:'Синхронизация настроена',idle:'Синхронизация не настроена'}[kind]||'Синхронизация не настроена')}
+if(ss){var _cloud=!DATA_SYNC_TOKEN&&(typeof backendAvailable==='function')&&backendAvailable();
+var _m={ok:'Синхронизировано',err:'Ошибка синхронизации',syncing:'Синхронизация...',pending:'Синхронизация настроена',idle:'Синхронизация не настроена'};
+if(_cloud){_m.ok='Синхронизировано с облаком';_m.pending='Синхронизация с облаком...';_m.idle='Синхронизация с облаком'}
+ss.textContent=msg||(_m[kind]||(_cloud?'Синхронизация с облаком':'Синхронизация не настроена'))}
 }
 function _b64(s){return btoa(unescape(encodeURIComponent(s)))}
 function _ghHeaders(extra){

@@ -721,7 +721,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
 <div class="settings-section"><div class="settings-section-title">Данные и конфиденциальность</div><button class="health-sync-btn" onclick="openInfo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span id="infoRowText">Что мы храним и согласие</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.12.6</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.12.7</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -903,7 +903,7 @@ function rotateBackups(){try{for(let i=BACKUP_KEYS.length-1;i>0;i--){const prev=
 function syncToCloud(){if(cloudSyncPending)return;if(!(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.CloudStorage&&Telegram.WebApp.CloudStorage.setItem))return;cloudSyncPending=true;try{const data=JSON.stringify(state);Telegram.WebApp.CloudStorage.setItem(CLOUD_KEY,data,function(err,ok){cloudSyncPending=false;if(!err&&ok){localStorage.setItem(CLOUD_TS_KEY,Date.now().toString());console.log('Cloud sync OK')}else if(err){console.warn('Cloud sync err:',err)}else{console.warn('Cloud sync no-ok')}})}catch(e){cloudSyncPending=false;console.warn('Cloud sync:',e)}}
 function saveData(){try{state.lastModified=Date.now();const data=JSON.stringify(state);localStorage.setItem(STORAGE_KEY,data);lastSaveTs=Date.now()}catch(e){console.error('Save:',e)}try{rotateBackups()}catch(e){}try{syncToCloud()}catch(e){}try{if(backendAvailable())scheduleBackendSync();else scheduleGitHubSync()}catch(e){}}
 function startAutoSave(){setInterval(function(){try{if(Date.now()-lastSaveTs>AUTOSAVE_INTERVAL){saveData()}}catch(e){}},AUTOSAVE_INTERVAL);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'){saveData();flushPingBackend()}});window.addEventListener('beforeunload',function(){saveData();flushPingBackend()});window.addEventListener('pagehide',function(){saveData();flushPingBackend()})}
-function startBackendPull(){setInterval(function(){try{if(!backendAvailable())return;if(document.visibilityState==='hidden')return;if(backendInFlight||backendSyncTimer)return;if(Date.now()-lastReconcileTs<8000)return;reconcileBackend()}catch(e){}},12000);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible'){try{if(backendAvailable()&&!backendInFlight&&!backendSyncTimer&&Date.now()-lastReconcileTs>3000)reconcileBackend()}catch(e){}}});}// v5.12.5: periodic+focus pull + close flush
+function startBackendPull(){setInterval(function(){try{if(!backendAvailable())return;if(document.visibilityState==='hidden')return;if(backendInFlight||backendSyncTimer)return;if(Date.now()-lastReconcileTs<2000)return;reconcileBackend()}catch(e){}},3500);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible'){try{if(backendAvailable()&&!backendInFlight&&!backendSyncTimer&&Date.now()-lastReconcileTs>500)reconcileBackend()}catch(e){}}});}// v5.12.5: periodic+focus pull + close flush
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
 function todayStr(){var d=new Date();var off=d.getTimezoneOffset();var local=new Date(d.getTime()-off*60000);return local.toISOString().slice(0,10)}
 function dateStr(d){var off=d.getTimezoneOffset();var local=new Date(d.getTime()-off*60000);return local.toISOString().slice(0,10)}
@@ -1945,7 +1945,7 @@ var DATA_SYNC_REPO='korobovaelena00-cmd/goal-tracker-data';
 // === v5.8.3: Telegram-backend sync (Cloudflare Worker + D1) ===
 var BACKEND_URL='https://goal-tracker-api.korobovaelena.workers.dev';
 var lastReconcileTs=0;// v5.12.5 periodic pull
-var backendSyncTimer=null;var backendInFlight=false;var backendPendingAgain=false;var lastBackendPayload='';var lastBackendTs=0;var BACKEND_INTERVAL=15000;var backendReconciled=false;
+var backendSyncTimer=null;var backendInFlight=false;var backendPendingAgain=false;var lastBackendPayload='';var lastBackendTs=0;var BACKEND_INTERVAL=5000;var backendReconciled=false;
 var DATA_SYNC_KEY='pupsai_github_token';
 var syncDebounceTimer=null;
 var lastSyncTs=0;
@@ -2305,17 +2305,17 @@ document.addEventListener('click',function(e){try{var t=e.target;var b=(t&&t.clo
 function trackScreenTime(){var now=Date.now();var sec=Math.round((now-_trkLast)/1000);_trkLast=now;if(sec>0)_trkPost({kind:'heartbeat',sec:sec,screen:_trkScreen})}
 function _beHint(raw){var m=String(raw||'');if(/bad_signature/.test(m))return ' - подпись Telegram не совпала (бот/токен)';if(/auth_date_in_future/.test(m))return ' - часы спешат (будущая дата)';if(/expired/.test(m))return ' - сессия Telegram истекла (>24ч), переоткрой';if(/missing_auth_date|missing_or_malformed_hash|missing_init_data/.test(m))return ' - Telegram не передал подпись, открой из бота';if(/no_user_in_init_data/.test(m))return ' - в данных нет пользователя';if(/server_misconfigured_no_bot_token/.test(m))return ' - сервер без токена бота';var st=(m.match(/(\d{3})/)||[])[1];if(st==='401')return ' - не авторизован (401) '+m;if(st==='403')return ' - нет доступа';if(st==='404')return ' - не найдено';if(/type ?error|failed to fetch|load failed|networkerror|network request failed/i.test(m))return ' - нет сети или запрос к облаку заблокирован';return ' - '+m}
 function updateBackendStatus(kind,msg){var el=document.getElementById('backendStatusText');if(el){el.textContent=msg||({ok:'Синхронизировано с облаком',err:'Ошибка синхронизации',syncing:'Синхронизация...'}[kind]||'')}}
-function scheduleBackendSync(force){if(!backendAvailable())return;if(force){if(backendSyncTimer){clearTimeout(backendSyncTimer);backendSyncTimer=null}syncDataToBackend(true);return}if(backendSyncTimer){clearTimeout(backendSyncTimer);backendSyncTimer=null}backendSyncTimer=setTimeout(function(){backendSyncTimer=null;syncDataToBackend()},6000)}// v5.12.6: clear the fired/stale handle so reconcileBackend+startBackendPull stop being starved
+function scheduleBackendSync(force){if(!backendAvailable())return;if(force){if(backendSyncTimer){clearTimeout(backendSyncTimer);backendSyncTimer=null}syncDataToBackend(true);return}if(backendSyncTimer){clearTimeout(backendSyncTimer);backendSyncTimer=null}backendSyncTimer=setTimeout(function(){backendSyncTimer=null;syncDataToBackend()},1500)}// v5.12.7: fast pull(3.5s)+fast push(1.5s)+defer-not-drop throttle(5s) so reconcileBackend+startBackendPull stop being starved
 function syncDataToBackend(force){
 if(!backendAvailable())return;
 var payload=JSON.stringify(state);
 if(!force&&payload===lastBackendPayload)return;
-if(!force&&(Date.now()-lastBackendTs<BACKEND_INTERVAL))return;
+if(!force&&(Date.now()-lastBackendTs<BACKEND_INTERVAL)){backendPendingAgain=true;var _w=BACKEND_INTERVAL-(Date.now()-lastBackendTs);if(!backendSyncTimer)backendSyncTimer=setTimeout(function(){backendSyncTimer=null;syncDataToBackend()},_w);return;}
 if(!force&&isEmptyData(state)&&!backendReconciled){return}// v5.8.9: never push empty state before reconcile has read the cloud
 backendInFlight=true;lastBackendTs=Date.now();updateBackendStatus('syncing');
 fetch(BACKEND_URL+'/data',{method:'PUT',headers:_beHeaders({'Content-Type':'application/json'}),body:JSON.stringify({state:state})})
 .then(function(r){if(!r.ok)return r.json().catch(function(){return{}}).then(function(j){throw new Error('облако HTTP '+r.status+(j&&j.error?' '+j.error:''))});return r.json()})
-.then(function(){lastBackendPayload=JSON.stringify(state);backendInFlight=false;updateBackendStatus('ok','Синхронизировано '+new Date().toLocaleTimeString().slice(0,5));if(backendPendingAgain){backendPendingAgain=false;scheduleBackendSync(true)}})
+.then(function(){lastBackendPayload=JSON.stringify(state);backendInFlight=false;updateBackendStatus('ok','Синхронизировано '+new Date().toLocaleTimeString().slice(0,5));if(backendPendingAgain){backendPendingAgain=false;scheduleBackendSync(true)}try{reconcileBackend()}catch(e){}})
 .catch(function(e){backendInFlight=false;var m=(e&&e.message)||String(e);updateBackendStatus('err','Ошибка синхронизации'+_beHint(m));if(backendPendingAgain)backendPendingAgain=false});
 }
 function loadFromBackend(cb){if(!backendAvailable()){cb(null,0);return}

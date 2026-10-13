@@ -11,8 +11,11 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script><script>
 /* --- Level 1 cohort guard: bounce to stable if cohort changed --- */
 (function(){
+  try{var _h=location.hash||"";var _m=_h.match(/tgWebAppData=([^&]+)/);if(_m){var _d=decodeURIComponent(_m[1]);if(_d)try{sessionStorage.setItem("pupsai_initdata",_d)}catch(e){}}}catch(e){}
+  try{var _s=window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initData;if(_s)try{sessionStorage.setItem("pupsai_initdata",_s)}catch(e){}}catch(e){}
+  window.__tgInit=function(){try{var a=(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initData)||"";if(a)return a;try{var s=sessionStorage.getItem("pupsai_initdata");if(s)return s}catch(e){}try{var h=location.hash||"";var m=h.match(/tgWebAppData=([^&]+)/);if(m)return decodeURIComponent(m[1])}catch(e){}return ""}catch(e){return ""}};
   var BACKEND="https://goal-tracker-api.korobovaelena.workers.dev", MINE="preview";
-  function id(){try{return (window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initData)||"";}catch(e){return "";}}
+  function id(){return window.__tgInit();}
   try{
     var q=location.search||"";
     var m=q.match(/[?&]cohort=(beta|preview)/);
@@ -26,7 +29,7 @@
         var c="stable";
         try{if(x.status===200){var j=JSON.parse(x.responseText);if(j&&j.cohort)c=j.cohort;}}catch(e){return;}
         var ow="";try{ow=String((JSON.parse(new URLSearchParams(t).get("user")||"{}").id)||"");}catch(e){}
-        if(c!==MINE && ow!=="815804273"){location.replace("../");}
+        if(c!==MINE && ow!=="815804273"){location.replace("../"+location.hash);}
       };
       x.send();
     }

@@ -720,7 +720,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
 <div class="settings-section"><div class="settings-section-title">Данные и конфиденциальность</div><button class="health-sync-btn" onclick="openInfo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span id="infoRowText">Что мы храним и согласие</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.12.17</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.12.18</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -1058,24 +1058,22 @@ var DAILY_PHRASES=[
 {text:"Успех — это сумма маленьких усилий, повторяемых изо дня в день",author:"Роберт Колье"},
 {text:"Не считай дни, а делай дни счастливыми",author:"народная мудрость"},
 {text:"Дисциплина — это мост между целями и достижениями",author:"Джим Рохн"},
-{text:"Падая семь раз, встань вось",author:"народная мудрость"},
+{text:"Падая семь раз, встань восемь",author:"народная мудрость"},
 {text:"Единственный способ делать великие дела — любить то, что делаешь",author:"Стив Джобс"},
-{text:"Привычка — это нить, из которой тка ткань характера",author:"народная мудрость"},
+{text:"Привычка — это нить, из которой ткётся ткань характера",author:"народная мудрость"},
 {text:"Человек, который движется вперёд, никогда не возвращается назад",author:"народная мудрость"},
 {text:"Мотивация приходит с действием, а не до него",author:"народная мудрость"},
-{text:"Завтрашний день начинается сегодняшних решений",author:"народная мудрость"},
+{text:"Завтрашний день начинается с сегодняшних решений",author:"народная мудрость"},
 {text:"Тебе не нужно быть великим, чтобы начать, но тебе нужно начать, чтобы стать великим",author:"Зиг Зиглар"},
-{text:"Меня не победить. Можно только проиграть собственную лень",author:"народная мудрость"},
 {text:"Прогресс — это не скорость, а направление",author:"народная мудрость"},
 {text:"Лучше медленно, чем никак",author:"народная мудрость"},
 {text:"Вечная привычка не формируется за день. Она формируется ежедневно",author:"народная мудрость"},
 {text:"Побеждает тот, кто верит в победу",author:"народная мудрость"},
 {text:"Невозможное — это мнение, а не факт",author:"народная мудрость"},
 {text:"Каждая привычка когда-то была впервые",author:"народная мудрость"},
-{text:"Терпение — горечкая трава, но плоды её сладки",author:"народная мудрость"},
 {text:"Верить в себя — это первый шаг к успеху",author:"народная мудрость"}
 ];
-var remotePhrase=null;/*v51214 one phrase for everyone: server is source of truth for today*/function loadRemotePhrase(){try{fetch(BACKEND_URL+"/phrase").then(function(r){return r.json()}).then(function(j){if(j&&j.ok&&typeof j.text==="string"&&j.text){remotePhrase={text:j.text,author:j.author||""};try{renderPhraseOfDay()}catch(e){}}}).catch(function(){})}catch(e){}}function getPhraseOfDay(dateStr){var t=dateStr?new Date(dateStr):new Date();var _isToday=!dateStr||dateStr===todayStr();if(_isToday&&remotePhrase){return remotePhrase}var dayOfYear=Math.floor((t-new Date(t.getFullYear(),0,0))/86400000);return DAILY_PHRASES[dayOfYear%DAILY_PHRASES.length]}
+var remotePhrase=null;/*v51214 one phrase for everyone: server is source of truth for today*/function loadRemotePhrase(){try{fetch(BACKEND_URL+"/phrase").then(function(r){return r.json()}).then(function(j){if(j&&j.ok&&typeof j.text==="string"&&j.text){remotePhrase={text:j.text,author:j.author||""};try{renderPhraseOfDay()}catch(e){}}}).catch(function(){})}catch(e){}}function getPhraseOfDay(dateStr){var t=dateStr?new Date(dateStr):new Date();var _isToday=!dateStr||dateStr===todayStr();if(_isToday&&remotePhrase){return remotePhrase}var dayOfYear=Math.floor((t-new Date(t.getUTCFullYear(),0,0))/86400000);return DAILY_PHRASES[dayOfYear%DAILY_PHRASES.length]}
 function renderPhraseOfDay(){var p=getPhraseOfDay();var el=document.getElementById('dashPhrase');if(!el)return;el.innerHTML='<div class="phrase-widget"><div class="phrase-text">“'+p.text+'”</div>'+(p.author?'<div class="phrase-author">— '+p.author+'</div>':'')+'</div>'}
 
 

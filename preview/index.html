@@ -2359,7 +2359,7 @@ if(bs&&!remoteEmpty&&!localEmpty){
 // checked on AT LEAST ONE device (habits merge by id).
 var base=state,other=bs;if(remoteTs>localTs){base=bs;other=state;}
 var changed=mergeCheckoffs(base,other);
-if(base!==state){state=base;if(!state.version||state.version<4.21)state.version=4.21;migrateState(state);try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}applySettings();renderDashboard();}
+if(base!==state){state=base;if(!state.version||state.version<4.21)state.version=4.21;migrateState(state);try{lastSavedSig=contentSig(state);backendDirty=false}catch(e){}try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}applySettings();renderDashboard();}
 if(changed){updateBackendStatus('ok','Объединено с другим устройством');syncDataToBackend(true);}
 return;
 }

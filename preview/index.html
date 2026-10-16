@@ -507,11 +507,11 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 .dstate-cal-ic{cursor:pointer;display:inline-flex;vertical-align:middle;margin-left:6px;color:var(--blue-bright)}
 .dstate-cal-ic svg{width:22px;height:24px}
 #dstateModal{z-index:260}
-.hero-dstate{margin-top:12px;padding:10px 12px 12px;border-radius:16px;background:var(--glass-bg);border:1px solid var(--glass-border)}
+.hero-dstate{margin-top:8px;padding:5px 10px 6px;border-radius:14px;background:var(--glass-bg);border:1px solid var(--glass-border)}
 .hero-dstate-label{text-align:center}
 .hero-dstate .ds-btn{border-color:transparent;background:transparent}
 .hero-dstate-label{font-size:9px;font-weight:600;letter-spacing:0.6px;text-transform:uppercase;color:var(--text-secondary);opacity:0.75;margin-bottom:6px}
-.hero-dstate .ds-btn{padding:4px 2px}
+.hero-dstate .ds-btn{padding:3px 2px}
 .hero-dstate .ds-btn svg{width:26px;height:29px}
 .freeze-group-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-secondary);margin:12px 0 4px}
 .freeze-del{margin-left:auto;width:24px;height:24px;border:none;background:transparent;color:var(--danger);cursor:pointer;font-size:16px;line-height:1}
@@ -744,7 +744,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
 <div class="settings-section"><div class="settings-section-title">Данные и конфиденциальность</div><button class="health-sync-btn" onclick="openInfo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span id="infoRowText">Что мы храним и согласие</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.12.24</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.12.25</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -758,7 +758,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 <div class="dash-stats" id="dashStats"></div>
 </div>
-<div class="hero-dstate"><div class="hero-dstate-label">Состояние дня</div><div id="dashState"></div></div>
+<div class="hero-dstate"><div id="dashState"></div></div>
 </div>
 <div class="card stagger" id="dashAchievements" style="display:none"><div class="card-title" style="display:flex;justify-content:space-between;align-items:center">Достижения <span id="achCounter" style="font-size:11px;color:var(--text-secondary);font-weight:400"></span></div><div class="achievements-row" id="achievementsRow"></div><div id="achievementsExpanded" style="display:none;margin-top:8px;padding-top:8px;border-top:1px solid var(--glass-border)"><div id="achievementsAll" style="display:flex;flex-wrap:wrap;gap:8px"></div><div class="streak-scroll-wrap" id="streakAnalyticsWrap" style="display:none"><div class="streak-scroll-title">Аналитика серий привычек</div><div class="streak-scroll" id="streakAnalytics"></div></div></div><button id="achExpandBtn" onclick="toggleAchievementsExpand()" style="width:100%;padding:6px;background:transparent;border:none;color:var(--text-secondary);font-size:11px;cursor:pointer">Показать все</button></div>
 <div class="card stagger" id="dashPhraseCard"><div class="card-title">Фраза дня</div><div id="dashPhrase" style="padding:4px 0"></div></div>

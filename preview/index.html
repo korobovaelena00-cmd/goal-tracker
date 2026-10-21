@@ -784,7 +784,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 <div class="settings-section"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
 <div class="settings-section"><div class="settings-section-title">Данные и конфиденциальность</div><button class="health-sync-btn" onclick="openInfo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span id="infoRowText">Что мы храним и согласие</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.12.30</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.12.31</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -1043,8 +1043,8 @@ const doneMandatory=mandatory.filter(h=>(h.checkoffs||[]).includes(dsStr)).lengt
 const doneTasks=todaysTasks.filter(t=>t.done).length;
 const doneFrozen=frozenHabits.filter(h=>(h.checkoffs||[]).includes(dsStr)).length;
 const doneExtra=extraHabits.filter(h=>(h.checkoffs||[]).includes(dsStr)).length;
-let score=baseTotal>0?Math.round(((doneMandatory+doneTasks)/baseTotal)*100):100;
-score+=(doneFrozen+doneExtra)*100;
+let score=baseTotal>0?Math.round(((doneMandatory+doneTasks+doneExtra)/baseTotal)*100):100;
+score+=doneFrozen*100;
 return score;
 }
 function getDailyScoreLevel(score){if(score===0)return 0;if(score<25)return 1;if(score<50)return 2;if(score<75)return 3;return 4}

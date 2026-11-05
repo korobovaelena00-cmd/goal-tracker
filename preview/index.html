@@ -915,7 +915,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 <div class="settings-section" id="healthSection"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
 <div class="settings-section"><div class="settings-section-title">Данные и конфиденциальность</div><button class="health-sync-btn" onclick="openInfo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="11" x2="12" y2="16.5"/><circle cx="12" cy="7.8" r="1.15" fill="currentColor" stroke="none"/></svg><span id="infoRowText">Пользовательское соглашение</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.12.62</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.12.63</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -1055,7 +1055,7 @@ let yearHeatmapSelectedMonth=null;
 let yearHeatmapSelectedDate=null;
 
 function getAllCategories(){const cats={};const deleted=state.deletedDefaultCats||[];Object.entries(DEFAULT_CATEGORIES).forEach(([id,dc])=>{if(deleted.includes(id))return;cats[id]={label:dc.label,color:(state.defaultCatColors&&state.defaultCatColors[id])||(dc.tokv?tok(dc.tokv,dc.color):dc.color),cls:dc.cls}});(state.customCategories||[]).forEach(c=>{cats[c.id]={label:c.name,color:c.color,cls:'custom-'+c.id}});return cats}
-function migrateState(p){if(!state.tasks)state.tasks=[];if(!state.customCategories)state.customCategories=[];if(!state.deletedIds)state.deletedIds={goals:{},habits:{},tasks:{}};if(!state.deletedIds.goals)state.deletedIds.goals={};if(!state.deletedIds.habits)state.deletedIds.habits={};if(!state.deletedIds.tasks)state.deletedIds.tasks={};if(!state.checkoffAt)state.checkoffAt={};if(!state.freezes)state.freezes=[];if(!state.dailyStates)state.dailyStates={};if(!state.dailyStateAt){state.dailyStateAt={};Object.keys(state.dailyStates).forEach(function(d){var e=state.dailyStates[d]||{};state.dailyStateAt[d]={ts:e.ts||new Date().toISOString(),mood:e.mood}})}if(!state.freezesDeleted)state.freezesDeleted={};if(!state.shareTemplatesDeleted)state.shareTemplatesDeleted={};if(!state.customCategoriesDeleted)state.customCategoriesDeleted={};(state.freezes||[]).forEach(function(f){if(f){if(!f.id)f.id='fz_'+f.from+'_'+f.to+'_'+(f.habits==='all'?'all':(f.habits||[]).slice().sort().join('-'));if(!f.updatedAt)f.updatedAt=new Date().toISOString()}});(state.shareTemplates||[]).forEach(function(t){if(t&&!t.updatedAt)t.updatedAt=new Date().toISOString()});(state.customCategories||[]).forEach(function(c){if(c&&!c.updatedAt)c.updatedAt=new Date().toISOString()});(state.habits||[]).forEach(function(h){if(!h.freezeDays)h.freezeDays=[];if(!state.checkoffAt[h.id])state.checkoffAt[h.id]={};(h.checkoffs||[]).forEach(function(ds){if(!state.checkoffAt[h.id][ds])state.checkoffAt[h.id][ds]={ts:h.updatedAt||new Date().toISOString(),on:1}})});if(!state.deletedDefaultCats)state.deletedDefaultCats=[];if(!state.settings)state.settings={theme:'dark',lang:'ru',healthSynced:false,healthData:null};if(!state.dailyScores)state.dailyScores={};if(!state.weeklyReviews)state.weeklyReviews={};if(!state.shareTemplates)state.shareTemplates=[];if(!state.settings.notifications)state.settings.notifications={enabled:true,count:1,times:['08:00'],items:{scheduledHabits:true,extraHabits:false,tasks:true,allGoals:false,goalSubtasks:false,phrase:true},tzOffsetMin:180};var _nf=state.settings.notifications;if(_nf.enabled===undefined)_nf.enabled=true;if(!Array.isArray(_nf.times)||!_nf.times.length)_nf.times=['08:00'];if(!_nf.items)_nf.items={scheduledHabits:true,extraHabits:false,tasks:true,allGoals:false,goalSubtasks:false,phrase:true};if(!_nf.count)_nf.count=_nf.times.length;if(_nf.tzOffsetMin==null)_nf.tzOffsetMin=180;if(_nf.updatedAt==null)_nf.updatedAt=state.lastModified||0;if(!state.chatTopics)state.chatTopics=[{id:'general',name:'Общее'}];if(!state.chatHistory)state.chatHistory={general:[{role:'system',text:'Привет! Я твой агент. Спроси меня о целях, привычках, или попроси рекомендации.',ts:Date.now()}]};if(!state.activeTopic)state.activeTopic='general';state.goals.forEach(g=>{if(!g.subtasks)g.subtasks=[];if(!g.priority)g.priority='med';g.subtasks.forEach(s=>{if(!s.dueDate)s.dueDate=null})});state.habits.forEach(h=>{if(h.targetPerWeek===undefined)h.targetPerWeek=7;if(!h.daysOfWeek)h.daysOfWeek=[1,2,3,4,5,6,0];if(h.startDate===undefined)h.startDate=null;if(h.endDate===undefined)h.endDate=null});if(state.lastModified===undefined)state.lastModified=0}
+function migrateState(p){if(!state.tasks)state.tasks=[];if(!state.customCategories)state.customCategories=[];if(!state.deletedIds)state.deletedIds={goals:{},habits:{},tasks:{}};if(!state.deletedIds.goals)state.deletedIds.goals={};if(!state.deletedIds.habits)state.deletedIds.habits={};if(!state.deletedIds.tasks)state.deletedIds.tasks={};if(!state.checkoffAt)state.checkoffAt={};if(!state.freezes)state.freezes=[];if(!state.dailyStates)state.dailyStates={};if(!state.dailyStateAt){state.dailyStateAt={};Object.keys(state.dailyStates).forEach(function(d){var e=state.dailyStates[d]||{};state.dailyStateAt[d]={ts:e.ts||new Date().toISOString(),mood:e.mood}})}if(!state.freezesDeleted)state.freezesDeleted={};if(!state.shareTemplatesDeleted)state.shareTemplatesDeleted={};if(!state.customCategoriesDeleted)state.customCategoriesDeleted={};(state.freezes||[]).forEach(function(f){if(f){if(!f.id)f.id='fz_'+f.from+'_'+f.to+'_'+(f.habits==='all'?'all':(f.habits||[]).slice().sort().join('-'));if(!f.updatedAt)f.updatedAt=new Date().toISOString()}});(state.shareTemplates||[]).forEach(function(t){if(t&&!t.updatedAt)t.updatedAt=new Date().toISOString()});(state.customCategories||[]).forEach(function(c){if(c&&!c.updatedAt)c.updatedAt=new Date().toISOString()});(state.habits||[]).forEach(function(h){if(!h.freezeDays)h.freezeDays=[];if(!state.checkoffAt[h.id])state.checkoffAt[h.id]={};(h.checkoffs||[]).forEach(function(ds){if(!state.checkoffAt[h.id][ds])state.checkoffAt[h.id][ds]={ts:h.updatedAt||new Date().toISOString(),on:1}})});if(!state.deletedDefaultCats)state.deletedDefaultCats=[];if(!state.settings)state.settings={theme:'dark',lang:'ru',healthSynced:false,healthData:null};if(!state.dailyScores)state.dailyScores={};if(!state.weeklyReviews)state.weeklyReviews={};_migrateMonthlyReflections(state.weeklyReviews);if(!state.shareTemplates)state.shareTemplates=[];if(!state.settings.notifications)state.settings.notifications={enabled:true,count:1,times:['08:00'],items:{scheduledHabits:true,extraHabits:false,tasks:true,allGoals:false,goalSubtasks:false,phrase:true},tzOffsetMin:180};var _nf=state.settings.notifications;if(_nf.enabled===undefined)_nf.enabled=true;if(!Array.isArray(_nf.times)||!_nf.times.length)_nf.times=['08:00'];if(!_nf.items)_nf.items={scheduledHabits:true,extraHabits:false,tasks:true,allGoals:false,goalSubtasks:false,phrase:true};if(!_nf.count)_nf.count=_nf.times.length;if(_nf.tzOffsetMin==null)_nf.tzOffsetMin=180;if(_nf.updatedAt==null)_nf.updatedAt=state.lastModified||0;if(!state.chatTopics)state.chatTopics=[{id:'general',name:'Общее'}];if(!state.chatHistory)state.chatHistory={general:[{role:'system',text:'Привет! Я твой агент. Спроси меня о целях, привычках, или попроси рекомендации.',ts:Date.now()}]};if(!state.activeTopic)state.activeTopic='general';state.goals.forEach(g=>{if(!g.subtasks)g.subtasks=[];if(!g.priority)g.priority='med';g.subtasks.forEach(s=>{if(!s.dueDate)s.dueDate=null})});state.habits.forEach(h=>{if(h.targetPerWeek===undefined)h.targetPerWeek=7;if(!h.daysOfWeek)h.daysOfWeek=[1,2,3,4,5,6,0];if(h.startDate===undefined)h.startDate=null;if(h.endDate===undefined)h.endDate=null});if(state.lastModified===undefined)state.lastModified=0}
 function isValidState(p){return p&&Array.isArray(p.goals)&&Array.isArray(p.habits)}
 function loadFromBackups(){for(const key of BACKUP_KEYS){try{const raw=localStorage.getItem(key);if(raw){const p=JSON.parse(raw);if(isValidState(p)){console.log('Restored from '+key);return p}}}catch(e){}}return null}
 function loadFromCloud(cb){if(!(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.CloudStorage&&Telegram.WebApp.CloudStorage.getItem)){cb(null,0);return}try{Telegram.WebApp.CloudStorage.getItem(CLOUD_KEY,function(err,val){if(!err&&val){try{const p=JSON.parse(val);if(isValidState(p)){const ts=p.lastModified||0;console.log('Cloud data found, ts='+ts);cb(p,ts);return}}catch(e){}}cb(null,0)})}catch(e){cb(null,0)}}
@@ -1887,7 +1887,7 @@ var labelMap={'Тренд':'trend','Скор':'score','Паттерны':'patter
 insEl.innerHTML='<div class="insight-list">'+ins.map(function(i){
 var cls=labelMap[i.label]||'start';
 return '<div class="insight-card insight-'+cls+'"><div class="insight-card-label">'+i.label+'</div><div class="insight-card-text">'+i.text+'</div></div>'
-}).join('')+'</div>';var reviewEl=document.getElementById('reviewContent');if(reviewEl){renderWeeklyReview();}}}
+}).join('')+'</div>';var reviewEl=document.getElementById('reviewContent');if(reviewEl){renderMonthlyReview();}}}
 function drawWeeklyChart(){const cv=document.getElementById('weeklyChart');const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;const w=cv.offsetWidth||300;const h=200;cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=dateStr(d);const count=state.habits.filter(h=>(h.checkoffs||[]).includes(ds)).length;days.push({label:['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][d.getDay()],count})}const max=Math.max(...days.map(d=>d.count),1);const bw=w/7*0.6;const gap=w/7*0.2;days.forEach((d,i)=>{const x=i*(w/7)+gap;const bh=(d.count/max)*(h-40);const grad=ctx.createLinearGradient(0,h-20-bh,0,h-20);grad.addColorStop(0,tok('--blue-glow','#1a6fff'));grad.addColorStop(1,tok('--cyan','#00d4ff'));ctx.fillStyle=grad;ctx.beginPath();roundRect(ctx,x,h-20-bh,bw,bh,4);ctx.fill();ctx.fillStyle='rgba('+tokRgb('--ink-rgb','232,240,255')+',0.5)';ctx.font='11px sans-serif';ctx.textAlign='center';ctx.fillText(d.label,x+bw/2,h-6);ctx.fillStyle='rgba('+tokRgb('--ink-rgb','232,240,255')+',0.8)';ctx.fillText(d.count,x+bw/2,h-26-bh)})}
 function drawDonutChart(){const cv=document.getElementById('donutChart');const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;const w=cv.offsetWidth||300;const h=200;cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const cats=getAllCategories();const catKeys=Object.keys(cats);const counts=catKeys.map(c=>state.goals.filter(g=>g.category===c).length);const total=counts.reduce((a,b)=>a+b,0);if(total===0){ctx.fillStyle='rgba('+tokRgb('--ink-rgb','232,240,255')+',0.3)';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText('Нет данных',w/2,h/2);return}const cx=w/2,cy=h/2;const r=Math.min(w,h)/2-20;let angle=-Math.PI/2;catKeys.forEach((c,i)=>{if(counts[i]===0)return;const arc=(counts[i]/total)*Math.PI*2;ctx.beginPath();ctx.arc(cx,cy,r,angle,angle+arc);ctx.lineWidth=20;ctx.strokeStyle=cats[c].color;ctx.stroke();angle+=arc});ctx.fillStyle='rgba('+tokRgb('--ink-rgb','232,240,255')+',0.9)';ctx.font='bold 24px sans-serif';ctx.textAlign='center';ctx.fillText(total,cx,cy-4);ctx.fillStyle='rgba('+tokRgb('--ink-rgb','232,240,255')+',0.5)';ctx.font='11px sans-serif';ctx.fillText('целей',cx,cy+14)}
 function drawTrendChart(){const cv=document.getElementById('trendChart');const ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;const w=cv.offsetWidth||300;const h=200;cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);const days=30;const data=[];for(let i=days-1;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=dateStr(d);data.push(state.habits.filter(h=>(h.checkoffs||[]).includes(ds)).length)}const max=Math.max(...data,1);const pw=(w-20)/days;data.forEach((v,i)=>{const x=10+i*pw;const bh=(v/max)*(h-30);const grad=ctx.createLinearGradient(0,h-10-bh,0,h-10);grad.addColorStop(0,tok('--blue-glow','#1a6fff'));grad.addColorStop(1,tok('--cyan','#00d4ff'));ctx.fillStyle=grad;ctx.fillRect(x,h-10-bh,pw-1,bh)});ctx.fillStyle='rgba('+tokRgb('--ink-rgb','232,240,255')+',0.3)';ctx.font='10px sans-serif';ctx.textAlign='center';ctx.fillText('30 дней назад',30,h-2);ctx.fillText('сегодня',w-30,h-2)}
@@ -2015,7 +2015,7 @@ var top=Math.ceil(maxv/step)*step;if(top<=0)top=step;
 anChartData=days;anChartPtW=ptW;anChartTopPad=topPad;anChartChartH=chartH;anChartTop=top;
 var svgW=Math.round(nDays*ptW);anChartWidth=svgW;
 var yaxis=document.getElementById('anChartYAxis');
-if(yaxis){var yl='';for(var t=top;t>=0;t-=step){var yy=topPad+(1-t/top)*chartH;yl+='<span style="top:'+yy.toFixed(1)+'px">'+t+'</span>'}yaxis.style.height=svgH+'px';yaxis.innerHTML=yl};var raxis=document.getElementById('anChartRAxis');if(raxis){var rl='';for(var rv=5;rv>=1;rv--){var ry=topPad+(1-(rv-1)/4)*chartH;rl+='<span class="rax-cup" style="top:'+ry.toFixed(1)+'px">'+dailyGlass(rv-1)+'</span>'}raxis.style.height=svgH+'px';raxis.innerHTML=rl}
+if(yaxis){if(anChartFilter!=='mood'){var yl='';for(var t=top;t>=0;t-=step){var yy=topPad+(1-t/top)*chartH;yl+='<span style="top:'+yy.toFixed(1)+'px">'+t+'</span>'}yaxis.style.height=svgH+'px';yaxis.innerHTML=yl;yaxis.style.display=''}else{yaxis.innerHTML='';yaxis.style.display='none'}};var raxis=document.getElementById('anChartRAxis');if(raxis){if(anChartFilter!=='score'){var rl='';for(var rv=5;rv>=1;rv--){var ry=topPad+(1-(rv-1)/4)*chartH;rl+='<span class="rax-cup" style="top:'+ry.toFixed(1)+'px">'+dailyGlass(rv-1)+'</span>'}raxis.style.height=svgH+'px';raxis.innerHTML=rl;raxis.style.display=''}else{raxis.innerHTML='';raxis.style.display='none'}}
 var grid='';for(var t2=top;t2>=0;t2-=step){var gy=topPad+(1-t2/top)*chartH;grid+='<line x1="0" y1="'+gy.toFixed(1)+'" x2="'+svgW+'" y2="'+gy.toFixed(1)+'" stroke="rgba(var(--veil-rgb),0.06)" stroke-width="1"/>'}
 var pts=[];for(var i2=0;i2<nDays;i2++){var d2=days[i2];pts.push({x:i2*ptW+ptW/2,y:topPad+(1-d2.v/top)*chartH})}
 var lineD=anChartSmoothPath(pts);
@@ -2382,43 +2382,61 @@ var syncPendingAgain=false;
 var lastSyncedPayload='';
 var SYNC_INTERVAL=20000; // min ms between syncs
 
-function getReviewWeekStart(d){
+function getReviewMonthStart(d){
 var dt=d?new Date(d):new Date();
-var day=dt.getDay();
-var diff=day===1?0:(day===0?-6:1-day);
-dt.setDate(dt.getDate()+diff);
+dt.setDate(1);
 dt.setHours(0,0,0,0);
 return dt;
 }
-function getReviewWeekEnd(start){
-var e=new Date(start);
-e.setDate(e.getDate()+6);
+function getReviewMonthEnd(start){
+var e=new Date(start.getFullYear(),start.getMonth()+1,0);
 e.setHours(23,59,59,999);
 return e;
 }
-function getPrevWeekStart(start){
-var p=new Date(start);
-p.setDate(p.getDate()-7);
+function getPrevReviewMonthStart(start){
+var p=new Date(start.getFullYear(),start.getMonth()-1,1);
+p.setHours(0,0,0,0);
 return p;
 }
-function calcWeekScore(weekStart){
+function _reviewRangeEnd(start,nDays){
+var e=new Date(start);
+e.setDate(e.getDate()+Math.max(1,nDays)-1);
+e.setHours(23,59,59,999);
+return e;
+}
+function _migrateMonthlyReflections(store){
+try{
+if(!store||typeof store!=='object')return;
+var agg={};
+Object.keys(store).forEach(function(k){
+var m=/^review_(\d{4})-(\d{2})-\d{2}$/.exec(k);if(!m)return;
+var mk='review_'+m[1]+'-'+m[2]+'-01';if(mk===k)return;
+var v=store[k];if(!v)return;
+if(!agg[mk])agg[mk]={wentWell:'',didNotWork:'',changeNext:''};
+['wentWell','didNotWork','changeNext'].forEach(function(f){
+if(v[f]&&String(v[f]).trim()&&!agg[mk][f])agg[mk][f]=v[f];
+});
+});
+Object.keys(agg).forEach(function(mk){if(!store[mk])store[mk]=agg[mk]});
+}catch(e){}
+}
+function calcPeriodScore(start,nDays){
 var scores=[];
-for(var i=0;i<7;i++){
-var d=new Date(weekStart);
+for(var i=0;i<nDays;i++){
+var d=new Date(start);
 d.setDate(d.getDate()+i);
 var ds=dateStr(d);
 scores.push({date:ds,dayName:['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][d.getDay()],score:calcDailyScore(ds),isToday:ds===todayStr()});
 }
 return scores;
 }
-function calcWeekHabitsStats(weekStart){
+function calcPeriodHabitsStats(start,nDays){
 var stats=[];var cats=getAllCategories();
-var weekEnd=getReviewWeekEnd(weekStart);
 state.habits.forEach(function(h){
 if(!isHabitActive(h))return;
 var scheduled=0,done=0;
-for(var i=0;i<7;i++){
-var d=new Date(weekStart);
+for(var i=0;i<nDays;i++){
+var d=new Date(start);
 d.setDate(d.getDate()+i);
 var ds=dateStr(d);
 if(isHabitScheduledForDate(h,ds)){
@@ -2432,28 +2450,26 @@ stats.push({title:h.title,done:done,scheduled:scheduled,rate:Math.round(done/sch
 });
 return stats.sort(function(a,b){var ca=(a.catName||''),cb=(b.catName||'');if(ca!==cb)return ca<cb?-1:ca>cb?1:0;return b.rate-a.rate});
 }
-function calcWeekTaskStats(weekStart){
-var weekEnd=getReviewWeekEnd(weekStart);
+function calcPeriodTaskStats(start,nDays){
+var end=_reviewRangeEnd(start,nDays);
 var total=0,completed=0;
 state.tasks.forEach(function(t){
 if(!t.date)return;
 var td=new Date(t.date);
-if(td>=weekStart&&td<=weekEnd){
+if(td>=start&&td<=end){
 total++;
 if(t.done)completed++;
 }
 });
 return{total:total,completed:completed};
 }
-function calcWeekGoalProgress(weekStart){
-var prevStart=getPrevWeekStart(weekStart);
+function calcPeriodGoalProgress(start,nDays){
+var end=_reviewRangeEnd(start,nDays);
 var results=[];
 state.goals.forEach(function(g){
 var currProg=calcGoalProgress(g);
-// Try to estimate previous progress — we don't store history, so we approximate
-// by checking if goal was completed this week
-var completedThisWeek=g.completedAt&&new Date(g.completedAt)>=weekStart&&new Date(g.completedAt)<=weekEnd;
-results.push({title:g.title,progress:currProg,completedThisWeek:completedThisWeek,category:g.category});
+var completedInRange=g.completedAt&&new Date(g.completedAt)>=start&&new Date(g.completedAt)<=end;
+results.push({title:g.title,progress:currProg,completedThisWeek:completedInRange,category:g.category});
 });
 return results;
 }
@@ -2469,43 +2485,43 @@ if(!state.weeklyReviews[key])state.weeklyReviews[key]={wentWell:'',didNotWork:''
 state.weeklyReviews[key][field]=value;
 saveData();
 }
-function renderWeeklyReview(){
+function renderMonthlyReview(){
 var el=document.getElementById('reviewContent');
 if(!el)return;
-var weekStart=getReviewWeekStart(new Date());
-var weekEnd=getReviewWeekEnd(weekStart);
-var prevStart=getPrevWeekStart(weekStart);
-var prevEnd=getReviewWeekEnd(prevStart);
+var monthStart=getReviewMonthStart(new Date());
+var monthEnd=getReviewMonthEnd(monthStart);
+var prevStart=getPrevReviewMonthStart(monthStart);
+var nDays=Math.max(1,new Date().getDate());
 var months=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
 
-var scores=calcWeekScore(weekStart);
-var habitStats=calcWeekHabitsStats(weekStart);
-var taskStats=calcWeekTaskStats(weekStart);
-var goalStats=calcWeekGoalProgress(weekStart);
-var reflections=getReflections(weekStart);
+var scores=calcPeriodScore(monthStart,nDays);
+var habitStats=calcPeriodHabitsStats(monthStart,nDays);
+var taskStats=calcPeriodTaskStats(monthStart,nDays);
+var goalStats=calcPeriodGoalProgress(monthStart,nDays);
+var reflections=getReflections(monthStart);
 
-// Previous week comparison
-var prevScores=calcWeekScore(prevStart);
-var prevAvg=prevScores.reduce(function(s,d){return s+d.score},0)/7;
-var currAvg=scores.reduce(function(s,d){return s+d.score},0)/7;
+// Previous month comparison over the SAME elapsed span (fair delta)
+var prevScores=calcPeriodScore(prevStart,nDays);
+var prevAvg=prevScores.reduce(function(s,d){return s+d.score},0)/nDays;
+var currAvg=scores.reduce(function(s,d){return s+d.score},0)/nDays;
 var delta=Math.round(currAvg-prevAvg);
-var prevTaskStats=calcWeekTaskStats(prevStart);
+var prevTaskStats=calcPeriodTaskStats(prevStart,nDays);
 
-var ws=weekStart.getDate()+' '+months[weekStart.getMonth()];
-var we=weekEnd.getDate()+' '+months[weekEnd.getMonth()];
+var ws=monthStart.getDate()+' '+months[monthStart.getMonth()];
+var we=monthEnd.getDate()+' '+months[monthEnd.getMonth()];
 
 var h='<div style="padding:16px">';
 h+='<div class="review-section">';
 h+='<div class="review-week-range">'+ws+' — '+we+'</div>';
-h+='<div style="font-size:12px;color:var(--text-secondary);margin-top:8px">Недельное ревью</div>';
+h+='<div style="font-size:12px;color:var(--text-secondary);margin-top:8px">Ревью месяца</div>';
 h+='</div>';
 
 // Day score cards
 h+='<div class="review-section">';
 h+='<div class="review-section-title">Оценки по дням</div>';
 h+='<div class="review-day-cards">';
-for(var _di=27;_di>=0;_di--){
-var _dc=new Date();_dc.setDate(_dc.getDate()-_di);var _dds=dateStr(_dc);var _dsc=calcDailyScore(_dds);
+for(var _di=nDays-1;_di>=0;_di--){
+var _dc=new Date(monthStart);_dc.setDate(_dc.getDate()+_di);var _dds=dateStr(_dc);var _dsc=calcDailyScore(_dds);
 h+='<div class="review-day-card'+(_dds===todayStr()?' today':'')+'">';
 h+='<div class="rdc-day">'+['\u0412\u0441','\u041f\u043d','\u0412\u0442','\u0421\u0440','\u0427\u0442','\u041f\u0442','\u0421\u0431'][_dc.getDay()]+'</div>';
 h+='<div class="rdc-score">'+_dsc+'</div>';
@@ -2517,7 +2533,7 @@ h+='</div>';
 // Average + comparison
 var deltaCls=delta>0?'up':(delta<0?'down':'flat');
 var deltaStr=delta>0?'+'+delta:(delta<0?''+delta:'0');
-h+='<div style="font-size:13px;color:var(--text-secondary);margin-top:8px">Средняя оценка: <b style="color:var(--text-secondary)">'+Math.round(currAvg)+'</b> <span class="rsc-delta '+deltaCls+'">('+deltaStr+' к прошлой неделе)</span></div>';
+h+='<div style="font-size:13px;color:var(--text-secondary);margin-top:8px">Средняя оценка: <b style="color:var(--text-secondary)">'+Math.round(currAvg)+'</b> <span class="rsc-delta '+deltaCls+'">('+deltaStr+' к прошлому месяцу)</span></div>';
 h+='</div>';
 
 // Stats grid
@@ -2525,7 +2541,7 @@ h+='<div class="review-stats-grid">';
 h+='<div class="review-stat-card"><div class="rsc-label">Привычек выполнено</div><div class="rsc-value">'+habitStats.filter(function(x){return x.rate>=50}).length+'/'+habitStats.length+'</div></div>';
 h+='<div class="review-stat-card"><div class="rsc-label">Задач выполнено</div><div class="rsc-value">'+taskStats.completed+'/'+taskStats.total+'</div>';
 var taskDelta=taskStats.completed-prevTaskStats.completed;
-h+='<div class="rsc-delta '+(taskDelta>0?'up':(taskDelta<0?'down':'flat'))+'">'+(taskDelta>0?'+':'')+taskDelta+' к прошлой неделе</div>';
+h+='<div class="rsc-delta '+(taskDelta>0?'up':(taskDelta<0?'down':'flat'))+'">'+(taskDelta>0?'+':'')+taskDelta+' к прошлому месяцу</div>';
 h+='</div>';
 h+='<div class="review-stat-card"><div class="rsc-label">Целей завершено</div><div class="rsc-value">'+goalStats.filter(function(g){return g.completedThisWeek}).length+'</div></div>';
 h+='<div class="review-stat-card"><div class="rsc-label">Лучшая привычка</div><div style="font-size:14px;font-weight:600;color:var(--blue-bright)">'+(habitStats.length>0?escapeHtml(habitStats[0].title)+' '+habitStats[0].rate+'%':'—')+'</div></div>';
@@ -2569,16 +2585,16 @@ h+='</div>';
 h+='<div class="review-section">';
 h+='<div class="review-section-title">Рефлексия</div>';
 h+='<div class="review-reflection">';
-h+='<div class="review-reflection-label">Что получилось на этой неделе?</div>';
-h+='<textarea id="refl_wentWell" placeholder="Запишите свои успехи..." onblur=\'saveReflection(getReviewWeekStart(new Date()),"wentWell",this.value)\'>'+escapeHtml(reflections.wentWell)+'</textarea>';
+h+='<div class="review-reflection-label">Что получилось в этом месяце?</div>';
+h+='<textarea id="refl_wentWell" placeholder="Запишите свои успехи..." onblur=\'saveReflection(getReviewMonthStart(new Date()),"wentWell",this.value)\'>'+escapeHtml(reflections.wentWell)+'</textarea>';
 h+='</div>';
 h+='<div class="review-reflection">';
 h+='<div class="review-reflection-label">Что не вышло?</div>';
-h+='<textarea id="refl_didNotWork" placeholder="Что мешало прогрессу..." onblur=\'saveReflection(getReviewWeekStart(new Date()),"didNotWork",this.value)\'>'+escapeHtml(reflections.didNotWork)+'</textarea>';
+h+='<textarea id="refl_didNotWork" placeholder="Что мешало прогрессу..." onblur=\'saveReflection(getReviewMonthStart(new Date()),"didNotWork",this.value)\'>'+escapeHtml(reflections.didNotWork)+'</textarea>';
 h+='</div>';
 h+='<div class="review-reflection">';
-h+='<div class="review-reflection-label">Что изменить на следующей неделе?</div>';
-h+='<textarea id="refl_changeNext" placeholder="Планы и изменения..." onblur=\'saveReflection(getReviewWeekStart(new Date()),"changeNext",this.value)\'>'+escapeHtml(reflections.changeNext)+'</textarea>';
+h+='<div class="review-reflection-label">Что изменить в следующем месяце?</div>';
+h+='<textarea id="refl_changeNext" placeholder="Планы и изменения..." onblur=\'saveReflection(getReviewMonthStart(new Date()),"changeNext",this.value)\'>'+escapeHtml(reflections.changeNext)+'</textarea>';
 h+='</div>';
 h+='<div class="review-reflection-saved">Сохраняется автоматически</div>';
 h+='</div>';

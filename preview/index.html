@@ -915,7 +915,7 @@ body::after{width:400px;height:400px;background:var(--blue-deep);bottom:-120px;r
 </div>
 <div class="settings-section" id="healthSection"><div class="settings-section-title">Здоровье и активность</div><button class="health-sync-btn" id="healthSyncBtn" onclick="syncHealth()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span id="healthSyncText">Синхронизировать с Apple Fitness</span></button></div>
 <div class="settings-section"><div class="settings-section-title">Данные и конфиденциальность</div><button class="health-sync-btn" onclick="openInfo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="11" x2="12" y2="16.5"/><circle cx="12" cy="7.8" r="1.15" fill="currentColor" stroke="none"/></svg><span id="infoRowText">Пользовательское соглашение</span></button></div>
-<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.12.69</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
+<div class="settings-section"><div class="settings-section-title">О приложении</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6"><div>Пупс-ай v5.12.70</div><div>Трекер целей и привычек</div><div style="margin-top:4px;font-size:11px;opacity:0.6">Автосохранение: локально + облако</div><div style="margin-top:8px;font-size:11px;opacity:0.6">Powered by Ouroboros</div></div></div>
 </div>
 
 <div class="view active" id="view-dashboard">
@@ -2769,8 +2769,8 @@ fetch(BACKEND_URL+'/data',{method:'PUT',headers:_beHeaders({'Content-Type':'appl
 function loadFromBackend(cb){if(!backendAvailable()){cb(null,0);return}
 fetch(BACKEND_URL+'/data',{headers:_beHeaders()})
 .then(function(r){if(!r.ok)return r.json().catch(function(){return{}}).then(function(j){throw new Error('HTTP '+r.status+(j&&j.error?' '+j.error:''))});return r.json()})
-.then(function(j){var st=(j&&j.state&&isValidState(j.state))?j.state:null;cb(st,(j&&j.last_modified)||0,(j&&j.reset_at)||0)})
-.catch(function(){cb(null,0,0)});
+.then(function(j){var st=(j&&j.state&&isValidState(j.state))?j.state:null;cb(st,(j&&j.last_modified)||0,(j&&j.reset_at)||0,false)})
+.catch(function(){cb(null,0,0,true)});
 }
 function mergeGoalsTasks(base,other){var changed=false;
 function unionArr(bk){var b=base[bk]||[];var idx={};b.forEach(function(x,i){if(x&&x.id)idx[x.id]=i});
@@ -2802,10 +2802,12 @@ else if(bHas&&bt>at){av[f]=bv[f];changed=true}
 if(bt>at)av.updatedAt=bt;
 });}catch(e){}return changed}
 function mergeUserFields(base,other){var c=false;c=mergeDailyStates(base,other)||c;c=mergeNotifications(base,other)||c;c=mergeIdArr('freezes','freezesDeleted',base,other)||c;c=mergeIdArr('shareTemplates','shareTemplatesDeleted',base,other)||c;c=mergeIdArr('customCategories','customCategoriesDeleted',base,other)||c;c=mergeDeletedCats(base,other)||c;c=mergeDailyScores(base,other)||c;c=mergeReflections(base,other)||c;return c}
+function renderCurrentView(){try{if(currentView==='dashboard')renderDashboard();else if(currentView==='goals')renderGoals();else if(currentView==='habits')renderHabits();else if(currentView==='analytics')renderAnalytics()}catch(e){}}
 function reconcileBackend(){
 if(!backendAvailable())return;
 if(backendInFlight||backendSyncTimer)return;// v5.12.5: don't pull while a local push is pending
-loadFromBackend(function(bs,bts,srvReset){
+loadFromBackend(function(bs,bts,srvReset,pullFailed){
+if(pullFailed){updateBackendStatus('err','Не удалось прочитать облако — повторю автоматически');return}// v5.12.70: a FAILED pull is NOT an empty cloud; never force-push stale local over the cloud
 backendReconciled=true;
 lastReconcileTs=Date.now();// v5.12.5
 var myReset=0;try{myReset=parseInt(localStorage.getItem(RESET_TS_KEY)||'0',10)||0}catch(e){}
@@ -2816,7 +2818,7 @@ if(bs&&isValidState(bs)){state=bs}else{state.goals=[];state.deletedIds={goals:{}
 try{lastSavedSig=contentSig(state);backendDirty=false}catch(e){}
 if(!state.version||state.version<4.21)state.version=4.21;migrateState(state);
 try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}
-try{applySettings()}catch(e){}try{renderDashboard()}catch(e){}
+try{applySettings()}catch(e){}renderCurrentView()
 updateBackendStatus('ok','Данные сброшены владельцем');showToast('Приложение сброшено к начальному состоянию');return;
 }
 var localTs=0;try{localTs=state.lastModified||0}catch(e){}
@@ -2833,7 +2835,7 @@ if(bs&&!remoteEmpty&&!localEmpty){
 // checked on AT LEAST ONE device (habits merge by id).
 var base=state,other=bs;if(remoteTs>localTs){base=bs;other=state;}
 var changed=mergeGoalsTasks(base,other);changed=mergeCheckoffs(base,other)||changed;changed=mergeUserFields(base,other)||changed;
-if(base!==state){state=base;if(!state.version||state.version<4.21)state.version=4.21;migrateState(state);try{lastSavedSig=contentSig(state);backendDirty=false}catch(e){}try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}applySettings();renderDashboard();}
+if(base!==state){state=base;if(!state.version||state.version<4.21)state.version=4.21;migrateState(state);try{lastSavedSig=contentSig(state);backendDirty=false}catch(e){}try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}applySettings();renderCurrentView();}
 if(changed){updateBackendStatus('ok','Объединено с другим устройством');syncDataToBackend(true);}
 return;
 }
@@ -2841,7 +2843,7 @@ if(bs&&!remoteEmpty&&localEmpty){
 state=bs;if(!state.version||state.version<4.21)state.version=4.21;migrateState(state);
 try{lastSavedSig=contentSig(state);backendDirty=false}catch(e){}
 try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}
-applySettings();renderDashboard();updateBackendStatus('ok','Восстановлено из облака');showToast('Данные восстановлены из облака');return;
+applySettings();renderCurrentView();updateBackendStatus('ok','Восстановлено из облака');showToast('Данные восстановлены из облака');return;
 }
 if(!localEmpty){syncDataToBackend(true)}
 });
